@@ -10,6 +10,14 @@
 	<packaging>war</packaging>
 	<name>CourierModulWeb</name>
 
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 	<dependencies>
 
 		<dependency>
@@ -46,10 +54,10 @@
 			<artifactId>primefaces</artifactId>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.primefaces.themes</groupId> -->
-<!-- 			<artifactId>excite-bike</artifactId> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>humanity</artifactId>
+		</dependency>
 
 
 		<dependency>
@@ -108,7 +116,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
-
+		
 	</dependencies>
 	<build>
 		<finalName>WebApp</finalName>

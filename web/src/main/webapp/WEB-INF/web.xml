@@ -5,6 +5,10 @@
 	version="3.0">
 	<display-name>Archetype Created Web Application</display-name>
 	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>humanity</param-value>
+	</context-param>
+	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
 	</context-param>
@@ -32,9 +36,6 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
-	</welcome-file-list>
 	<display-name>web</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -43,6 +44,7 @@
 		<welcome-file>default.html</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
