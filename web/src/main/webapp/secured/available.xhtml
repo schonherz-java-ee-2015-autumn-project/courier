@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
+	<ui:define name="content">
+
+		<section class="content">
+
+			<div class="row">
+				<div class="col-md-12">
+
+					<p:dataGrid id="availableUsers" var="user"
+						value="#{messagesBean.users}" columns="1"
+						style="background-color: transparent !important;">
+						<div class="box box-success box-solid">
+							<div class="box-header with-border">
+								<h3 class="box-title">#{user.fullname}</h3>
+								<div class="box-tools pull-right">
+									<button class="btn btn-box-tool" data-widget="collapse">
+										<i class="fa fa-minus"></i>
+									</button>
+								</div>
+								<!-- /.box-tools -->
+							</div>
+							<!-- /.box-header -->
+
+							<div class="box-body">
+								<p>Address: #{user.username}</p>
+							</div>
+							<div class="box-footer">
+								<button class="btn  btn-success pull-right">#{out.pickUp}</button>
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					</p:dataGrid>
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col (LEFT) -->
+
+		</section>
+
+
+	</ui:define>
+</ui:composition>
