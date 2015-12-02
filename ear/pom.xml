@@ -39,7 +39,7 @@
 						<webModule>
 							<groupId>hu.schonherz.java.training.courier</groupId>
 							<artifactId>web</artifactId>
-							<contextRoot>webApp</contextRoot>
+							<contextRoot>courier</contextRoot>
 						</webModule>
 						<ejbModule>
 							<groupId>hu.schonherz.java.training.courier</groupId>
