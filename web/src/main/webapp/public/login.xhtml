@@ -1,98 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:sec="http://www.springframework.org/security/tags"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
+	<ui:define name="content">
+		<section class="content">
 
-<f:view>
-
-	<h:head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-		<!-- Tell the browser to be responsive to screen width -->
-		<meta
-			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-			name="viewport" />
-		<!-- Bootstrap 3.3.5 -->
-		<h:outputStylesheet library="resources"
-			name="/bootstrap/css/bootstrap.min.css" />
-		<!-- Theme style -->
-		<h:outputStylesheet library="resources"
-			name="/dist/css/AdminLTE.min.css" />
-		<!-- iCheck -->
-		<h:outputStylesheet library="resources"
-			name="/plugins/iCheck/square/blue.css" />
-
-		<!-- Font Awesome -->
-		<link rel="stylesheet"
-			href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
-
-		<!-- jQuery 2.1.4 -->
-		<h:outputScript library="resources"
-			name="/plugins/jQuery/jQuery-2.1.4.min.js" />
-		<!-- Bootstrap 3.3.5 -->
-		<h:outputScript library="resources"
-			name="/bootstrap/js/bootstrap.min.js" />
-
-	</h:head>
-	<h:body class="hold-transition login-page">
-
-		<div class="login-box">
-			<div class="login-logo">
-				<h:outputText value="Sign in"></h:outputText>
-			</div>
-			<!-- /.login-logo -->
-			<div class="login-box-body">
-
-				<form action="#{request.contextPath}/login" method="post">
-					<h:panelGroup layout="block" class="error"
-						styleClass="alert alert-danger" rendered="#{param['error'] == 1}">Wrong username or password!</h:panelGroup>
-
-					<div class="form-group has-feedback">
-						<input type="text" class="form-control" placeholder="Username"
-							name="j_username" />
+			<div class="login-box">
+				<!-- Login Form -->
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">#{out.login}</h3>
 					</div>
-					<div class="form-group has-feedback">
-						<input type="password" class="form-control" placeholder="Password"
-							name="j_password" />
+					<!-- /.box-header -->
+					<!-- form start -->
+					<form class="form-horizontal" action="#{request.contextPath}/login"
+						method="post">
 
-					</div>
-
-
-					<div class="row">
-						<div class="col-xs-8">
-							
+						<div class="box-body">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h:panelGroup layout="block" class="callout callout-danger"
+										rendered="#{param['error'] == 1}">#{out.loginerror}</h:panelGroup>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<input type="text" class="form-control"
+										placeholder="#{out.username}" name="j_username" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<input type="password" class="form-control"
+										placeholder="#{out.password}" name="j_password" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="checkbox">
+										<label> <input type="checkbox" />#{out.rememberme}
+										</label>
+									</div>
+								</div>
+							</div>
 						</div>
-						<!-- /.col -->
-						<div class="col-xs-4">
-							<button type="submit" class="btn btn-primary btn-block btn-flat">Sign
-								In</button>
+						<!-- /.box-body -->
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary pull-right">#{out.login}</button>
 						</div>
-						<!-- /.col -->
-					</div>
-				</form>
-
-			</div>
-			<!-- /.login-box-body -->
-			<div class="row">
-				<div class="col-xs-8">
-					<a href="#">I forgot my password</a>
+						<!-- /.box-footer -->
+					</form>
 				</div>
-				<!-- /.col -->
-
+				<!-- /.box -->
 			</div>
-		</div>
-		<!-- /.login-box -->
-
-
-
-	</h:body>
-
-</f:view>
-</html>
+		</section>
+	</ui:define>
+</ui:composition>
