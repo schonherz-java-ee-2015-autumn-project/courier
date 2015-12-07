@@ -12,20 +12,30 @@
 			access="hasRole('MANAGER')" />
 		<security:intercept-url pattern="/secured/admin/*"
 			requires-channel="https" access="hasRole('ADMIN')" />
-		<security:form-login login-page="/public/login.xhtml" 
+		<security:form-login login-page="/public/login.xhtml"
 			login-processing-url="/login" default-target-url="/index.xhtml"
 			authentication-failure-url="/public/login.xhtml?error=1"
-			username-parameter="j_username" password-parameter="j_password" />
+			username-parameter="j_username" password-parameter="j_password"
+			authentication-success-handler-ref="myAuthenticationSuccessHandler" />
 		<security:logout logout-url="/logout"
-			logout-success-url="/index.xhtml" />
-		<security:remember-me key="key" 
-			remember-me-parameter="remember-me" token-validity-seconds="86400" />
-			
+			invalidate-session="true"
+			delete-cookies="JSESSIONID" />
+		<security:remember-me key="key"
+			remember-me-parameter="remember-me" token-validity-seconds="10" />
+		<security:session-management
+			invalid-session-url="/public/login.xhtml?error=0"
+			session-fixation-protection="migrateSession">
+			<security:concurrency-control
+				expired-url="/expired-session" max-sessions="1"
+				error-if-maximum-exceeded="true" />
+		</security:session-management>
 	</security:http>
+
 	<security:authentication-manager>
 		<security:authentication-provider
 			user-service-ref="customUserDetailsService">
 			<security:password-encoder hash="bcrypt" />
 		</security:authentication-provider>
 	</security:authentication-manager>
+
 </beans>

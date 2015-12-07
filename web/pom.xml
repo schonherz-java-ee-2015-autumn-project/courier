@@ -19,13 +19,16 @@
 		</repository>
 	</repositories>
 	<dependencies>
-
+		<dependency>
+			<groupId>hu.schonherz.java.training.courier</groupId>
+			<artifactId>service</artifactId>
+			<version>${version}</version>
+		</dependency>
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>service-client-api</artifactId>
 			<version>${version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -115,7 +118,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
-		
 	</dependencies>
 	<build>
 		<finalName>WebApp</finalName>
