@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 public class Address extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private String address;
 	private List<Item> items;
 	private Date deadline;
 	private int value;
@@ -54,5 +55,13 @@ public class Address extends BaseEntity implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }
