@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Address extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String address;
+	@OneToMany
 	private List<Item> items;
 	private Date deadline;
 	private int value;
