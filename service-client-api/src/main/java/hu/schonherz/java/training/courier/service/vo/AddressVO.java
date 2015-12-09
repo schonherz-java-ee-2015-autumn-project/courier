@@ -1,16 +1,17 @@
-package hu.schonherz.java.training.courier.entities;
+package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
-@Entity
-public class Address extends BaseEntity implements Serializable {
+import hu.schonherz.java.training.courier.entities.Item;
+
+public class AddressVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private Long id;
 	private String address;
 	@OneToMany
 	private List<Item> items;
@@ -18,6 +19,14 @@ public class Address extends BaseEntity implements Serializable {
 	private int value;
 	private String payment;
 	private String status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public List<Item> getItems() {
 		return items;
@@ -69,7 +78,8 @@ public class Address extends BaseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Address [address=" + address + ", items=" + items + ", deadline=" + deadline + ", value=" + value
-				+ ", payment=" + payment + ", status=" + status + "]";
+		return "AddressVO [id=" + id + ", address=" + address + ", items=" + items + ", deadline=" + deadline
+				+ ", value=" + value + ", payment=" + payment + ", status=" + status + "]";
 	}
+
 }

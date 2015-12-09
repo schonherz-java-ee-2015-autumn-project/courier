@@ -1,16 +1,22 @@
-package hu.schonherz.java.training.courier.entities;
+package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-
-@Entity
-public class Item extends BaseEntity implements Serializable {
+public class ItemVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private Long id;
 	private String item;
 	private int quantity;
 	private int value;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getItem() {
 		return item;
@@ -34,11 +40,6 @@ public class Item extends BaseEntity implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-	}
-
-	@Override
-	public String toString() {
-		return "Item [item=" + item + ", quantity=" + quantity + ", value=" + value + "]";
 	}
 
 }

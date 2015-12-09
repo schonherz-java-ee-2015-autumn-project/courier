@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/templates/masterLayout.xhtml"
 	xmlns:sec="http://www.springframework.org/security/tags">
-	<ui:define name="pageTitle">#{out.hello}</ui:define>
+	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
 	<ui:define name="content">
 		<h:outputStylesheet library="css" name="prime.css" />
 
@@ -14,12 +14,14 @@
 			<div class="row">
 				<div class="col-md-12">
 
-					<p:dataGrid id="availableUsers" var="user"
-						value="#{messagesBean.users}" columns="1">
+					<p:dataGrid id="availableCargo" var="cargo"
+						value="#{availableBean.availables}" columns="1"
+						emptyMessage="#{out.emptyMessage}">
 						<div class="box box-success box-solid">
 							<div class="box-header with-border">
-								<h3 class="box-title">Title</h3>
-								<h5 class="widget-user-desc">Address</h5>
+								<h3 class="box-title">#{cargo.name}</h3>
+								<h5 class="widget-user-desc">#{cargo.address}</h5>
+								<h6 class="widget-user-desc">#{cargo.phone}</h6>
 								<div class="box-tools pull-right">
 									<button class="btn btn-box-tool" data-widget="collapse">
 										<i class="fa fa-minus"></i>
@@ -29,35 +31,9 @@
 							</div>
 							<!-- /.box-header -->
 
-							<div class="box-body">
-								<p:dataTable var="address" value="#{messagesBean.addresses}"
-									styleClass="datatable">
-
-									<p:column>
-										<h:outputText value="#{address.address}" />
-									</p:column>
-
-									<p:column>
-										<h:outputText value="#{address.items}" />
-									</p:column>
-
-									<p:column>
-										<h:outputText value="#{address.deadline}">
-											<f:convertDateTime pattern="MM-dd-yyyy" />
-										</h:outputText>
-									</p:column>
-
-									<p:column>
-										<h:outputText value="#{address.value}" />
-									</p:column>
-
-									<p:column>
-										<h:outputText value="#{address.payment}" />
-									</p:column>
-								</p:dataTable>
-							</div>
+							<div class="box-body"></div>
 							<div class="box-footer">
-								<button class="btn  btn-success pull-right">Pick Up</button>
+								<button class="btn  btn-success pull-right">#{out.pickUp}</button>
 							</div>
 							<!-- /.box-body -->
 						</div>

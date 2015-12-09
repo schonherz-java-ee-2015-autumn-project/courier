@@ -1,16 +1,22 @@
-package hu.schonherz.java.training.courier.entities;
+package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-
-@Entity
-public class Restaurant extends BaseEntity implements Serializable {
+public class RestaurantVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private Long id;
 	private String name;
 	private String address;
 	private String phone;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -34,11 +40,6 @@ public class Restaurant extends BaseEntity implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	@Override
-	public String toString() {
-		return "Restaurant [name=" + name + ", address=" + address + ", phone=" + phone + "]";
 	}
 
 }

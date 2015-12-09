@@ -5,12 +5,14 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class Restaurant extends BaseEntity implements Serializable {
+public class Supplier extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private String name;
 	private String address;
 	private String phone;
+	private String email;
 
 	public String getName() {
 		return name;
@@ -36,9 +38,12 @@ public class Restaurant extends BaseEntity implements Serializable {
 		this.phone = phone;
 	}
 
-	@Override
-	public String toString() {
-		return "Restaurant [name=" + name + ", address=" + address + ", phone=" + phone + "]";
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

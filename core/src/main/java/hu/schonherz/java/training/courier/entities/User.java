@@ -3,7 +3,9 @@ package hu.schonherz.java.training.courier.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User extends BaseEntity implements Serializable {
@@ -13,7 +15,8 @@ public class User extends BaseEntity implements Serializable {
 	private String username;
 	private String fullname;
 	private String password;
-
+	@OneToOne
+	private Supplier supplier;
 	@ManyToMany
 	private List<Role> roles;
 
@@ -53,4 +56,11 @@ public class User extends BaseEntity implements Serializable {
 		this.fullname = fullname;
 	}
 
+	public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
 }

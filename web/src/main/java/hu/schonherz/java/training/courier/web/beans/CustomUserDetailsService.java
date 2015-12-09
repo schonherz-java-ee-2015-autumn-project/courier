@@ -24,7 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	UserService userService;
-
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
@@ -32,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		try {
 			user = userService.findUserByName(username);
-
+			System.out.println("userVO = " + user);
 			if (user == null) {
 				throw new UsernameNotFoundException(username);
 			}

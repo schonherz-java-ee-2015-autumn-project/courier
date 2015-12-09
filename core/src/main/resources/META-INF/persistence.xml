@@ -11,6 +11,11 @@
 		<class>hu.schonherz.java.training.courier.entities.Role</class>
 		<class>hu.schonherz.java.training.courier.entities.User</class>
 		<class>hu.schonherz.java.training.courier.entities.Log</class>
+		<class>hu.schonherz.java.training.courier.entities.Item</class>
+		<class>hu.schonherz.java.training.courier.entities.Address</class>
+		<class>hu.schonherz.java.training.courier.entities.Cargo</class>
+		<class>hu.schonherz.java.training.courier.entities.Restaurant</class>
+		<class>hu.schonherz.java.training.courier.entities.Supplier</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.show_sql" value="false" />

@@ -48,4 +48,10 @@ public class Cargo extends BaseEntity implements Serializable {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "Cargo [restaurant=" + restaurant + ", addresses=" + addresses + ", value=" + value + ", status="
+				+ status + "]";
+	}
+
 }
