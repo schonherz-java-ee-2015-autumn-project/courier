@@ -12,6 +12,8 @@
 		<module>core</module>
 		<module>ear</module>
 		<module>service-client-api</module>
+		<module>integration-api</module>
+		<module>integration-service-client</module>
 	</modules>
 	<build>
 		<defaultGoal>install</defaultGoal>
