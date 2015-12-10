@@ -31,4 +31,19 @@ public class UserServiceImpl implements UserService {
 
 		return UserConverter.toVo(userDao.findAll());
 	}
+	/** 
+	 * WebService: az adminisztrátori modultol kapott adatok bevitele a User táblába.
+	*/
+	@Override
+	public void saveUser(UserVO newUser) throws Exception {
+		
+		
+	}
+	/** 
+	 * WebService: az adminisztrátori modultol kapott adatok bevitele az adatbázisba frissítéssel, User táblába.
+	*/
+	@Override
+	public void updateUser(UserVO modUser) throws Exception {
+
+	}
 }

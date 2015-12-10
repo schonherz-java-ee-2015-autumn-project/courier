@@ -9,4 +9,8 @@ public interface UserService {
 	public UserVO findUserByName(String name) throws Exception;
 
 	public List<UserVO> findAll() throws Exception;
+	
+	public void saveUser(UserVO newUser) throws Exception;
+	
+	public void updateUser(UserVO modUser) throws Exception;
 }

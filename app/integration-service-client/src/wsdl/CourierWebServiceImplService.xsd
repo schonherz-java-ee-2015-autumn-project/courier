@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). 
+	RI's version is JAX-WS RI 2.2.10-b140319.1121 svn-revision#7b34660d6bc70e587e8ec81a17e4d76af68816a6. -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:ns0="http://webservice.courier.training.java.schonherz.hu/"
+	targetNamespace="http://webservice.courier.training.java.schonherz.hu/">
+	<xsd:complexType name="getUsersList" />
+	<xsd:complexType name="supplierVO">
+		<xsd:sequence>
+			<xsd:element name="address" type="xsd:string" minOccurs="0" />
+			<xsd:element name="email" type="xsd:string" minOccurs="0" />
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="name" type="xsd:string" minOccurs="0" />
+			<xsd:element name="phone" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="roleVO">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="name" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getUsersListResponse">
+		<xsd:sequence>
+			<xsd:element name="usersListResponse" type="ns0:userVO"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="userVO">
+		<xsd:sequence>
+			<xsd:element name="fullname" type="xsd:string" minOccurs="0" />
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="password" type="xsd:string" minOccurs="0" />
+			<xsd:element name="roles" type="ns0:roleVO" minOccurs="0"
+				maxOccurs="unbounded" nillable="true" />
+			<xsd:element name="supplier" type="ns0:supplierVO"
+				minOccurs="0" />
+			<xsd:element name="username" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="getUsersList" type="ns0:getUsersList" />
+	<xsd:element name="getUsersListResponse" type="ns0:getUsersListResponse" />
+</xsd:schema>
