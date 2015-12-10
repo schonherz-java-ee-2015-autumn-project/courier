@@ -10,7 +10,6 @@ import org.springframework.security.core.session.SessionDestroyedEvent;
 import org.springframework.stereotype.Component;
 
 import hu.schonherz.java.training.courier.service.LogService;
-import hu.schonherz.java.training.courier.service.converter.LogConverter;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 
 @Component
@@ -26,7 +25,6 @@ public class SessionEndedListener implements ApplicationListener<SessionDestroye
 			SpringUser currentUser = (SpringUser) authentication.getPrincipal();
 			LogVO logInfo = currentUser.getLogVO();
 			logInfo.setLogoutDate(new Date());
-			System.out.println(LogConverter.toEntity(logInfo));
 			try {
 				logService.save(logInfo);
 			} catch (Exception e) {

@@ -31,7 +31,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		try {
 			user = userService.findUserByName(username);
-			System.out.println("userVO = " + user);
 			if (user == null) {
 				throw new UsernameNotFoundException(username);
 			}
