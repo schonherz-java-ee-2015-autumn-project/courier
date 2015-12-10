@@ -1,5 +1,7 @@
 package hu.schonherz.java.training.courier.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,13 +21,13 @@ public class LogServiceImpl implements LogService {
 	LogDao logDao;
 
 	@Override
-	public void save(LogVO logVO) throws Exception {
-		logDao.save(LogConverter.toEntity(logVO));
+	public LogVO save(LogVO logVO) throws Exception {
+		Log log = logDao.save(LogConverter.toEntity(logVO));
+		return LogConverter.toVo(log);
 	}
 
 	@Override
-	public LogVO findBySessionId(String name) throws Exception {
-		Log user = logDao.findBySessionId(name);
-		return LogConverter.toVo(user);
+	public List<LogVO> findByUserId(Long id) throws Exception {
+		return LogConverter.toVo(logDao.findByUserId(id));
 	}
 }

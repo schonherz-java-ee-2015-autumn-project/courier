@@ -13,32 +13,9 @@ public class Log extends BaseEntity implements Serializable {
 
 	@OneToOne
 	private User user;
-	@Override
-	public String toString() {
-		return "Log [user=" + user + ", sessionId=" + sessionId + ", loginDate=" + loginDate + ", logoutDate="
-				+ logoutDate + "]";
-	}
-
-	private String sessionId;
 	private Date loginDate;
 	private Date logoutDate;
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
-
+	
 	public Date getLoginDate() {
 		return loginDate;
 	}
@@ -53,6 +30,14 @@ public class Log extends BaseEntity implements Serializable {
 
 	public void setLogoutDate(Date logoutDate) {
 		this.logoutDate = logoutDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

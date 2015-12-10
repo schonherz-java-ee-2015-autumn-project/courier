@@ -6,9 +6,25 @@ public class ItemVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private String item;
-	private int quantity;
-	private int value;
+	private String name;
+	private Long quantity;
+	private double price;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
 
 	public Long getId() {
 		return id;
@@ -18,28 +34,17 @@ public class ItemVO implements Serializable {
 		this.id = id;
 	}
 
-	public String getItem() {
-		return item;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setItem(String item) {
-		this.item = item;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	@Override
+	public String toString() {
+		return "ItemVO [id=" + id + ", name=" + name + ", quantity=" + quantity + ", price=" + price + "]";
 	}
 
 }

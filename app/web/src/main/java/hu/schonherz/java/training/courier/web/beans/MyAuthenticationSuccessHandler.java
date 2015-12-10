@@ -32,14 +32,12 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 
 		SpringUser currentUser = (SpringUser) authentication.getPrincipal();
 		LogVO logInfo = currentUser.getLogVO();
-
-		logInfo.setSessionId(request.getSession().getId());
 		logInfo.setLoginDate(new Date());
 		logInfo.setLogoutDate(null);
-
+		LogVO returnedLogVO;
 		try {
-			logService.save(logInfo);
-			logInfo.setId(logService.findBySessionId(logInfo.getSessionId()).getId());
+			returnedLogVO = logService.save(logInfo);
+			logInfo.setId(returnedLogVO.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,7 +49,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 		Authentication newAuth = new UsernamePasswordAuthenticationToken(currentUser, auth.getCredentials(),
 				authorities);
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
-
+		setDefaultTargetUrl("/secured/index.xhtml");
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 }

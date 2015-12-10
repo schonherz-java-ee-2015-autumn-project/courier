@@ -77,7 +77,6 @@
 
 				<li class="header">#{out.mainNavigation}</li>
 
-				<sec:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
 					<li><a href="#{request.contextPath}/secured/profile.xhtml">
 							<i class="fa fa-user"></i> <span>#{out.profile}</span>
 					</a></li>
@@ -107,12 +106,6 @@
 					<li><a href="#{request.contextPath}/logout"> <i
 							class="fa fa-sign-out"></i> <span>#{out.logout}</span>
 					</a></li>
-				</sec:authorize>
-				<sec:authorize ifNotGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
-					<li><a href="#{request.contextPath}/public/login.xhtml"> <i
-							class="fa fa-sign-in"></i> <span>#{out.login}</span>
-					</a></li>
-				</sec:authorize>
 			</ul>
 			</section> <!-- /.sidebar --> </aside>
 

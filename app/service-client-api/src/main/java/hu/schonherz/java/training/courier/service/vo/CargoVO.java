@@ -1,19 +1,26 @@
-package hu.schonherz.java.training.courier.entities;
+package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import hu.schonherz.java.training.courier.entities.Address;
+import hu.schonherz.java.training.courier.entities.Restaurant;
 
-@Entity
-public class Cargo extends BaseEntity implements Serializable {
+public class CargoVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private Long id;
 	private Restaurant restaurant;
-	@OneToMany
 	List<Address> addresses;
 	private String status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Restaurant getRestaurant() {
 		return restaurant;

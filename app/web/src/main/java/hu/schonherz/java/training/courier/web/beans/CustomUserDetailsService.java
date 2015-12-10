@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import hu.schonherz.java.training.courier.service.UserService;
-import hu.schonherz.java.training.courier.service.converter.UserConverter;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 import hu.schonherz.java.training.courier.service.vo.RoleVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
@@ -24,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	UserService userService;
+
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
@@ -48,7 +48,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private SpringUser buildUserForAuthentication(UserVO user, List<GrantedAuthority> authorities) {
 
 		LogVO logVO = new LogVO();
-		logVO.setUser(UserConverter.toEntity(user));
+		logVO.setUser(user);
 		return new SpringUser(logVO, user.getUsername(), user.getPassword(), true, true, true, true, authorities);
 	}
 

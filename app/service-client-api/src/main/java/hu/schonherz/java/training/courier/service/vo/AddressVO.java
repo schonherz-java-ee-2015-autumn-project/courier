@@ -16,7 +16,6 @@ public class AddressVO implements Serializable {
 	@OneToMany
 	private List<Item> items;
 	private Date deadline;
-	private int value;
 	private String payment;
 	private String status;
 
@@ -44,13 +43,7 @@ public class AddressVO implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
-	}
+	
 
 	public String getPayment() {
 		return payment;
@@ -79,7 +72,9 @@ public class AddressVO implements Serializable {
 	@Override
 	public String toString() {
 		return "AddressVO [id=" + id + ", address=" + address + ", items=" + items + ", deadline=" + deadline
-				+ ", value=" + value + ", payment=" + payment + ", status=" + status + "]";
+				+ ", payment=" + payment + ", status=" + status + "]";
 	}
+
+	
 
 }

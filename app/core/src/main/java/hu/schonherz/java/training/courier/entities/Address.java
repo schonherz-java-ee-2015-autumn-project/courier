@@ -15,7 +15,6 @@ public class Address extends BaseEntity implements Serializable {
 	@OneToMany
 	private List<Item> items;
 	private Date deadline;
-	private int value;
 	private String payment;
 	private String status;
 
@@ -33,14 +32,6 @@ public class Address extends BaseEntity implements Serializable {
 
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
 	}
 
 	public String getPayment() {
@@ -69,7 +60,8 @@ public class Address extends BaseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Address [address=" + address + ", items=" + items + ", deadline=" + deadline + ", value=" + value
-				+ ", payment=" + payment + ", status=" + status + "]";
+		return "Address [address=" + address + ", items=" + items + ", deadline=" + deadline + ", payment=" + payment
+				+ ", status=" + status + "]";
 	}
+
 }

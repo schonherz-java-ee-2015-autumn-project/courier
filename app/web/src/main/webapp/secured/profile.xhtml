@@ -41,6 +41,17 @@
 						<!-- /.box-body -->
 					</div>
 					<!-- /.box -->
+					<p:dataTable var="log" value="#{logBean.logs}" sortMode="multiple">
+
+						<p:column headerText="Login" sortBy="#{log.loginDate}">
+							<h:outputText value="#{car.id}" />
+						</p:column>
+
+						<p:column headerText="Logout" sortBy="#{log.logoutDate}">
+							<h:outputText value="#{car.year}" />
+						</p:column>
+
+					</p:dataTable>
 				</div>
 				<!-- /.box -->
 			</div>
