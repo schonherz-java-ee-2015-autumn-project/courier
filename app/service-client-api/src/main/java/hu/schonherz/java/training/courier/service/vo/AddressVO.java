@@ -14,8 +14,9 @@ public class AddressVO implements Serializable {
 	@OneToMany
 	private List<ItemVO> items;
 	private Date deadline;
-	private String payment;
-	private String status;
+	private Long payment;
+	private double totalValue;
+	private Long status;
 
 	public Long getId() {
 		return id;
@@ -41,19 +42,19 @@ public class AddressVO implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public String getPayment() {
+	public Long getPayment() {
 		return payment;
 	}
 
-	public void setPayment(String payment) {
+	public void setPayment(Long payment) {
 		this.payment = payment;
 	}
 
-	public String getStatus() {
+	public Long getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Long status) {
 		this.status = status;
 	}
 
@@ -68,7 +69,15 @@ public class AddressVO implements Serializable {
 	@Override
 	public String toString() {
 		return "AddressVO [id=" + id + ", address=" + address + ", items=" + items + ", deadline=" + deadline
-				+ ", payment=" + payment + ", status=" + status + "]";
+				+ ", payment=" + payment + ", totalValue=" + totalValue + ", status=" + status + "]";
+	}
+
+	public double getTotalValue() {
+		return totalValue;
+	}
+
+	public void setTotalValue(double totalValue) {
+		this.totalValue = totalValue;
 	}
 
 }

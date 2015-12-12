@@ -15,8 +15,8 @@ public class Address extends BaseEntity implements Serializable {
 	@ManyToMany
 	private List<Item> items;
 	private Date deadline;
-	private String payment;
-	private String status;
+	private Long payment;
+	private Long status;
 
 	public List<Item> getItems() {
 		return items;
@@ -34,19 +34,19 @@ public class Address extends BaseEntity implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public String getPayment() {
+	public Long getPayment() {
 		return payment;
 	}
 
-	public void setPayment(String payment) {
+	public void setPayment(Long payment) {
 		this.payment = payment;
 	}
 
-	public String getStatus() {
+	public Long getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Long status) {
 		this.status = status;
 	}
 

@@ -16,11 +16,17 @@
 						value="#{availableBean.cargoes}" columns="1">
 						<div class="box box-success">
 							<div class="box-header with-border">
-								<h3 class="box-title">#{out.company}
-									#{cargo.restaurant.name}</h3>
-								<h5 class="widget-user-desc">#{out.cargoValue}
-									#{cargo.totalValue}</h5>
-								<h6 class="widget-user-desc">#{out.status} #{cargo.status}</h6>
+								<h2 class="box-title">#{out.company}
+									#{cargo.restaurant.name}</h2>
+								<h5 class="widget-user-desc">
+									#{out.cargoValue}
+									<h:outputText value="#{cargo.totalValue}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputText>
+									HUF
+								</h5>
+								<h5 class="widget-user-desc">#{out.status}
+									#{availableBean.convertStatus(cargo.status)}</h5>
 								<div class="box-tools pull-right">
 									<button class="btn btn-box-tool" data-widget="collapse">
 										<i class="fa fa-minus"></i>
@@ -35,9 +41,25 @@
 								<p:dataGrid var="address" value="#{cargo.addresses}" columns="1">
 									<div class="box box-success box-solid">
 										<div class="box-header with-border">
-											<h3 class="box-title">#{out.address} #{address.address}</h3>
+											<h4 class="box-title">#{out.address} #{address.address}</h4>
+
 										</div>
 										<div class="box-body">
+											<ul class="list-group list-group-unbordered">
+												<li class="list-group-item"><b>#{out.deadline}</b> <a
+													class="pull-right"> <h:outputText
+															value="#{address.deadline}">
+															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+														</h:outputText></a></li>
+												<li class="list-group-item"><b>#{out.addressValue}</b>
+													<a class="pull-right"> <h:outputText
+															value="#{address.totalValue}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
+												</a></li>
+												<li class="list-group-item"><b>#{out.payment}</b> <a
+													class="pull-right">#{availableBean.convertPayment(address.payment)}</a></li>
+											</ul>
 											<p:dataTable var="item" value="#{address.items}"
 												styleClass="datatable">
 												<f:facet name="header">
@@ -48,7 +70,9 @@
 													</p:column> <p:column headerText="#{out.quantity}">
 														<h:outputText value="#{item.quantity}" />
 													</p:column> <p:column headerText="#{out.price}">
-														<h:outputText value="#{item.price}" />
+														<h:outputText value="#{item.price}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
 													</p:column></li>
 											</p:dataTable>
 

@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoService;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
@@ -28,16 +30,20 @@ public class AvailableBean implements Serializable {
 	public void init() {
 		try {
 			cargoes = getCargoService().findAll();
-			double price;
+			double cargoPrice;
+			double addressPrice;
 			for (int i = 0; i < cargoes.size(); i++) {
-				price = 0;
+				cargoPrice = 0;
 				List<AddressVO> addresses = cargoes.get(i).getAddresses();
 				for (int j = 0; j < addresses.size(); j++) {
+					addressPrice = 0;
 					List<ItemVO> items = addresses.get(j).getItems();
 					for (int k = 0; k < items.size(); k++)
-						price = price + items.get(k).getPrice() * items.get(k).getQuantity();
+						addressPrice += items.get(k).getPrice() * items.get(k).getQuantity();
+					addresses.get(j).setTotalValue(addressPrice);
+					cargoPrice += addressPrice;
 				}
-				cargoes.get(i).setTotalValue(price);
+				cargoes.get(i).setTotalValue(cargoPrice);
 			}
 
 		} catch (Exception e) {
@@ -67,6 +73,16 @@ public class AvailableBean implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getSessionMap().put("cargoId", cargoId);
 		FacesContext.getCurrentInstance().getExternalContext().redirect("../secured/map.xhtml");
+	}
+
+	public CargoStatus convertStatus(Long statusId) {
+		return CargoStatus.getValue(statusId);
+
+	}
+
+	public Payment convertPayment(Long statusId) {
+		return Payment.getValue(statusId);
+
 	}
 
 }

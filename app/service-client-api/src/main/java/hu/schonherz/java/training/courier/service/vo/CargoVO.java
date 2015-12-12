@@ -9,7 +9,7 @@ public class CargoVO implements Serializable {
 	private Long id;
 	private RestaurantVO restaurant;
 	List<AddressVO> addresses;
-	private String status;
+	private Long status;
 	private double totalValue;
 
 	public Long getId() {
@@ -36,26 +36,26 @@ public class CargoVO implements Serializable {
 		this.addresses = addresses;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	@Override
-	public String toString() {
-		return "CargoVO [id=" + id + ", restaurant=" + restaurant + ", addresses=" + addresses + ", status=" + status
-				+ "]";
-	}
-
 	public double getTotalValue() {
 		return totalValue;
 	}
 
 	public void setTotalValue(double totalValue) {
 		this.totalValue = totalValue;
+	}
+
+	public Long getStatus() {
+		return status;
+	}
+
+	public void setStatus(Long status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "CargoVO [id=" + id + ", restaurant=" + restaurant + ", addresses=" + addresses + ", cargoStatus="
+				+ status + ", totalValue=" + totalValue + "]";
 	}
 
 }

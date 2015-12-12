@@ -15,7 +15,7 @@ public class Cargo extends BaseEntity implements Serializable {
 	private Restaurant restaurant;
 	@OneToMany
 	List<Address> addresses;
-	private String status;
+	private Long status;
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -33,11 +33,11 @@ public class Cargo extends BaseEntity implements Serializable {
 		this.addresses = addresses;
 	}
 
-	public String getStatus() {
+	public Long getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Long status) {
 		this.status = status;
 	}
 
