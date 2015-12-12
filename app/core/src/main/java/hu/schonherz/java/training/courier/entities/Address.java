@@ -5,14 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Address extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String address;
-	@OneToMany
+	@ManyToMany
 	private List<Item> items;
 	private Date deadline;
 	private String payment;
@@ -57,11 +57,4 @@ public class Address extends BaseEntity implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
-	@Override
-	public String toString() {
-		return "Address [address=" + address + ", items=" + items + ", deadline=" + deadline + ", payment=" + payment
-				+ ", status=" + status + "]";
-	}
-
 }

@@ -54,7 +54,8 @@
 	</welcome-file-list>
 	<session-config>
         <session-timeout>
-            1
+        <!-- Minutes -->
+            480
         </session-timeout>
     </session-config>
 </web-app>

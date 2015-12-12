@@ -6,15 +6,13 @@ import java.util.List;
 
 import javax.persistence.OneToMany;
 
-import hu.schonherz.java.training.courier.entities.Item;
-
 public class AddressVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String address;
 	@OneToMany
-	private List<Item> items;
+	private List<ItemVO> items;
 	private Date deadline;
 	private String payment;
 	private String status;
@@ -27,11 +25,11 @@ public class AddressVO implements Serializable {
 		this.id = id;
 	}
 
-	public List<Item> getItems() {
+	public List<ItemVO> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(List<ItemVO> items) {
 		this.items = items;
 	}
 
@@ -42,8 +40,6 @@ public class AddressVO implements Serializable {
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
 	}
-
-	
 
 	public String getPayment() {
 		return payment;
@@ -74,7 +70,5 @@ public class AddressVO implements Serializable {
 		return "AddressVO [id=" + id + ", address=" + address + ", items=" + items + ", deadline=" + deadline
 				+ ", payment=" + payment + ", status=" + status + "]";
 	}
-
-	
 
 }

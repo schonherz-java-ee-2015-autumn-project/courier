@@ -13,45 +13,7 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="box box-primary">
-						<div class="box-body box-profile">
-							<h3 class="profile-username text-left">#{out.profile}</h3>
-							<ul class="list-group list-group-unbordered">
-								<li class="list-group-item"><b>#{out.fullname}</b> <a
-									class="pull-right">#{userSessionBean.userVO.fullname}</a></li>
-							</ul>
-						</div>
-						<!-- /.box-body -->
-					</div>
-					<!-- /.box -->
-					<div class="box box-primary">
-						<div class="box-body box-profile">
-							<h3 class="profile-username text-left">#{out.company}</h3>
-							<ul class="list-group list-group-unbordered">
-								<li class="list-group-item"><b>#{out.fullname}</b> <a
-									class="pull-right">#{userSessionBean.userVO.supplier.name}</a></li>
-								<li class="list-group-item"><b>#{out.address}</b> <a
-									class="pull-right">#{userSessionBean.userVO.supplier.address}</a></li>
-								<li class="list-group-item"><b>#{out.phone}</b> <a
-									class="pull-right">#{userSessionBean.userVO.supplier.phone}</a></li>
-								<li class="list-group-item"><b>#{out.email}</b> <a
-									class="pull-right">#{userSessionBean.userVO.supplier.email}</a></li>
-							</ul>
-						</div>
-						<!-- /.box-body -->
-					</div>
-					<!-- /.box -->
-					<p:dataTable var="log" value="#{logBean.logs}" sortMode="multiple">
-
-						<p:column headerText="Login" sortBy="#{log.loginDate}">
-							<h:outputText value="#{car.id}" />
-						</p:column>
-
-						<p:column headerText="Logout" sortBy="#{log.logoutDate}">
-							<h:outputText value="#{car.year}" />
-						</p:column>
-
-					</p:dataTable>
+				
 				</div>
 				<!-- /.box -->
 			</div>

@@ -7,5 +7,7 @@ import hu.schonherz.java.training.courier.entities.Cargo;
 
 @Repository
 public interface CargoDao extends JpaRepository<Cargo, Long> {
-	
+
+	Cargo findCargoById(Long cargoId);
+
 }

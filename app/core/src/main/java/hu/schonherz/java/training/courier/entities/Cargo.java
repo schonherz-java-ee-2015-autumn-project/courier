@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Cargo extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	@OneToOne
 	private Restaurant restaurant;
 	@OneToMany
 	List<Address> addresses;

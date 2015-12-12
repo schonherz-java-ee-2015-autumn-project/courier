@@ -12,6 +12,7 @@
 <f:view>
 
 	<h:head>
+		<title>#{out.pageTitle}</title>
 		<!-- Bootstrap 3.3.5 -->
 		<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 		<!-- Font Awesome -->
@@ -57,7 +58,8 @@
 				class="navbar navbar-static-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a href="#{request.contextPath}/public/login.xhtml" class="navbar-brand"><b>C</b>ourier</a>
+					<a href="#{request.contextPath}/public/login.xhtml"
+						class="navbar-brand"><b>C</b>ourier</a>
 					<button type="button" class="navbar-toggle collapsed"
 						data-toggle="collapse" data-target="#navbar-collapse">
 						<i class="fa fa-bars"></i>

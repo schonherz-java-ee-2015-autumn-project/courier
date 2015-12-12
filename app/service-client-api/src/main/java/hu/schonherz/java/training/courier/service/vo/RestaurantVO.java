@@ -42,4 +42,9 @@ public class RestaurantVO implements Serializable {
 		this.phone = phone;
 	}
 
+	@Override
+	public String toString() {
+		return "RestaurantVO [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + "]";
+	}
+
 }
