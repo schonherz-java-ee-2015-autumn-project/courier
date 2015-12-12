@@ -2,6 +2,7 @@ package hu.schonherz.java.training.courier.entities;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,10 +13,13 @@ public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date RegDate;
-	private Date ModDate;
-	private Long RegUser;
-	private Long ModUser;
+	private Date RegDate = new Date();
+	@Column(columnDefinition = "DATETIME DEFAULT NOW()")
+	private Date ModDate = new Date();
+	@Column(columnDefinition="int default 1",nullable=false)
+	private Long RegUser = (long) 1;
+	@Column(columnDefinition="int default 1",nullable=false)
+	private Long ModUser = (long) 1;
 
 	public Date getRegDate() {
 		return RegDate;
