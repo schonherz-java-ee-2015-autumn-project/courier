@@ -25,6 +25,11 @@ public class CargoServiceImpl implements CargoService {
 	}
 
 	@Override
+	public List<CargoVO> findCargoesById(Long cargoId) throws Exception {
+		return CargoConverter.toVo(cargoDao.findCargoesById(cargoId));
+	}
+	
+	@Override
 	public CargoVO findCargoById(Long cargoId) throws Exception {
 		return CargoConverter.toVo(cargoDao.findCargoById(cargoId));
 	}

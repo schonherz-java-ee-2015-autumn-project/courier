@@ -61,8 +61,9 @@
 		<div class="wrapper">
 
 			<header class="main-header"> <!-- Logo --> <a
-				href="#{request.contextPath}/index.xhtml" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
-				<span class="logo-mini"><b>C</b></span> <!-- logo for regular state and mobile devices -->
+				href="#{request.contextPath}/secured/index.xhtml" class="logo">
+				<!-- mini logo for sidebar mini 50x50 pixels --> <span
+				class="logo-mini"><b>C</b></span> <!-- logo for regular state and mobile devices -->
 				<span class="logo-lg"><b>C</b>ourier</span>
 			</a> <!-- Header Navbar: style can be found in header.less --> <nav
 				class="navbar navbar-static-top" role="navigation"> <!-- Sidebar toggle button-->
@@ -87,7 +88,8 @@
 					<ul class="treeview-menu">
 						<li><a href="#{request.contextPath}/secured/available.xhtml"><i
 								class="fa fa-shopping-cart"></i>#{out.available}</a></li>
-						<li><a href="#"><i class="fa fa-road"></i>#{out.inProgress}</a></li>
+						<li><a href="#{request.contextPath}/secured/inprogress.xhtml"><i
+								class="fa fa-road"></i>#{out.inProgress}</a></li>
 
 
 					</ul></li>
