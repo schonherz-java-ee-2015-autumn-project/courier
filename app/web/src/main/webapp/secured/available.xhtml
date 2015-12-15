@@ -27,6 +27,12 @@
 
 					<p:dataGrid id="availableCargoes" var="cargo"
 						value="#{availableBean.cargoes}" columns="1">
+						<f:facet name="emptyMessage">
+
+							<h:outputText value="#{out.emptyMessage}"
+								class="callout callout-danger" />
+
+						</f:facet>
 						<div class="box box-success">
 							<div class="box-header with-border">
 								<h2 class="box-title">#{out.company}
@@ -99,12 +105,15 @@
 								<div class="box-footer">
 
 									<h:commandButton value="#{out.map}"
-										action="#{availableBean.selected(cargo.id)}"
+										action="#{availableBean.showOnMap(cargo.id)}"
 										class="btn btn-default">
 									</h:commandButton>
+									<h:commandButton value="#{out.pickUp}"
+										action="#{availableBean.pickUpCargo(cargo)}"
+										rendered="#{availableBean.userVO.transporting != 1}"
+										class="btn btn-success pull-right">
+									</h:commandButton>
 
-									<button class="btn btn-success pull-right">
-										#{out.pickUp}</button>
 								</div>
 							</h:form>
 						</div>

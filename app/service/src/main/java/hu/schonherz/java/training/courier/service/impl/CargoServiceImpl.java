@@ -20,17 +20,27 @@ public class CargoServiceImpl implements CargoService {
 	CargoDao cargoDao;
 
 	@Override
-	public List<CargoVO> findAll() throws Exception {
-		return CargoConverter.toVo(cargoDao.findAll());
+	public List<CargoVO> findCargoesByUserIdAndStatus(Long userId, Long status) throws Exception {
+		return CargoConverter.toVo(cargoDao.findCargoesByUserIdAndStatus(userId, status));
 	}
 
 	@Override
 	public List<CargoVO> findCargoesById(Long cargoId) throws Exception {
 		return CargoConverter.toVo(cargoDao.findCargoesById(cargoId));
 	}
-	
+
 	@Override
 	public CargoVO findCargoById(Long cargoId) throws Exception {
 		return CargoConverter.toVo(cargoDao.findCargoById(cargoId));
+	}
+
+	@Override
+	public CargoVO save(CargoVO cargo) throws Exception {
+		return CargoConverter.toVo(cargoDao.save(CargoConverter.toEntity(cargo)));
+	}
+
+	@Override
+	public List<CargoVO> findAllByStatus(Long status) throws Exception {
+		return CargoConverter.toVo(cargoDao.findAllByStatus(status));
 	}
 }

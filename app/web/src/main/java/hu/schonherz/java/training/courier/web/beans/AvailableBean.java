@@ -13,9 +13,11 @@ import javax.faces.context.FacesContext;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoService;
+import hu.schonherz.java.training.courier.service.UserService;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
+import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @ManagedBean(name = "availableBean")
 @ViewScoped
@@ -25,11 +27,17 @@ public class AvailableBean implements Serializable {
 	private List<CargoVO> cargoes;
 	@ManagedProperty("#{cargoService}")
 	private CargoService cargoService;
+	@ManagedProperty("#{userService}")
+	private UserService userService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+	UserVO userVO;
 
 	@PostConstruct
 	public void init() {
 		try {
-			cargoes = getCargoService().findAll();
+			userVO = getUserSessionBean().getUserVO();
+			cargoes = getCargoService().findAllByStatus(1L);
 			double cargoPrice;
 			double addressPrice;
 			for (int i = 0; i < cargoes.size(); i++) {
@@ -69,10 +77,33 @@ public class AvailableBean implements Serializable {
 		this.cargoService = cargoService;
 	}
 
-	public void selected(Long cargoId) throws IOException {
+	public void showOnMap(Long cargoId) throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getSessionMap().put("cargoId", cargoId);
 		FacesContext.getCurrentInstance().getExternalContext().redirect("../secured/map.xhtml");
+	}
+
+	public void pickUpCargo(CargoVO cargo) {
+
+		cargo.setUser(userVO);
+		cargo.setStatus(2L);
+		try {
+			getCargoService().save(cargo);
+			userVO.setTransporting(1L);
+			getUserService().save(userVO);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			context.getExternalContext().redirect("../secured/inprogress.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public CargoStatus convertStatus(Long statusId) {
@@ -83,6 +114,30 @@ public class AvailableBean implements Serializable {
 	public Payment convertPayment(Long statusId) {
 		return Payment.getValue(statusId);
 
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public UserVO getUserVO() {
+		return userVO;
+	}
+
+	public void setUserVO(UserVO userVO) {
+		this.userVO = userVO;
 	}
 
 }

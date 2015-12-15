@@ -11,6 +11,9 @@ import javax.persistence.OneToOne;
 public class Cargo extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@OneToOne
+	private User user;
 	@OneToOne
 	private Restaurant restaurant;
 	@OneToMany
@@ -39,6 +42,14 @@ public class Cargo extends BaseEntity implements Serializable {
 
 	public void setStatus(Long status) {
 		this.status = status;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

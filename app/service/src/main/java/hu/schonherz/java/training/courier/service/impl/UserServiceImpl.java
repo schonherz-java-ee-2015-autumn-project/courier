@@ -21,6 +21,13 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 
 	@Override
+	public UserVO save(UserVO user) throws Exception {
+
+		return UserConverter.toVo(userDao.save(UserConverter.toEntity(user)));
+
+	}
+
+	@Override
 	public UserVO findUserByName(String name) throws Exception {
 		User user = userDao.findByUsername(name);
 		return UserConverter.toVo(user);

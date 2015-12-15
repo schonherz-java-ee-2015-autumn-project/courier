@@ -9,4 +9,6 @@ public interface UserService {
 	public UserVO findUserByName(String name) throws Exception;
 
 	public List<UserVO> findAll() throws Exception;
+
+	UserVO save(UserVO userVO) throws Exception;
 }

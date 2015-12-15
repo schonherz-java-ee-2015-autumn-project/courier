@@ -13,4 +13,11 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 	List<Cargo> findCargoesById(Long cargoId);
 
 	Cargo findCargoById(Long cargoId);
+
+	List<Cargo> findCargoesByUserIdAndStatus(Long userId, Long status);
+
+	@SuppressWarnings("unchecked")
+	Cargo save(Cargo cargo);
+
+	List<Cargo> findAllByStatus(Long status);
 }

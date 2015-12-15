@@ -14,6 +14,7 @@ public class User extends BaseEntity implements Serializable {
 	private String username;
 	private String fullname;
 	private String password;
+	private Long transporting;
 	@ManyToMany
 	private List<Role> roles;
 
@@ -51,6 +52,14 @@ public class User extends BaseEntity implements Serializable {
 
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
+	}
+
+	public Long getTransporting() {
+		return transporting;
+	}
+
+	public void setTransporting(Long transporting) {
+		this.transporting = transporting;
 	}
 
 }

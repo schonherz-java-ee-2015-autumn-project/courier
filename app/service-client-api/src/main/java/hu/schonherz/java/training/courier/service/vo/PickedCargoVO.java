@@ -3,7 +3,7 @@ package hu.schonherz.java.training.courier.service.vo;
 import java.io.Serializable;
 import java.util.List;
 
-public class CargoVO implements Serializable {
+public class PickedCargoVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -55,7 +55,7 @@ public class CargoVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CargoVO [id=" + id + ", user=" + user + ", restaurant=" + restaurant + ", addresses=" + addresses
+		return "PickedCargoVO [id=" + id + ", user=" + user + ", restaurant=" + restaurant + ", addresses=" + addresses
 				+ ", status=" + status + ", totalValue=" + totalValue + "]";
 	}
 

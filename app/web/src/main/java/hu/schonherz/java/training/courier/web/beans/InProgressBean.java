@@ -29,6 +29,8 @@ public class InProgressBean implements Serializable {
 	private List<CargoVO> cargo;
 	@ManagedProperty("#{cargoService}")
 	private CargoService cargoService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 	private String cargoStatus;
 	private String addressStatus;
 	private String paymentStatus;
@@ -39,8 +41,8 @@ public class InProgressBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		try {
-			//Set cargo id to user!
-			cargo = getCargoService().findCargoesById(2L);
+			// Set cargo id to user!
+			cargo = getCargoService().findCargoesByUserIdAndStatus(getUserSessionBean().getUserVO().getId(), 2L);
 
 			double cargoPrice;
 			double addressPrice;
@@ -97,7 +99,7 @@ public class InProgressBean implements Serializable {
 	public void selected(Long cargoId) throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getSessionMap().put("cargoId", cargoId);
-		FacesContext.getCurrentInstance().getExternalContext().redirect("../secured/map.xhtml");
+		context.getExternalContext().redirect("../secured/map.xhtml");
 	}
 
 	public CargoStatus convertStatus(Long statusId) {
@@ -164,6 +166,14 @@ public class InProgressBean implements Serializable {
 
 	public void setAllPaymentStatus(List<Payment> allPaymentStatus) {
 		this.allPaymentStatus = allPaymentStatus;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
 	}
 
 }

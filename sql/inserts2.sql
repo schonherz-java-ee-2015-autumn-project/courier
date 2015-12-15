@@ -23,3 +23,5 @@ insert into cargo_address (Cargo_id, addresses_id) values (2, 2);
 insert into address (address, deadline,  payment, status) values ("Debrecen, Füredi út 95", '2015-12-07 14:36:12', 4, 1);
 insert into address_item (Address_id, items_id) values (3, 6);
 insert into cargo_address (Cargo_id, addresses_id) values (2, 3);
+
+update user set transporting = 0;
