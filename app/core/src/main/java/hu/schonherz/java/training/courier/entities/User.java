@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class User extends BaseEntity implements Serializable {
@@ -15,8 +14,7 @@ public class User extends BaseEntity implements Serializable {
 	private String username;
 	private String fullname;
 	private String password;
-	@OneToOne
-	private Supplier supplier;
+	private Long transporting;
 	@ManyToMany
 	private List<Role> roles;
 
@@ -56,11 +54,12 @@ public class User extends BaseEntity implements Serializable {
 		this.fullname = fullname;
 	}
 
-	public Supplier getSupplier() {
-		return supplier;
+	public Long getTransporting() {
+		return transporting;
 	}
 
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
+	public void setTransporting(Long transporting) {
+		this.transporting = transporting;
 	}
+
 }

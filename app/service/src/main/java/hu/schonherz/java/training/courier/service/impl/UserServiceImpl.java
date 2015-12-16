@@ -21,6 +21,13 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 
 	@Override
+	public UserVO save(UserVO user) throws Exception {
+
+		return UserConverter.toVo(userDao.save(UserConverter.toEntity(user)));
+
+	}
+
+	@Override
 	public UserVO findUserByName(String name) throws Exception {
 		User user = userDao.findByUsername(name);
 		return UserConverter.toVo(user);
@@ -30,20 +37,5 @@ public class UserServiceImpl implements UserService {
 	public List<UserVO> findAll() throws Exception {
 
 		return UserConverter.toVo(userDao.findAll());
-	}
-	/** 
-	 * WebService: az adminisztrátori modultol kapott adatok bevitele a User táblába.
-	*/
-	@Override
-	public void saveUser(UserVO newUser) throws Exception {
-		
-		
-	}
-	/** 
-	 * WebService: az adminisztrátori modultol kapott adatok bevitele az adatbázisba frissítéssel, User táblába.
-	*/
-	@Override
-	public void updateUser(UserVO modUser) throws Exception {
-
 	}
 }

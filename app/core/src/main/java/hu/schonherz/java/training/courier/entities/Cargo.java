@@ -5,16 +5,20 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Cargo extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@OneToOne
+	private User user;
+	@OneToOne
 	private Restaurant restaurant;
 	@OneToMany
 	List<Address> addresses;
-	private int value;
-	private String status;
+	private Long status;
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -32,26 +36,20 @@ public class Cargo extends BaseEntity implements Serializable {
 		this.addresses = addresses;
 	}
 
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
-	}
-
-	public String getStatus() {
+	public Long getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Long status) {
 		this.status = status;
 	}
 
-	@Override
-	public String toString() {
-		return "Cargo [restaurant=" + restaurant + ", addresses=" + addresses + ", value=" + value + ", status="
-				+ status + "]";
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

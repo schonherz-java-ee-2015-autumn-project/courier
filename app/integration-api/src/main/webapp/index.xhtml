@@ -21,12 +21,12 @@
 				<p:column headerText="Fullname">
 					<h:outputText value="#{users.fullname}" />
 				</p:column>
-				<p:column headerText="Role id">
-					<h:outputText value="#{users.roles.id}" />
-				</p:column>
-				<p:column headerText="Role name">
-					<h:outputText value="#{users.roles.name}" />
-				</p:column>
+<!-- 				<p:column headerText="Role id"> -->
+<!-- 					<h:outputText value="#{users.roles.id}" /> -->
+<!-- 				</p:column> -->
+<!-- 				<p:column headerText="Role name"> -->
+<!-- 					<h:outputText value="#{users.roles.name}" /> -->
+<!-- 				</p:column> -->
 			</p:dataTable>
 			<p:commandButton update="usersListForm" value="Get Users" actionListener="#{userListBean.getUsers}"></p:commandButton>
 		</h:form>

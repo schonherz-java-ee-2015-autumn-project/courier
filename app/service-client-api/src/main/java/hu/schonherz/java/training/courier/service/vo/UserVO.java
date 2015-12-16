@@ -10,7 +10,7 @@ public class UserVO implements Serializable {
 	private String fullname;
 	private String username;
 	private String password;
-	private SupplierVO supplier;
+	private Long transporting;
 	private List<RoleVO> roles;
 
 	public Long getId() {
@@ -53,18 +53,18 @@ public class UserVO implements Serializable {
 		this.fullname = fullname;
 	}
 
-	public SupplierVO getSupplier() {
-		return supplier;
-	}
-
-	public void setSupplier(SupplierVO supplier) {
-		this.supplier = supplier;
-	}
-
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", fullname=" + fullname + ", username=" + username + ", password=" + password
-				+ ", supplier=" + supplier + ", roles=" + roles + "]";
+				+ ", transporting=" + transporting + ", roles=" + roles + "]";
+	}
+
+	public Long getTransporting() {
+		return transporting;
+	}
+
+	public void setTransporting(Long transporting) {
+		this.transporting = transporting;
 	}
 
 }

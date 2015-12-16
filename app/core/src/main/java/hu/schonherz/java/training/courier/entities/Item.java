@@ -8,37 +8,32 @@ import javax.persistence.Entity;
 public class Item extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private String item;
-	private int quantity;
-	private int value;
+	private String name;
+	private Long quantity;
+	private double price;
 
-	public String getItem() {
-		return item;
+	public String getName() {
+		return name;
 	}
 
-	public void setItem(String item) {
-		this.item = item;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
-	}
-
-	public int getQuantity() {
+	public Long getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
 
-	@Override
-	public String toString() {
-		return "Item [item=" + item + ", quantity=" + quantity + ", value=" + value + "]";
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 }

@@ -62,7 +62,6 @@ public class DataGenerate {
 				user.setPassword(encPassword);
 				user.setRoles(new ArrayList<>());
 				user.getRoles().add(userRole);
-
 				users.add(user);
 				System.out.println(user.getUsername());
 

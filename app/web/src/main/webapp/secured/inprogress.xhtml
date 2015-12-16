@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
+	<ui:define name="content">
+		<style>
+.ui-datatable-header {
+	background: #f39c12;
+}
+
+.ui-datagrid-content {
+	background: transparent;
+	border: none;
+}
+
+.datatable td {
+	background: white;
+}
+</style>
+		<section class="content">
+			<div class="row">
+				<div class="col-md-12">
+					<p:dataGrid id="cargoes" var="cargo"
+						value="#{inProgressBean.cargo}" columns="1">
+						<f:facet name="emptyMessage">
+
+							<h:outputText value="#{out.emptyMessage}"
+								class="callout callout-danger" />
+
+						</f:facet>
+						<div class="box box-danger">
+							<div class="box-header with-border">
+								<h3 class="box-title">#{out.company}
+									#{cargo.restaurant.name}</h3>
+
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<ul class="list-group list-group-unbordered">
+									<li class="list-group-item"><b>#{out.address}</b> <a
+										class="pull-right">#{cargo.restaurant.address}</a></li>
+									<li class="list-group-item"><b>#{out.cargoValue}</b> <a
+										class="pull-right"> <h:outputText
+												value="#{cargo.totalValue}">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText> HUF
+									</a></li>
+
+								</ul>
+
+								<b>#{out.status}</b> <a class="pull-right"> <h:form>
+										<h:selectOneMenu id="cargoStatus"
+											value="#{availableBean.convertStatus(cargo.status)}"
+											class="form-control">
+											<f:ajax event="valueChange" render="cargoStatus"
+												listener="#{inProgressBean.cargoStatusChanged}" />
+											<f:selectItems value="#{inProgressBean.allCargoStatus}" />
+										</h:selectOneMenu>
+									</h:form></a>
+							</div>
+							<h:form>
+								<div class="box-footer">
+									<h:commandButton value="#{out.map}"
+										action="#{inProgressBean.selected(inProgressBean.cargo.id)}"
+										class="btn btn-default">
+									</h:commandButton>
+								</div>
+							</h:form>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+						<p:dataGrid id="addresses" var="address"
+							value="#{cargo.addresses}" columns="1">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">#{out.address} #{address.address}</h3>
+
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<ul class="list-group list-group-unbordered">
+										<li class="list-group-item"><b>#{out.deadline}</b> <a
+											class="pull-right"> <h:outputText
+													value="#{address.deadline}">
+													<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+												</h:outputText></a></li>
+										<li class="list-group-item"><b>#{out.addressValue}</b> <a
+											class="pull-right"> <h:outputText
+													value="#{address.totalValue}">
+													<f:convertNumber minFractionDigits="2" />
+												</h:outputText> HUF
+										</a></li>
+
+									</ul>
+
+									<p:dataTable id="table" var="item" value="#{address.items}"
+										styleClass="datatable">
+										<f:facet name="header">
+      												#{out.items}
+   												</f:facet>
+										<li><p:column styleClass="customHeader"
+												headerText="#{out.item}">
+												<h:outputText value="#{item.name}" />
+											</p:column> <p:column headerText="#{out.quantity}">
+												<h:outputText value="#{item.quantity}" />
+											</p:column> <p:column headerText="#{out.price}">
+												<h:outputText value="#{item.price}">
+													<f:convertNumber minFractionDigits="2" />
+												</h:outputText> HUF
+													</p:column></li>
+									</p:dataTable>
+									<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
+											<h:selectOneMenu id="paymentStatus"
+												value="#{availableBean.convertPayment(address.payment)}"
+												class="form-control">
+												<f:ajax event="valueChange" render="paymentStatus"
+													listener="#{inProgressBean.paymentStatusChanged}" />
+												<f:selectItems value="#{inProgressBean.allPaymentStatus}" />
+											</h:selectOneMenu>
+										</h:form></a>
+
+								</div>
+								<h:form>
+									<div class="box-footer">
+										<b>#{out.status}</b> <a class="pull-right"> <h:form>
+												<h:selectOneMenu id="addressStatus"
+													value="#{inProgressBean.addressStatus}"
+													class="form-control">
+													<f:ajax event="valueChange" render="addressStatus"
+														listener="#{inProgressBean.addressStatusChanged}" />
+													<f:selectItems value="#{inProgressBean.allAddressStatus}" />
+												</h:selectOneMenu>
+											</h:form></a>
+									</div>
+								</h:form>
+								<!-- /.box-body -->
+							</div>
+							<!-- /.box -->
+						</p:dataGrid>
+					</p:dataGrid>
+
+				</div>
+			</div>
+		</section>
+
+	</ui:define>
+</ui:composition>

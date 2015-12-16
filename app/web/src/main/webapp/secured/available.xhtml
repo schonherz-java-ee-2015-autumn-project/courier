@@ -7,21 +7,45 @@
 	xmlns:sec="http://www.springframework.org/security/tags">
 	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
 	<ui:define name="content">
-		<h:outputStylesheet library="css" name="prime.css" />
+		<style>
+.ui-datatable-header {
+	background: #f39c12;
+}
 
+.ui-datagrid-content {
+	background: transparent;
+	border: none;
+}
+
+.datatable td {
+	background: white;
+}
+</style>
 		<section class="content">
-
 			<div class="row">
 				<div class="col-md-12">
 
-					<p:dataGrid id="availableCargo" var="cargo"
-						value="#{availableBean.availables}" columns="1"
-						emptyMessage="#{out.emptyMessage}">
-						<div class="box box-success box-solid">
+					<p:dataGrid id="availableCargoes" var="cargo"
+						value="#{availableBean.cargoes}" columns="1">
+						<f:facet name="emptyMessage">
+
+							<h:outputText value="#{out.emptyMessage}"
+								class="callout callout-danger" />
+
+						</f:facet>
+						<div class="box box-success">
 							<div class="box-header with-border">
-								<h3 class="box-title">#{cargo.name}</h3>
-								<h5 class="widget-user-desc">#{cargo.address}</h5>
-								<h6 class="widget-user-desc">#{cargo.phone}</h6>
+								<h2 class="box-title">#{out.company}
+									#{cargo.restaurant.name}</h2>
+								<h5 class="widget-user-desc">
+									#{out.cargoValue}
+									<h:outputText value="#{cargo.totalValue}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputText>
+									HUF
+								</h5>
+								<h5 class="widget-user-desc">#{out.status}
+									#{availableBean.convertStatus(cargo.status)}</h5>
 								<div class="box-tools pull-right">
 									<button class="btn btn-box-tool" data-widget="collapse">
 										<i class="fa fa-minus"></i>
@@ -31,21 +55,74 @@
 							</div>
 							<!-- /.box-header -->
 
-							<div class="box-body"></div>
-							<div class="box-footer">
-								<button class="btn  btn-success pull-right">#{out.pickUp}</button>
+							<div class="box-body">
+
+								<p:dataGrid var="address" value="#{cargo.addresses}" columns="1">
+									<div class="box box-success box-solid">
+										<div class="box-header with-border">
+											<h4 class="box-title">#{out.address} #{address.address}</h4>
+
+										</div>
+										<div class="box-body">
+											<ul class="list-group list-group-unbordered">
+												<li class="list-group-item"><b>#{out.deadline}</b> <a
+													class="pull-right"> <h:outputText
+															value="#{address.deadline}">
+															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+														</h:outputText></a></li>
+												<li class="list-group-item"><b>#{out.addressValue}</b>
+													<a class="pull-right"> <h:outputText
+															value="#{address.totalValue}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
+												</a></li>
+												<li class="list-group-item"><b>#{out.payment}</b> <a
+													class="pull-right">#{availableBean.convertPayment(address.payment)}</a></li>
+											</ul>
+											<p:dataTable id="table" var="item" value="#{address.items}"
+												styleClass="datatable">
+												<f:facet name="header">
+      												#{out.items}
+   												</f:facet>
+												<li><p:column styleClass="customHeader"
+														headerText="#{out.item}">
+														<h:outputText value="#{item.name}" />
+													</p:column> <p:column headerText="#{out.quantity}">
+														<h:outputText value="#{item.quantity}" />
+													</p:column> <p:column headerText="#{out.price}">
+														<h:outputText value="#{item.price}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
+													</p:column></li>
+											</p:dataTable>
+
+										</div>
+									</div>
+								</p:dataGrid>
+
 							</div>
-							<!-- /.box-body -->
+							<h:form>
+								<div class="box-footer">
+
+									<h:commandButton value="#{out.map}"
+										action="#{availableBean.showOnMap(cargo.id)}"
+										class="btn btn-default">
+									</h:commandButton>
+									<h:commandButton value="#{out.pickUp}"
+										action="#{availableBean.pickUpCargo(cargo)}"
+										rendered="#{availableBean.userVO.transporting != 1}"
+										class="btn btn-success pull-right">
+									</h:commandButton>
+
+								</div>
+							</h:form>
 						</div>
 						<!-- /.box -->
 					</p:dataGrid>
 				</div>
 				<!-- /.box -->
 			</div>
-			<!-- /.col (LEFT) -->
-
 		</section>
-
 
 	</ui:define>
 </ui:composition>

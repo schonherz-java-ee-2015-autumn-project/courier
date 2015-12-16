@@ -3,14 +3,11 @@ package hu.schonherz.java.training.courier.service.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import hu.schonherz.java.training.courier.entities.User;
-
 public class LogVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private User user;
-	private String sessionId;
+	private UserVO user;
 	private Date loginDate;
 	private Date logoutDate;
 
@@ -20,22 +17,6 @@ public class LogVO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
 	}
 
 	public Date getLoginDate() {
@@ -54,9 +35,17 @@ public class LogVO implements Serializable {
 		this.logoutDate = logoutDate;
 	}
 
+	public UserVO getUser() {
+		return user;
+	}
+
+	public void setUser(UserVO user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
-		return "LogVO [id=" + id + ", user=" + user + ", sessionId=" + sessionId + ", loginDate=" + loginDate
-				+ ", logoutDate=" + logoutDate + "]";
+		return "LogVO [id=" + id + ", user=" + user + ", loginDate=" + loginDate + ", logoutDate=" + logoutDate + "]";
 	}
+
 }

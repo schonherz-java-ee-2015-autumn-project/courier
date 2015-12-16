@@ -11,6 +11,7 @@
 	<name>CourierModulWeb</name>
 
 	<repositories>
+
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
@@ -118,6 +119,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>WebApp</finalName>

@@ -18,7 +18,6 @@
 			content="width=device-width, initial-scale=1.0, user-scalable=no" />
 		<title><ui:insert name="pageTitle"></ui:insert></title>
 		<ui:insert name="head-extra" />
-
 		<!-- Bootstrap 3.3.5 -->
 		<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 		<!-- Font Awesome -->
@@ -62,8 +61,9 @@
 		<div class="wrapper">
 
 			<header class="main-header"> <!-- Logo --> <a
-				href="#{request.contextPath}/index.xhtml" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
-				<span class="logo-mini"><b>C</b></span> <!-- logo for regular state and mobile devices -->
+				href="#{request.contextPath}/secured/index.xhtml" class="logo">
+				<!-- mini logo for sidebar mini 50x50 pixels --> <span
+				class="logo-mini"><b>C</b></span> <!-- logo for regular state and mobile devices -->
 				<span class="logo-lg"><b>C</b>ourier</span>
 			</a> <!-- Header Navbar: style can be found in header.less --> <nav
 				class="navbar navbar-static-top" role="navigation"> <!-- Sidebar toggle button-->
@@ -77,42 +77,37 @@
 
 				<li class="header">#{out.mainNavigation}</li>
 
-				<sec:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
-					<li><a href="#{request.contextPath}/secured/profile.xhtml">
-							<i class="fa fa-user"></i> <span>#{out.profile}</span>
-					</a></li>
+				<li><a href="#{request.contextPath}/secured/profile.xhtml">
+						<i class="fa fa-user"></i> <span>#{out.profile}</span>
+				</a></li>
 
-					<li class="treeview"><a href="#"> <i class="fa fa-car"></i>
-							<span>#{out.deliveries}</span> <i class="fa fa-angle-left pull-right"></i>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="#{request.contextPath}/secured/available.xhtml"><i
-									class="fa fa-shopping-cart"></i>#{out.available}</a></li>
-							<li><a href="#"><i class="fa fa-road"></i>#{out.inProgress}</a></li>
+				<li class="treeview"><a href="#"> <i class="fa fa-car"></i>
+						<span>#{out.deliveries}</span> <i
+						class="fa fa-angle-left pull-right"></i>
+				</a>
+					<ul class="treeview-menu">
+						<li><a href="#{request.contextPath}/secured/available.xhtml"><i
+								class="fa fa-shopping-cart"></i>#{out.available}</a></li>
+						<li><a href="#{request.contextPath}/secured/inprogress.xhtml"><i
+								class="fa fa-road"></i>#{out.inProgress}</a></li>
 
 
-						</ul></li>
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-bar-chart"></i> <span>#{out.statistics}</span> <i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="#{request.contextPath}/secured/chart.xhtml"><i
-									class="fa fa-circle-o"></i>#{out.reports}</a></li>
-							<li><a href="#"><i class="fa fa-circle-o"></i>SubMenu2</a></li>
-							<li><a href="#"><i class="fa fa-circle-o"></i>SubMenu3</a></li>
+					</ul></li>
+				<li class="treeview"><a href="#"> <i
+						class="fa fa-bar-chart"></i> <span>#{out.statistics}</span> <i
+						class="fa fa-angle-left pull-right"></i>
+				</a>
+					<ul class="treeview-menu">
+						<li><a href="#{request.contextPath}/secured/chart.xhtml"><i
+								class="fa fa-circle-o"></i>#{out.reports}</a></li>
+						<li><a href="#"><i class="fa fa-circle-o"></i>SubMenu2</a></li>
+						<li><a href="#"><i class="fa fa-circle-o"></i>SubMenu3</a></li>
 
-						</ul></li>
+					</ul></li>
 
-					<li><a href="#{request.contextPath}/logout"> <i
-							class="fa fa-sign-out"></i> <span>#{out.logout}</span>
-					</a></li>
-				</sec:authorize>
-				<sec:authorize ifNotGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
-					<li><a href="#{request.contextPath}/public/login.xhtml"> <i
-							class="fa fa-sign-in"></i> <span>#{out.login}</span>
-					</a></li>
-				</sec:authorize>
+				<li><a href="#{request.contextPath}/logout"> <i
+						class="fa fa-sign-out"></i> <span>#{out.logout}</span>
+				</a></li>
 			</ul>
 			</section> <!-- /.sidebar --> </aside>
 

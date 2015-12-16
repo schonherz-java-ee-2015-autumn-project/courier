@@ -1,9 +1,11 @@
 package hu.schonherz.java.training.courier.service;
 
+import java.util.List;
+
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 
 public interface LogService {
-	void save(LogVO logVO) throws Exception;
+	LogVO save(LogVO logVO) throws Exception;
 
-	LogVO findBySessionId(String name) throws Exception;
+	List<LogVO> findByUserId(Long id) throws Exception;
 }
