@@ -37,7 +37,7 @@
 			<artifactId>service</artifactId>
 			<version>${version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>integration-service-client</artifactId>
@@ -134,4 +134,6 @@
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
 	</dependencies>
+
+	
 </project>

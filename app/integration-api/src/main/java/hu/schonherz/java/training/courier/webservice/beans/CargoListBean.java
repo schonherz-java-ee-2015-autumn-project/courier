@@ -1,10 +1,13 @@
 package hu.schonherz.java.training.courier.webservice.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.xml.namespace.QName;
@@ -17,7 +20,7 @@ import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.webservice.CourierWebService;
 import hu.schonherz.java.training.courier.webservice.CourierWebServiceImplService;
 
-@ManagedBean(name="cargoListBean")
+@ManagedBean(name = "cargoListBean")
 @ViewScoped
 public class CargoListBean implements Serializable {
 	private static final Logger logger = Logger.getLogger(CargoListBean.class);
@@ -25,10 +28,54 @@ public class CargoListBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
+	private Properties wsdlProperties;
+
+	private String url;
+	private String namespaceURI;
+	private String localPart;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getNamespaceUri() {
+		return namespaceURI;
+	}
+
+	public void setNamespaceUri(String namespaceUri) {
+		this.namespaceURI = namespaceUri;
+	}
+
+	public String getLocalPart() {
+		return localPart;
+	}
+
+	public void setLocalPart(String localPart) {
+		this.localPart = localPart;
+	}
+
 	@Autowired
 	CargoService cargoService;
-	
+
+	@PostConstruct
+	public void init() {
+		wsdlProperties = new Properties();
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			wsdlProperties.load(classLoader.getResourceAsStream("wsdllocation.properties"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		url = wsdlProperties.getProperty("url");
+		namespaceURI = wsdlProperties.getProperty("namespaceURI");
+		localPart = wsdlProperties.getProperty("localPart");
+	}
+
 	private List<CargoVO> cargoList;
 
 	public List<CargoVO> getCargoList() {
@@ -38,30 +85,28 @@ public class CargoListBean implements Serializable {
 	public void setCargoList(List<CargoVO> cargoList) {
 		this.cargoList = cargoList;
 	}
-	
+
 	public void updateCargos(Long status) {
-		
+
 		try {
 			List<CargoVO> cargosInDb = cargoService.findAllByStatus(status);
-			
+
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 		}
 	}
-	
+
 	public void getCargos() {
 		URL wsdl = null;
 		try {
-			wsdl = new URL(
-					"http://localhost:8088/mockCourierWebServiceImplPortBinding?WSDL");
+			wsdl = new URL(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
-		QName qName = new QName("http://webservice.courier.training.java.schonherz.hu/","CourierWebServiceImplService");
+
+		QName qName = new QName(namespaceURI, localPart);
 		CourierWebServiceImplService courierWebService = new CourierWebServiceImplService(wsdl, qName);
 		CourierWebService serviceImpl = courierWebService.getCourierWebServiceImplPort();
-		//System.out.println("Getting cargo list from webservice, right now we are mocking.");
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
 		setCargoList(serviceImpl.getFreeCargos());
 	}

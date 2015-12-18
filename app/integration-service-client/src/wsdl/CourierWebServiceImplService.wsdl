@@ -12,24 +12,30 @@
 	<types>
 		<xsd:schema>
 			<xsd:import namespace="http://webservice.courier.training.java.schonherz.hu/"
-				schemaLocation="CourierWebServiceImplService.xsd" />
+				schemaLocation="http://localhost:7001/integration-api/CourierWebServiceImplService?xsd=1" />
 		</xsd:schema>
-        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservice.courier.training.java.schonherz.hu/"><xsd:element name="in" type="xsd:string"></xsd:element>
-        	</xsd:schema>
-    </types>
+	</types>
+	<message name="getFreeCargosList">
+		<part name="parameters" element="tns:getFreeCargosList" />
+	</message>
+	<message name="getFreeCargosListResponse">
+		<part name="parameters" element="tns:getFreeCargosListResponse" />
+	</message>
 	<message name="getUsersList">
 		<part name="parameters" element="tns:getUsersList" />
 	</message>
 	<message name="getUsersListResponse">
 		<part name="parameters" element="tns:getUsersListResponse" />
 	</message>
-	<message name="getFreeCargosListRequest">
-		<part name="getFreeCargosListRequest" element="tns:getFreeCargosList"></part>
-	</message>
-	<message name="getFreeCargosListResponse">
-		<part name="parameters" element="tns:getFreeCargosListResponse"></part>
-	</message>
 	<portType name="courierWebService">
+		<operation name="getFreeCargosList">
+			<input
+				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getFreeCargosListRequest"
+				message="tns:getFreeCargosList" />
+			<output
+				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getFreeCargosListResponse"
+				message="tns:getFreeCargosListResponse" />
+		</operation>
 		<operation name="getUsersList">
 			<input
 				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getUsersListRequest"
@@ -38,16 +44,11 @@
 				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getUsersListResponse"
 				message="tns:getUsersListResponse" />
 		</operation>
-		<operation name="getFreeCargosList">
-			<input message="tns:getFreeCargosListRequest"></input>
-			<output message="tns:getFreeCargosListResponse"></output>
-		</operation>
 	</portType>
-	<binding name="CourierWebServiceImplPortBinding"
-		type="tns:courierWebService">
+	<binding name="CourierWebServiceImplPortBinding" type="tns:courierWebService">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
 			style="document" />
-		<operation name="getUsersList">
+		<operation name="getFreeCargosList">
 			<soap:operation soapAction="" />
 			<input>
 				<soap:body use="literal" />
@@ -56,9 +57,8 @@
 				<soap:body use="literal" />
 			</output>
 		</operation>
-		<operation name="getFreeCargosList">
-			<soap:operation
-				soapAction="http://webservice.courier.training.java.schonherz.hu/getFreeCargosList" />
+		<operation name="getUsersList">
+			<soap:operation soapAction="" />
 			<input>
 				<soap:body use="literal" />
 			</input>

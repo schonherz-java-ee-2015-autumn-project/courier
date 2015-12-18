@@ -9,14 +9,15 @@ import javax.jws.WebService;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
-@WebService(name="courierWebService")
+@WebService(name = "courierWebService")
 public interface CourierWebService {
-	
-	@WebMethod(operationName="getUsersList")
-	@WebResult(name="usersListResponse")
+
+	@WebMethod(operationName = "getUsersList")
+	@WebResult(name = "usersListResponse")
 	public List<UserVO> getUsers();
-	
-	@WebMethod(operationName="getFreeCargosList")
-	@WebResult(name="freeCargosListResponse")
+
+	@WebMethod(operationName = "getFreeCargosList")
+	@WebResult(name = "freeCargosListResponse")
 	public List<CargoVO> getFreeCargos();
+
 }

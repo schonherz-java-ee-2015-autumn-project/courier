@@ -3,7 +3,42 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:ns0="http://webservice.courier.training.java.schonherz.hu/"
 	targetNamespace="http://webservice.courier.training.java.schonherz.hu/">
-    <xsd:complexType name="getUsersList" />
+	<xsd:complexType name="cargoVO">
+		<xsd:sequence>
+			<xsd:element name="addresses" type="ns0:addressVO"
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="restaurant" type="ns0:restaurantVO"
+				minOccurs="0" />
+			<xsd:element name="status" type="xsd:long" minOccurs="0" />
+			<xsd:element name="totalValue" type="xsd:double" />
+			<xsd:element name="user" type="ns0:userVO" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getUsersList" />
+	<xsd:complexType name="restaurantVO">
+		<xsd:sequence>
+			<xsd:element name="address" type="xsd:string" minOccurs="0" />
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="name" type="xsd:string" minOccurs="0" />
+			<xsd:element name="phone" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="itemVO">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="name" type="xsd:string" minOccurs="0" />
+			<xsd:element name="price" type="xsd:double" />
+			<xsd:element name="quantity" type="xsd:long" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getFreeCargosList" />
+	<xsd:complexType name="getFreeCargosListResponse">
+		<xsd:sequence>
+			<xsd:element name="freeCargosListResponse" type="ns0:cargoVO"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
 	<xsd:complexType name="roleVO">
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:long" minOccurs="0" />
@@ -16,74 +51,33 @@
 				minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 	</xsd:complexType>
+	<xsd:complexType name="addressVO">
+		<xsd:sequence>
+			<xsd:element name="address" type="xsd:string" minOccurs="0" />
+			<xsd:element name="deadline" type="xsd:dateTime"
+				minOccurs="0" />
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="items" type="ns0:itemVO" minOccurs="0"
+				maxOccurs="unbounded" nillable="true" />
+			<xsd:element name="payment" type="xsd:long" minOccurs="0" />
+			<xsd:element name="status" type="xsd:long" minOccurs="0" />
+			<xsd:element name="totalValue" type="xsd:double" />
+		</xsd:sequence>
+	</xsd:complexType>
 	<xsd:complexType name="userVO">
 		<xsd:sequence>
 			<xsd:element name="fullname" type="xsd:string" minOccurs="0" />
 			<xsd:element name="id" type="xsd:long" minOccurs="0" />
 			<xsd:element name="password" type="xsd:string" minOccurs="0" />
 			<xsd:element name="roles" type="ns0:roleVO" minOccurs="0"
-				maxOccurs="unbounded" nillable="true" />
+				maxOccurs="unbounded" nillable="true" />
+			<xsd:element name="transporting" type="xsd:long"
+				minOccurs="0" />
 			<xsd:element name="username" type="xsd:string" minOccurs="0" />
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="getUsersList" type="ns0:getUsersList" />
+	<xsd:element name="getFreeCargosList" type="ns0:getFreeCargosList" />
+	<xsd:element name="getFreeCargosListResponse" type="ns0:getFreeCargosListResponse" />
 	<xsd:element name="getUsersListResponse" type="ns0:getUsersListResponse" />
-
-	<xsd:complexType name="cargoVO">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="restaurant" type="ns0:restaurantVO" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="addresses" type="ns0:addressVO" maxOccurs="unbounded" minOccurs="0"></xsd:element>
-			<xsd:element name="status" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="totalValue" type="xsd:double" maxOccurs="1" minOccurs="0"></xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="restaurantVO">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="name" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="address" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="phone" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="addressVO">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="address" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="items" type="ns0:itemVO" maxOccurs="unbounded" minOccurs="0"></xsd:element>
-			<xsd:element name="deadline" type="xsd:date" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="totalValue" type="xsd:double" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="payment" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="status" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="itemVO">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="name" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="quantity" type="xsd:long" maxOccurs="1" minOccurs="0"></xsd:element>
-			<xsd:element name="price" type="xsd:double" maxOccurs="1" minOccurs="0"></xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-
-    <xsd:complexType name="getFreeCargosList"></xsd:complexType>
-
-    <xsd:complexType name="getFreeCargosListResponse">
-    	<xsd:sequence>
-    		<xsd:element name="freeCargosListResponse"
-    			type="ns0:cargoVO" maxOccurs="unbounded" minOccurs="0">
-    		</xsd:element>
-    	</xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:element name="getFreeCargosList"
-    	type="ns0:getFreeCargosList">
-    </xsd:element>
-
-    <xsd:element name="getFreeCargosListResponse"
-    	type="ns0:getFreeCargosListResponse">
-    </xsd:element>
 </xsd:schema>

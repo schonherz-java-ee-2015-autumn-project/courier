@@ -3,7 +3,7 @@ package hu.schonherz.java.training.courier.service.vo;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserVO implements Serializable {
+public class UserVO extends BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
