@@ -25,15 +25,15 @@
 			<div class="row">
 				<div class="col-md-12">
 
-					<p:dataGrid id="availableCargoes" var="cargo"
-						value="#{availableBean.cargoes}" columns="1">
+					<p:dataGrid id="deliveredCargoes" var="cargo"
+						value="#{deliveredBean.cargoes}" columns="1">
 						<f:facet name="emptyMessage">
 
 							<h:outputText value="#{out.emptyMessage}"
 								class="callout callout-danger" />
 
 						</f:facet>
-						<div class="box box-warning collapsed-box">
+						<div class="box box-success collapsed-box">
 							<div class="box-header with-border">
 								<h2 class="box-title">#{out.company}
 									#{cargo.restaurant.name}</h2>
@@ -57,7 +57,7 @@
 							<div class="box-body">
 
 								<p:dataGrid var="address" value="#{cargo.addresses}" columns="1">
-									<div class="box box-warning box-solid">
+									<div class="box box-success box-solid">
 										<div class="box-header with-border">
 											<h4 class="box-title">#{out.address} #{address.address}</h4>
 
@@ -77,6 +77,8 @@
 												</a></li>
 												<li class="list-group-item"><b>#{out.payment}</b> <a
 													class="pull-right">#{address.payment}</a></li>
+												<li class="list-group-item"><b>#{out.status}</b> <a
+													class="pull-right">#{address.status}</a></li>
 											</ul>
 											<p:dataTable id="table" var="item" value="#{address.items}"
 												styleClass="datatable">
@@ -100,21 +102,7 @@
 								</p:dataGrid>
 
 							</div>
-							<h:form>
-								<div class="box-footer">
 
-									<h:commandButton value="#{out.map}"
-										action="#{availableBean.showOnMap(cargo.id)}"
-										class="btn btn-default">
-									</h:commandButton>
-									<h:commandButton value="#{out.pickUp}"
-										action="#{availableBean.pickUpCargo(cargo)}"
-										rendered="#{availableBean.userVO.transporting != 1}"
-										class="btn btn-success pull-right">
-									</h:commandButton>
-
-								</div>
-							</h:form>
 						</div>
 						<!-- /.box -->
 					</p:dataGrid>

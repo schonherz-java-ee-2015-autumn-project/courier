@@ -3,6 +3,8 @@ package hu.schonherz.java.training.courier.service.vo;
 import java.io.Serializable;
 import java.util.List;
 
+import hu.schonherz.java.training.courier.entities.CargoStatus;
+
 public class CargoVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -10,7 +12,7 @@ public class CargoVO implements Serializable {
 	private UserVO user;
 	private RestaurantVO restaurant;
 	List<AddressVO> addresses;
-	private Long status;
+	private CargoStatus status;
 	private double totalValue;
 
 	public Long getId() {
@@ -45,11 +47,11 @@ public class CargoVO implements Serializable {
 		this.totalValue = totalValue;
 	}
 
-	public Long getStatus() {
+	public CargoStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Long status) {
+	public void setStatus(CargoStatus status) {
 		this.status = status;
 	}
 

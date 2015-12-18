@@ -53,11 +53,11 @@
 								</ul>
 
 								<b>#{out.status}</b> <a class="pull-right"> <h:form>
-										<h:selectOneMenu id="cargoStatus"
-											value="#{availableBean.convertStatus(cargo.status)}"
+										<h:selectOneMenu id="cargoStatus" value="#{cargo.status}"
 											class="form-control">
-											<f:ajax event="valueChange" render="cargoStatus"
+											<f:ajax event="change" render="cargoStatus"
 												listener="#{inProgressBean.cargoStatusChanged}" />
+											<f:attribute name="cargoId" value="#{cargo.id}" />
 											<f:selectItems value="#{inProgressBean.allCargoStatus}" />
 										</h:selectOneMenu>
 									</h:form></a>
@@ -65,7 +65,7 @@
 							<h:form>
 								<div class="box-footer">
 									<h:commandButton value="#{out.map}"
-										action="#{inProgressBean.selected(inProgressBean.cargo.id)}"
+										action="#{inProgressBean.showOnMap(cargo.id)}"
 										class="btn btn-default">
 									</h:commandButton>
 								</div>
@@ -115,10 +115,10 @@
 									</p:dataTable>
 									<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
 											<h:selectOneMenu id="paymentStatus"
-												value="#{availableBean.convertPayment(address.payment)}"
-												class="form-control">
-												<f:ajax event="valueChange" render="paymentStatus"
+												value="#{address.payment}" class="form-control">
+												<f:ajax event="change" render="paymentStatus"
 													listener="#{inProgressBean.paymentStatusChanged}" />
+												<f:attribute name="addressId" value="#{address.id}" />
 												<f:selectItems value="#{inProgressBean.allPaymentStatus}" />
 											</h:selectOneMenu>
 										</h:form></a>
@@ -128,10 +128,10 @@
 									<div class="box-footer">
 										<b>#{out.status}</b> <a class="pull-right"> <h:form>
 												<h:selectOneMenu id="addressStatus"
-													value="#{inProgressBean.addressStatus}"
-													class="form-control">
-													<f:ajax event="valueChange" render="addressStatus"
+													value="#{address.status}" class="form-control">
+													<f:ajax event="change" render="addressStatus"
 														listener="#{inProgressBean.addressStatusChanged}" />
+													<f:attribute name="addressId" value="#{address.id}" />
 													<f:selectItems value="#{inProgressBean.allAddressStatus}" />
 												</h:selectOneMenu>
 											</h:form></a>

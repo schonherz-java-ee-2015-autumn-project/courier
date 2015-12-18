@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import hu.schonherz.java.training.courier.dao.CargoDao;
+import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoService;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
@@ -20,7 +21,7 @@ public class CargoServiceImpl implements CargoService {
 	CargoDao cargoDao;
 
 	@Override
-	public List<CargoVO> findCargoesByUserIdAndStatus(Long userId, Long status) throws Exception {
+	public List<CargoVO> findCargoesByUserIdAndStatus(Long userId, CargoStatus status) throws Exception {
 		return CargoConverter.toVo(cargoDao.findCargoesByUserIdAndStatus(userId, status));
 	}
 
@@ -40,7 +41,7 @@ public class CargoServiceImpl implements CargoService {
 	}
 
 	@Override
-	public List<CargoVO> findAllByStatus(Long status) throws Exception {
+	public List<CargoVO> findAllByStatus(CargoStatus status) throws Exception {
 		return CargoConverter.toVo(cargoDao.findAllByStatus(status));
 	}
 }

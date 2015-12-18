@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.persistence.OneToMany;
 
+import hu.schonherz.java.training.courier.entities.AddressStatus;
+import hu.schonherz.java.training.courier.entities.Payment;
+
 public class AddressVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -14,9 +17,9 @@ public class AddressVO implements Serializable {
 	@OneToMany
 	private List<ItemVO> items;
 	private Date deadline;
-	private Long payment;
+	private Payment payment;
 	private double totalValue;
-	private Long status;
+	private AddressStatus status;
 
 	public Long getId() {
 		return id;
@@ -42,19 +45,19 @@ public class AddressVO implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public Long getPayment() {
+	public Payment getPayment() {
 		return payment;
 	}
 
-	public void setPayment(Long payment) {
+	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
 
-	public Long getStatus() {
+	public AddressStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Long status) {
+	public void setStatus(AddressStatus status) {
 		this.status = status;
 	}
 
