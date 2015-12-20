@@ -68,7 +68,11 @@
 		<xsd:sequence>
 			<xsd:element name="fullname" type="xsd:string" minOccurs="0" />
 			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="moddate" type="xsd:dateTime"
+				minOccurs="0" />
 			<xsd:element name="password" type="xsd:string" minOccurs="0" />
+			<xsd:element name="regdate" type="xsd:dateTime"
+				minOccurs="0" />
 			<xsd:element name="roles" type="ns0:roleVO" minOccurs="0"
 				maxOccurs="unbounded" nillable="true" />
 			<xsd:element name="transporting" type="xsd:long"

@@ -8,7 +8,7 @@
 	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
 	<ui:define name="content">
 		<h:form id="usersListForm">
-			<p:dataTable  var="users" value="#{userListBean.userList}">
+			<p:dataTable var="users" value="#{userListBean.userList}">
 				<p:column headerText="Id">
 					<h:outputText value="#{users.id}" />
 				</p:column>
@@ -21,14 +21,18 @@
 				<p:column headerText="Fullname">
 					<h:outputText value="#{users.fullname}" />
 				</p:column>
-<!-- 				<p:column headerText="Role id"> -->
-<!-- 					<h:outputText value="#{users.roles.id}" /> -->
-<!-- 				</p:column> -->
-<!-- 				<p:column headerText="Role name"> -->
-<!-- 					<h:outputText value="#{users.roles.name}" /> -->
-<!-- 				</p:column> -->
+				<p:column headerText="Moddate">
+					<h:outputText value="#{users.moddate}" />
+				</p:column>
+				<!-- 				<p:column headerText="Role id"> -->
+				<!-- 					<h:outputText value="#{users.roles.id}" /> -->
+				<!-- 				</p:column> -->
+				<!-- 				<p:column headerText="Role name"> -->
+				<!-- 					<h:outputText value="#{users.roles.name}" /> -->
+				<!-- 				</p:column> -->
 			</p:dataTable>
-			<p:commandButton update="usersListForm" value="Get Users" actionListener="#{userListBean.getUsers}"></p:commandButton>
+			<p:commandButton update="usersListForm" value="Get Users"
+				actionListener="#{userListBean.getUsers}"></p:commandButton>
 		</h:form>
 	</ui:define>
 </ui:composition>

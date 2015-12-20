@@ -1,9 +1,11 @@
 package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
-public class UserVO extends BaseVO implements Serializable {
+public class UserVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -12,6 +14,8 @@ public class UserVO extends BaseVO implements Serializable {
 	private String password;
 	private Long transporting;
 	private List<RoleVO> roles;
+	private Date regdate;
+	private Date moddate;
 
 	public Long getId() {
 		return id;
@@ -56,7 +60,8 @@ public class UserVO extends BaseVO implements Serializable {
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", fullname=" + fullname + ", username=" + username + ", password=" + password
-				+ ", transporting=" + transporting + ", roles=" + roles + "]";
+				+ ", transporting=" + transporting + ", roles=" + roles + ", regdate=" + getRegdate() + ", moddate="
+				+ getModdate() + "]";
 	}
 
 	public Long getTransporting() {
@@ -65,6 +70,22 @@ public class UserVO extends BaseVO implements Serializable {
 
 	public void setTransporting(Long transporting) {
 		this.transporting = transporting;
+	}
+
+	public Date getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
+
+	public Date getModdate() {
+		return moddate;
+	}
+
+	public void setModdate(Date moddate) {
+		this.moddate = moddate;
 	}
 
 }

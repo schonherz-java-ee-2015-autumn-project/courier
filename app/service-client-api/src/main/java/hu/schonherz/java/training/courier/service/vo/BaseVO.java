@@ -9,23 +9,23 @@ public class BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Date RegDate;
-	private Date ModDate;
+	private Date regDate;
+	private Date modDate;
 
 	public Date getRegDate() {
-		return RegDate;
+		return regDate;
 	}
 
 	public void setRegDate(Date regDate) {
-		RegDate = regDate;
+		regDate = regDate;
 	}
 
 	public Date getModDate() {
-		return ModDate;
+		return modDate;
 	}
 
 	public void setModDate(Date modDate) {
-		ModDate = modDate;
+		modDate = modDate;
 	}
 
 }

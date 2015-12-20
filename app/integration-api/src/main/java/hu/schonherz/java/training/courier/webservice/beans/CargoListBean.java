@@ -20,6 +20,7 @@ import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.webservice.CourierWebService;
 import hu.schonherz.java.training.courier.webservice.CourierWebServiceImplService;
 
+
 @ManagedBean(name = "cargoListBean")
 @ViewScoped
 public class CargoListBean implements Serializable {
@@ -108,7 +109,7 @@ public class CargoListBean implements Serializable {
 		CourierWebServiceImplService courierWebService = new CourierWebServiceImplService(wsdl, qName);
 		CourierWebService serviceImpl = courierWebService.getCourierWebServiceImplPort();
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
-		setCargoList(serviceImpl.getFreeCargos());
+		//setCargoList(serviceImpl.getFreeCargos());
 	}
 
 }
