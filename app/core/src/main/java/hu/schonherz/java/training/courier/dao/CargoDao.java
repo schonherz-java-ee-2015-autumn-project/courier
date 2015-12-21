@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import hu.schonherz.java.training.courier.entities.Cargo;
+import hu.schonherz.java.training.courier.entities.CargoStatus;
 
 @Repository
 public interface CargoDao extends JpaRepository<Cargo, Long> {
@@ -14,10 +15,10 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 
 	Cargo findCargoById(Long cargoId);
 
-	List<Cargo> findCargoesByUserIdAndStatus(Long userId, Long status);
+	List<Cargo> findCargoesByUserIdAndStatus(Long userId, CargoStatus status);
 
 	@SuppressWarnings("unchecked")
 	Cargo save(Cargo cargo);
 
-	List<Cargo> findAllByStatus(Long status);
+	List<Cargo> findAllByStatus(CargoStatus status);
 }
