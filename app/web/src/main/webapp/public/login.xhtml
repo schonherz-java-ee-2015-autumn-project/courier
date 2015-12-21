@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+
+	<h:head>
+		<title>#{out.pageTitle}</title>
+		<!-- Bootstrap 3.3.5 -->
+		<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+		<!-- Ionicons -->
+		<link rel="stylesheet"
+			href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+		<!-- jvectormap -->
+		<h:outputStylesheet library="plugins"
+			name="vectormap/jquery-jvectormap-1.2.2.css" />
+		<!-- Theme style -->
+		<h:outputStylesheet library="dist" name="css/AdminLTE.min.css" />
+		<!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+		<h:outputStylesheet library="dist" name="css/skins/_all-skins.min.css" />
+		<!-- jQuery 2.1.4 -->
+		<h:outputScript library="plugins" name="jQuery/jQuery-2.1.4.min.js" />
+		<!-- Bootstrap 3.3.5 -->
+		<h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
+		<!-- FastClick -->
+		<h:outputScript library="plugins" name="fastclick/fastclick.min.js" />
+		<!-- AdminLTE App -->
+		<h:outputScript library="dist" name="js/app.min.js" />
+		<!-- Sparkline -->
+		<h:outputScript library="plugins"
+			name="sparkline/jquery.sparkline.min.js" />
+		<!-- jvectormap -->
+		<h:outputScript library="plugins"
+			name="jvectormap/jquery-jvectormap-1.2.2.min.js" />
+		<h:outputScript library="plugins"
+			name="jvectormap/jquery-jvectormap-world-mill-en.js" />
+		<!-- SlimScroll 1.3.0 -->
+		<h:outputScript library="plugins"
+			name="slimScroll/jquery.slimscroll.min.js" />
+
+	</h:head>
+	<h:body class="hold-transition skin-blue layout-top-nav">
+
+		<div class="wrapper">
+
+			<header class="main-header"> <nav
+				class="navbar navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<a href="#{request.contextPath}/public/login.xhtml"
+						class="navbar-brand"><b>C</b>ourier</a>
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar-collapse">
+						<i class="fa fa-bars"></i>
+					</button>
+				</div>
+
+
+			</div>
+			<!-- /.container-fluid --> </nav> </header>
+			<!-- Full Width Column -->
+			<div class="content-wrapper">
+				<div class="container">
+
+					<section class="content">
+
+					<div class="login-box">
+						<!-- Login Form -->
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<h3 class="box-title">#{out.login}</h3>
+							</div>
+							<!-- /.box-header -->
+							<!-- form start -->
+							<form class="form-horizontal"
+								action="#{request.contextPath}/login" method="post">
+
+								<div class="box-body">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<h:panelGroup layout="block" class="callout callout-danger"
+												rendered="#{param['error'] == 0}">#{out.sessionExpired}</h:panelGroup>
+											<h:panelGroup layout="block" class="callout callout-danger"
+												rendered="#{param['error'] == 1}">#{out.loginerror}</h:panelGroup>
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input type="text" class="form-control"
+												placeholder="#{out.username}" name="j_username" />
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input type="password" class="form-control"
+												placeholder="#{out.password}" name="j_password" />
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-12">
+											<div class="checkbox">
+												<label> <input type="checkbox" />#{out.rememberme}
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /.box-body -->
+								<div class="box-footer">
+									<button type="submit" class="btn btn-primary pull-right">#{out.login}</button>
+								</div>
+								<!-- /.box-footer -->
+							</form>
+						</div>
+						<!-- /.box -->
+					</div>
+					</section>
+				</div>
+				<!-- /.container -->
+			</div>
+			<!-- /.content-wrapper -->
+
+		</div>
+		<!-- ./wrapper -->
+
+	</h:body>
+</f:view>
+</html>

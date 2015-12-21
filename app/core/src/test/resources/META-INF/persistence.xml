@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+	<persistence-unit name="hu.schonherz.java.training.courier.test">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>hu.schonherz.java.training.courier.entities.BaseEntity</class>
+		<class>hu.schonherz.java.training.courier.entities.Role</class>
+		<class>hu.schonherz.java.training.courier.entities.User</class>
+		<class>hu.schonherz.java.training.courier.entities.Log</class>
+		<class>hu.schonherz.java.training.courier.entities.Item</class>
+		<class>hu.schonherz.java.training.courier.entities.Address</class>
+		<class>hu.schonherz.java.training.courier.entities.Cargo</class>
+		<class>hu.schonherz.java.training.courier.entities.Restaurant</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<property name="hibernate.archive.autodetection" value="class, hbm" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="mysql" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/courier" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+		</properties>
+	</persistence-unit>
+
+
+
+</persistence>
