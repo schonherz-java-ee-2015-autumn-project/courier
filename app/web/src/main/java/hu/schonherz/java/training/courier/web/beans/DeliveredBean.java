@@ -32,7 +32,7 @@ public class DeliveredBean implements Serializable {
 		try {
 			currentDate = new Date();
 			cargoes = getCargoService().findCargoesByUserIdAndStatus(getUserSessionBean().getUserVO().getId(),
-					CargoStatus.getValue(5L));
+					CargoStatus.getValue(4L));
 			double cargoPrice;
 			double addressPrice;
 			for (int i = 0; i < cargoes.size(); i++) {

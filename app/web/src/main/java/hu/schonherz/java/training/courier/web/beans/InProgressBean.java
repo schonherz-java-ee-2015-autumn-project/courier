@@ -9,14 +9,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIOutput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 
 import hu.schonherz.java.training.courier.entities.AddressStatus;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.entities.Payment;
-import hu.schonherz.java.training.courier.service.AddressService;
 import hu.schonherz.java.training.courier.service.CargoService;
 import hu.schonherz.java.training.courier.service.UserService;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
@@ -32,8 +30,7 @@ public class InProgressBean implements Serializable {
 	private List<CargoVO> cargo;
 	@ManagedProperty("#{cargoService}")
 	private CargoService cargoService;
-	@ManagedProperty("#{addressService}")
-	private AddressService addressService;
+
 	@ManagedProperty("#{userService}")
 	private UserService userService;
 	@ManagedProperty(value = "#{userSessionBean}")
@@ -81,34 +78,7 @@ public class InProgressBean implements Serializable {
 		this.cargoService = cargoService;
 	}
 
-	public void cargoStatusChanged(AjaxBehaviorEvent e) throws Exception {
-		CargoStatus cargoStatus = (CargoStatus) ((UIOutput) e.getSource()).getValue();
-		Long cargoId = (long) (Long) e.getComponent().getAttributes().get("cargoId");
-		CargoVO cargoVO = getCargoService().findCargoById(cargoId);
-		cargoVO.setStatus(cargoStatus);
-		getCargoService().save(cargoVO);
-		if (cargoStatus.equals(CargoStatus.getValue(5L))) {
-			getUserSessionBean().getUserVO().setTransporting(0L);
-			getUserService().save(getUserSessionBean().getUserVO());
-			FacesContext context = FacesContext.getCurrentInstance();
-			FacesContext.getCurrentInstance().getExternalContext().redirect("../secured/available.xhtml");
-		}
-
-		System.out.println("cargostatus = " + cargoStatus + " 5L = " + CargoStatus.getValue(5L));
-
-	}
-
-	public void addressStatusChanged(AjaxBehaviorEvent e) throws Exception {
-		AddressStatus addressStatus = (AddressStatus) ((UIOutput) e.getSource()).getValue();
-		Long addressId = (Long) e.getComponent().getAttributes().get("addressId");
-		AddressVO addressVO = getAddressService().findAddressById(addressId);
-		addressVO.setStatus(addressStatus);
-		getAddressService().save(addressVO);
-		System.out.println("status = " + addressStatus + " address id = " + addressId);
-		// Update cargo status in database!
-	}
-
-	public void paymentStatusChanged(AjaxBehaviorEvent e) throws Exception {
+	/*public void paymentStatusChanged(AjaxBehaviorEvent e) throws Exception {
 		Payment paymentStatus = (Payment) ((UIOutput) e.getSource()).getValue();
 		Long addressId = (long) (Long) e.getComponent().getAttributes().get("addressId");
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
@@ -116,12 +86,11 @@ public class InProgressBean implements Serializable {
 		getAddressService().save(addressVO);
 		System.out.println("status = " + paymentStatus + " address id " + addressId);
 		// Update cargo status in database!
-	}
+	}*/
 
 	public void showOnMap(Long cargoId) throws IOException {
-		FacesContext context = FacesContext.getCurrentInstance();
-		context.getExternalContext().getSessionMap().put("cargoId", cargoId);
-		FacesContext.getCurrentInstance().getExternalContext().redirect("../secured/map.xhtml");
+		getFacesExternalContext().getSessionMap().put("cargoId", cargoId);
+		getFacesExternalContext().redirect("../secured/map.xhtml");
 	}
 
 	public List<CargoVO> getCargo() {
@@ -164,14 +133,6 @@ public class InProgressBean implements Serializable {
 		this.userSessionBean = userSessionBean;
 	}
 
-	public AddressService getAddressService() {
-		return addressService;
-	}
-
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
-	}
-
 	public UserVO getUserVO() {
 		return userVO;
 	}
@@ -186,6 +147,16 @@ public class InProgressBean implements Serializable {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	public ExternalContext getFacesExternalContext() {
+
+		return getFacesContext().getExternalContext();
+	}
+
+	public FacesContext getFacesContext() {
+
+		return FacesContext.getCurrentInstance();
 	}
 
 }

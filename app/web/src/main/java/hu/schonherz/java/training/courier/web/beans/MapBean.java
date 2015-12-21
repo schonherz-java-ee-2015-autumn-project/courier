@@ -1,15 +1,26 @@
 package hu.schonherz.java.training.courier.web.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
+
+import hu.schonherz.java.training.courier.entities.AddressStatus;
+import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.service.AddressService;
 import hu.schonherz.java.training.courier.service.CargoService;
+import hu.schonherz.java.training.courier.service.UserService;
+import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
+import hu.schonherz.java.training.courier.service.vo.ItemVO;
 
 @ManagedBean(name = "mapBean")
 @ViewScoped
@@ -18,19 +29,91 @@ public class MapBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@ManagedProperty("#{cargoService}")
 	private CargoService cargoService;
+	@ManagedProperty("#{userService}")
+	private UserService userService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+	@ManagedProperty("#{addressService}")
+	private AddressService addressService;
 	private CargoVO selectedCargo;
+	private String addressList;
 
 	@PostConstruct
 	public void init() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		Long id = (Long) context.getExternalContext().getSessionMap().get("cargoId");
+
+		Long id = (Long) getFacesExternalContext().getSessionMap().get("cargoId");
 		try {
 			selectedCargo = getCargoService().findCargoById(id);
-		} catch (Exception e) {
+			double cargoPrice = 0;
+			double addressPrice = 0;
+
+			List<AddressVO> addresses = selectedCargo.getAddresses();
+			for (int j = 0; j < addresses.size(); j++) {
+				addressPrice = 0;
+				List<ItemVO> items = addresses.get(j).getItems();
+				for (int k = 0; k < items.size(); k++)
+					addressPrice += items.get(k).getPrice() * items.get(k).getQuantity();
+				addresses.get(j).setTotalValue(addressPrice);
+				cargoPrice += addressPrice;
+			}
+			selectedCargo.setTotalValue(cargoPrice);
+
+		} catch (
+
+		Exception e)
+
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		addressList = selectedCargo.getRestaurant().getAddress();
+
+	}
+
+	public void cargoStatusChanged(Long value) throws Exception {
+		CargoStatus status = CargoStatus.getValue(value);
+		selectedCargo.setStatus(status);
+		getCargoService().save(selectedCargo);
+		updateRoute();
+		System.out.println(addressList);
+
+		if (status.equals(CargoStatus.getValue(4L))) {
+			getUserSessionBean().getUserVO().setTransporting(0L);
+			getUserService().save(getUserSessionBean().getUserVO());
+
+			getFacesExternalContext().redirect("../secured/available.xhtml");
+		}
+
+	}
+
+	public void updateRoute() {
+		List<AddressVO> addresses = selectedCargo.getAddresses();
+
+		List<String> stringAddress = new ArrayList<String>();
+
+		for (int j = 0; j < addresses.size(); j++) {
+//updatelni vagy kitorolni kellene a listabol a cimeket
+			//if (addresses.get(j).getStatus() == null)
+				stringAddress.add(addresses.get(j).getAddress());
+		}
+
+		if (addresses.size() > 1)
+			addressList = StringUtils.join(stringAddress, ";");
+		else
+			addressList = stringAddress.toString();
+	}
+
+	public void addressStatusChanged(Long address, Long buttonValue) throws Exception {
+		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(buttonValue);
+		Long addressId = (Long) address;
+		AddressVO addressVO = getAddressService().findAddressById(addressId);
+		addressVO.setStatus(addressStatus);
+		getAddressService().save(addressVO);
+		
+		updateRoute();
+		System.out.println("status = " + addressStatus + " address id = " + addressId);
+		// Update cargo status in database!
 	}
 
 	public CargoService getCargoService() {
@@ -41,6 +124,14 @@ public class MapBean implements Serializable {
 		this.cargoService = cargoService;
 	}
 
+	public AddressService getAddressService() {
+		return addressService;
+	}
+
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
+	}
+
 	public CargoVO getSelectedCargo() {
 		return selectedCargo;
 	}
@@ -49,6 +140,38 @@ public class MapBean implements Serializable {
 		this.selectedCargo = selectedCargo;
 	}
 
+	public ExternalContext getFacesExternalContext() {
 
+		return getFacesContext().getExternalContext();
+	}
+
+	public FacesContext getFacesContext() {
+
+		return FacesContext.getCurrentInstance();
+	}
+
+	public String getAddressList() {
+		return addressList;
+	}
+
+	public void setAddressList(String addressList) {
+		this.addressList = addressList;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 
 }

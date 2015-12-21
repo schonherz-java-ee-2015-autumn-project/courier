@@ -9,7 +9,8 @@
 	<ui:define name="content">
 		<style>
 .ui-datatable-header {
-	background: #f39c12;
+	background: #00a65a;
+	color: white;
 }
 
 .ui-datagrid-content {
@@ -19,6 +20,48 @@
 
 .datatable td {
 	background: white;
+}
+
+.datatable td {
+	font-size: 12px;
+}
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+	text-align: center;
+	font-size: 13px;
+}
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+	text-align: center;
+	padding: 4px 11px;
+	font-size: 14px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	border: 1px solid #00a65a;
+	background: none;
+	font-weight: small;
+	color: #3f3731;
+	font-weight: normal;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td,
+	.ui-datatable tfoot th {
+	padding: 4px 10px;
+	overflow: hidden;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #00a65a;
+}
+
+.ui-corner-top {
+	-moz-border-radius-topleft: 3px;
+	-webkit-border-top-left-radius: 3px;
+	border-top-left-radius: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-right-radius: 3px;
 }
 </style>
 		<section class="content">
@@ -85,16 +128,18 @@
 												<f:facet name="header">
       												#{out.items}
    												</f:facet>
-												<li><p:column styleClass="customHeader"
-														headerText="#{out.item}">
-														<h:outputText value="#{item.name}" />
-													</p:column> <p:column headerText="#{out.quantity}">
-														<h:outputText value="#{item.quantity}" />
-													</p:column> <p:column headerText="#{out.price}">
-														<h:outputText value="#{item.price}">
-															<f:convertNumber minFractionDigits="2" />
-														</h:outputText> HUF
-													</p:column></li>
+												<p:column styleClass="customHeader" headerText="#{out.item}">
+													<h:outputText value="#{item.name}" />
+												</p:column>
+
+												<p:column headerText="#{out.price}">
+													<h:outputText value="#{item.price}">
+														<f:convertNumber minFractionDigits="2" />
+													</h:outputText> HUF
+													</p:column>
+												<p:column headerText="#{out.quantity}">
+													<h:outputText value="#{item.quantity}" />
+												</p:column>
 											</p:dataTable>
 
 										</div>

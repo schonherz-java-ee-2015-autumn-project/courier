@@ -49,39 +49,107 @@
 		<h:outputScript library="plugins"
 			name="slimScroll/jquery.slimscroll.min.js" />
 		<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo54L8yC4OrNibZr25ggrhv0egXe-Cey4&geometry;" />
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo54L8yC4OrNibZr25ggrhv0egXe-Cey4" />
 		<script>
-			var destination;
-			var currentPosition;
+			var map;
+			var origin;
+			var center;
+			var destinations = '#{mapBean.addressList}'.split(";");
+			var lat;
+			var lng;
 			var directionsDisplay;
 			var directionsService = new google.maps.DirectionsService();
-			var map;
-			var service = new google.maps.DistanceMatrixService;
+			var geocoder;
+
+			function calculateDistances() {
+
+				var service = new google.maps.DistanceMatrixService();
+				service.getDistanceMatrix({
+					origins : [ origin ], //array of origins
+					destinations : destinations, //array of destinations
+					travelMode : google.maps.TravelMode.DRIVING,
+					unitSystem : google.maps.UnitSystem.METRIC,
+					avoidHighways : false,
+					avoidTolls : false
+				}, callback);
+			}
+
+			function callback(response, status) {
+				if (status != google.maps.DistanceMatrixStatus.OK) {
+					alert('Error was: ' + status);
+				} else {
+					//we only have one origin so there should only be one row
+					var routes = response.rows[0];
+					var sortable = [];
+					//build the waypoints.
+
+					for (var i = routes.elements.length - 1; i >= 0; i--) {
+						var rteLength = routes.elements[i].duration.value;
+						sortable.push([ destinations[i], rteLength ]);
+					}
+					//sort the result lengths from shortest to longest.
+					sortable.sort(function(a, b) {
+						return a[1] - b[1];
+					});
+					//build the waypoints.
+					var waypoints = [];
+					
+					for (j = 0; j &lt; sortable.length - 1; j++) {
+					
+						waypoints.push({
+							location : sortable[j][0],
+							stopover : true
+						});
+					}
+					//start address == origin
+					var start = origin;
+					//end address is the furthest desitnation from the origin.
+					var end = sortable[sortable.length - 1][0];
+					//calculate the route with the waypoints        
+					calculateRoute(start, end, waypoints);
+					
+				
+				}
+			}
+			//Calculate the route of the shortest distance we found.
+			function calculateRoute(start, end, waypoints) {
+				var request = {
+					origin : start,
+					destination : end,
+					waypoints : waypoints,
+					optimizeWaypoints : true,
+					travelMode : google.maps.TravelMode.DRIVING
+				};
+				directionsService.route(request, function(result, status) {
+					if (status == google.maps.DirectionsStatus.OK) {
+						directionsDisplay.setDirections(result);
+					}
+				});
+			}
+
 			function initialize() {
 				directionsDisplay = new google.maps.DirectionsRenderer();
+				var centerPosition = new google.maps.LatLng(38.713107,
+						-90.42984);
 				map = new google.maps.Map(document.getElementById('map'), {
+					zoom : 14,
 					center : {
-						lat : -34.397,
-						lng : 150.644
-					},
-					zoom : 14
+						lat : 38.713107,
+						lng : -90.42984
+					}
 				});
+				geocoder = new google.maps.Geocoder();
 				directionsDisplay.setMap(map);
-
-				// Try HTML5 geolocation.
 				if (navigator.geolocation) {
 					navigator.geolocation.getCurrentPosition(
 							function(position) {
-								currentPosition = {
-									lat : position.coords.latitude,
-									lng : position.coords.longitude
-								};
-								/*
-								 * var marker = new google.maps.Marker({ position : currentPosition,
-								 * map : map, title : 'Hello World!' });
-								 */
 
-								map.setCenter(currentPosition);
+								lat = position.coords.latitude;
+								lng = position.coords.longitude;
+								center = new google.maps.LatLng(lat, lng);
+
+								map.setCenter(center);
+								geocodeLatLng();
 							}, function() {
 								handleLocationError(true, infoWindow, map
 										.getCenter());
@@ -90,8 +158,7 @@
 					// Browser doesn't support Geolocation
 					handleLocationError(false, infoWindow, map.getCenter());
 				}
-				var geocoder = new google.maps.Geocoder();
-				geocodeAddress(geocoder, map);
+
 			}
 
 			function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -101,74 +168,28 @@
 								: 'Error: Your browser doesn\'t support geolocation.');
 			}
 
-			function geocodeAddress(geocoder, resultsMap) {
-				var address = '#{mapBean.selectedCargo.restaurant.address}';
-				geocoder
-						.geocode(
-								{
-									'address' : address
-								},
-								function(results, status) {
-									destination = results[0].geometry.location;
-									if (status === google.maps.GeocoderStatus.OK) {
-										/*
-										 * resultsMap.setCenter(destination); var marker = new
-										 * google.maps.Marker({ map : resultsMap, position : destination });
-										 */
-										calcRoute();
-									} else {
-										alert('Geocode was not successful for the following reason: '
-												+ status);
-									}
-								});
+			function geocodeLatLng() {
+
+				var latlng = new google.maps.LatLng(lat, lng);
+				geocoder.geocode({
+					'location' : latlng
+				}, function(results, status) {
+					if (status === google.maps.GeocoderStatus.OK) {
+						if (results[1]) {
+							origin = results[1].formatted_address;
+							calculateDistances();
+						} else {
+							window.alert('No results found');
+						}
+					} else {
+						window.alert('Geocoder failed due to: ' + status);
+					}
+				});
 			}
-			function calcRoute() {
-				var start = currentPosition;
-				var end = destination;
-				var request = {
-					origin : start,
-					destination : end,
-					travelMode : google.maps.TravelMode.DRIVING
-				};
-				directionsService
-						.route(
-								request,
-								function(response, status) {
-									if (status == google.maps.DirectionsStatus.OK) {
-										directionsDisplay
-												.setDirections(response);
-										service
-												.getDistanceMatrix(
-														{
-															origins : [ currentPosition ],
-															destinations : [ destination ],
-															travelMode : google.maps.TravelMode.DRIVING,
 
-														}, callback);
-
-										function callback(response, status) {
-											if (status == google.maps.DistanceMatrixStatus.OK) {
-												var origins = response.originAddresses;
-												var destinations = response.destinationAddresses;
-
-												var results = response.rows[0].elements;
-												var element = results[0];
-												var distance = element.distance.text;
-												var duration = element.duration.text;
-												var from = origins[0];
-												var to = destinations[0];
-												document
-														.getElementById('output').innerHTML = '#{out.distance} '
-														+ distance
-														+ ' #{out.duration} '
-														+ duration;
-
-											}
-										}
-
-									}
-								});
-			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+			
+			function reinitialize(){google.maps.event.trigger(map, 'resize');}
 		</script>
 
 		<style>
@@ -178,10 +199,65 @@
 	height: 450px;
 	width: 100%;
 }
+
+.ui-datatable-header {
+	background: #dd4b39;
+	color: white;
+}
+
+.ui-datagrid-content {
+	background: transparent;
+	border: none;
+}
+
+.datatable td {
+	background: white;
+}
+
+.datatable td {
+	font-size: 12px;
+}
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+	text-align: center;
+	font-size: 13px;
+}
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+	text-align: center;
+	padding: 4px 11px;
+	font-size: 14px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	border: 1px solid #dd4b39;
+	background: none;
+	font-weight: small;
+	color: #3f3731;
+	font-weight: normal;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td,
+	.ui-datatable tfoot th {
+	padding: 4px 10px;
+	overflow: hidden;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #dd4b39;
+}
+
+.ui-corner-top {
+	-moz-border-radius-topleft: 3px;
+	-webkit-border-top-left-radius: 3px;
+	border-top-left-radius: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-right-radius: 3px;
+}
 </style>
 	</h:head>
-	<h:body class="hold-transition skin-blue layout-top-nav"
-		onload="initialize();">
+	<h:body class="hold-transition skin-blue layout-top-nav">
 
 
 		<header class="main-header"> <nav
@@ -207,19 +283,145 @@
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">#{mapBean.selectedCargo.restaurant.name}</h3>
-
-								<div id="output" class="pull-right"></div>
 							</div>
 
-							<div class="box-body" id="map" />
+							<div class="box-body">
+								<div id="map"></div>
+								<ul class="list-group list-group-unbordered">
+									<li class="list-group-item"><b>#{out.address}</b> <a
+										class="pull-right">#{mapBean.selectedCargo.restaurant.address}</a></li>
+									<li class="list-group-item"><b>#{out.cargoValue}</b> <a
+										class="pull-right"> <h:outputText
+												value="#{mapBean.selectedCargo.totalValue}">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText> HUF
+									</a></li>
+									<li class="list-group-item"><b>#{out.status}</b> <a
+										class="pull-right">#{mapBean.selectedCargo.status}</a></li>
+								</ul>
+								<b>#{out.changeStatus}</b>
+								<div class="pull-right">
+									<h:form id="cargoStatus">
+										<h:commandButton value="#{out.pickedUp}" style="margin: 3px;"
+											rendered="#{mapBean.selectedCargo.status == 'Foglalt'}"
+											class="btn btn-success"
+											action="#{mapBean.cargoStatusChanged(3)}"
+											onclick="reinitialize();">
+										</h:commandButton>
 
-							<div class="box-footer">
+										<h:commandButton value="#{out.delivered}" style="margin: 3px;"
+											rendered="#{mapBean.selectedCargo.status == 'Átvéve'}"
+											class="btn btn-success"
+											action="#{mapBean.cargoStatusChanged(4)}"
+											onclick="reinitialize();">
+										</h:commandButton>
+									</h:form>
+								</div>
 
-								<a href="#{request.contextPath}/secured/available.xhtml"
-									class="btn btn-primary pull-right"><span>#{out.back}</span>
-								</a>
 							</div>
+
 						</div>
+						<p:layout rendered="#{mapBean.selectedCargo.status == 'Átvéve'}">
+							<div class="box box-danger box-solid">
+								<div class="box-header with-border">
+									<h3 class="box-title">#{out.addresses}</h3>
+
+								</div>
+
+								<div class="box-body">
+									<h:form id="addressesForm">
+										<p:dataGrid id="addresses" var="address"
+											value="#{mapBean.selectedCargo.addresses}" columns="1"
+											emptyMessage="#{out.emptyMessage}">
+											<div class="box box-danger box-solid collapsed-box">
+												<div class="box-header with-border">
+													<h5>#{out.address} #{address.address}</h5>
+													<h6>
+														#{out.deadline}
+														<h:outputText value="#{address.deadline}">
+															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+														</h:outputText>
+													</h6>
+													<div class="box-tools pull-right">
+														<button class="btn btn-box-tool" data-widget="collapse">
+															<i class="fa fa-plus"></i>
+														</button>
+													</div>
+												</div>
+												<!-- /.box-header -->
+												<div class="box-body">
+													<ul class="list-group list-group-unbordered">
+
+														<li class="list-group-item"><b>#{out.addressValue}</b>
+															<a class="pull-right"> <h:outputText
+																	value="#{address.totalValue}">
+																	<f:convertNumber minFractionDigits="2" />
+																</h:outputText> HUF
+														</a></li>
+
+
+													</ul>
+
+													<p:dataTable id="table" var="item" value="#{address.items}"
+														styleClass="datatable">
+														<f:facet name="header">
+      												#{out.items}
+   												</f:facet>
+														<p:column styleClass="customHeader"
+															headerText="#{out.item}">
+															<h:outputText value="#{item.name}" />
+														</p:column>
+														<p:column headerText="#{out.price}">
+															<h:outputText value="#{item.price}">
+																<f:convertNumber minFractionDigits="2" />
+															</h:outputText> HUF
+													</p:column>
+														<p:column headerText="#{out.quantity}">
+															<h:outputText value="#{item.quantity}" />
+														</p:column>
+													</p:dataTable>
+													<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
+															<h:selectOneMenu id="paymentStatus"
+																value="#{address.payment}" class="form-control">
+																<f:ajax event="change" render="paymentStatus"
+																	listener="#{inProgressBean.paymentStatusChanged(3)}" />
+																<f:attribute name="addressId" value="#{address.id}" />
+																<f:selectItems
+																	value="#{inProgressBean.allPaymentStatus}" />
+															</h:selectOneMenu>
+														</h:form></a>
+
+												</div>
+
+												<div class="box-footer">
+													<b>#{out.status}</b>
+													<div class="pull-right">
+														<h:form id="buttons">
+															<h:commandButton value="#{out.success}"
+																style="margin: 3px;" class="btn btn-success"
+																action="#{mapBean.addressStatusChanged(address.id, 1)}"
+																onclick="reinitialize();">
+
+															</h:commandButton>
+															<h:commandButton value="#{out.failed}"
+																style="margin: 3px;" class="btn btn-danger"
+																action="#{mapBean.addressStatusChanged(address.id, 2)}"
+																onclick="reinitialize();">
+
+															</h:commandButton>
+														</h:form>
+													</div>
+												</div>
+
+												<!-- /.box-body -->
+											</div>
+											<!-- /.box -->
+										</p:dataGrid>
+									</h:form>
+								</div>
+								<div class="box-footer"></div>
+							</div>
+						</p:layout>
 					</div>
 				</div>
 				</section>

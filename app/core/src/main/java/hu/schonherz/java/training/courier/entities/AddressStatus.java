@@ -1,7 +1,7 @@
 package hu.schonherz.java.training.courier.entities;
 
 public enum AddressStatus {
-	Folyamatban(1L), Kiszállítva(2L), Sikertelen(3L);
+	Kiszállítva(1L), Sikertelen(2L);
 	public final Long value;
 
 	AddressStatus(final Long value) {

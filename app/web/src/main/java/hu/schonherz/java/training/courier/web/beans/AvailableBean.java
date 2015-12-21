@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
@@ -77,9 +78,9 @@ public class AvailableBean implements Serializable {
 	}
 
 	public void showOnMap(Long cargoId) throws IOException {
-		FacesContext context = FacesContext.getCurrentInstance();
-		context.getExternalContext().getSessionMap().put("cargoId", cargoId);
-		FacesContext.getCurrentInstance().getExternalContext().redirect("../secured/map.xhtml");
+
+		getFacesExternalContext().getSessionMap().put("cargoId", cargoId);
+		getFacesExternalContext().redirect("../secured/map.xhtml");
 	}
 
 	public void pickUpCargo(CargoVO cargo) {
@@ -95,9 +96,8 @@ public class AvailableBean implements Serializable {
 			e.printStackTrace();
 		}
 
-		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			context.getExternalContext().redirect("../secured/inprogress.xhtml");
+			getFacesExternalContext().redirect("../secured/inprogress.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,4 +129,13 @@ public class AvailableBean implements Serializable {
 		this.userVO = userVO;
 	}
 
+	public ExternalContext getFacesExternalContext() {
+
+		return getFacesContext().getExternalContext();
+	}
+
+	public FacesContext getFacesContext() {
+
+		return FacesContext.getCurrentInstance();
+	}
 }
