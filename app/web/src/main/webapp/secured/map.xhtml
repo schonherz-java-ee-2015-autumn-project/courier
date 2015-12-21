@@ -329,97 +329,92 @@
 								</div>
 
 								<div class="box-body">
-									<h:form id="addressesForm">
-										<p:dataGrid id="addresses" var="address"
-											value="#{mapBean.selectedCargo.addresses}" columns="1"
-											emptyMessage="#{out.emptyMessage}">
-											<div class="box box-danger box-solid collapsed-box">
-												<div class="box-header with-border">
-													<h5>#{out.address} #{address.address}</h5>
-													<h6>
-														#{out.deadline}
-														<h:outputText value="#{address.deadline}">
-															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
-														</h:outputText>
-													</h6>
-													<div class="box-tools pull-right">
-														<button class="btn btn-box-tool" data-widget="collapse">
-															<i class="fa fa-plus"></i>
-														</button>
-													</div>
+
+									<p:dataGrid id="addresses" var="address"
+										value="#{mapBean.selectedCargo.addresses}" columns="1"
+										emptyMessage="#{out.done}">
+										<div class="box box-danger box-solid collapsed-box">
+											<div class="box-header with-border">
+												<h5>#{out.address} #{address.address}</h5>
+												<h6>
+													#{out.deadline}
+													<h:outputText value="#{address.deadline}">
+														<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+													</h:outputText>
+												</h6>
+												<div class="box-tools pull-right">
+													<button class="btn btn-box-tool" data-widget="collapse">
+														<i class="fa fa-plus"></i>
+													</button>
 												</div>
-												<!-- /.box-header -->
-												<div class="box-body">
-													<ul class="list-group list-group-unbordered">
+											</div>
+											<!-- /.box-header -->
+											<div class="box-body">
+												<ul class="list-group list-group-unbordered">
 
-														<li class="list-group-item"><b>#{out.addressValue}</b>
-															<a class="pull-right"> <h:outputText
-																	value="#{address.totalValue}">
-																	<f:convertNumber minFractionDigits="2" />
-																</h:outputText> HUF
-														</a></li>
-
-
-													</ul>
-
-													<p:dataTable id="table" var="item" value="#{address.items}"
-														styleClass="datatable">
-														<f:facet name="header">
-      												#{out.items}
-   												</f:facet>
-														<p:column styleClass="customHeader"
-															headerText="#{out.item}">
-															<h:outputText value="#{item.name}" />
-														</p:column>
-														<p:column headerText="#{out.price}">
-															<h:outputText value="#{item.price}">
+													<li class="list-group-item"><b>#{out.addressValue}</b>
+														<a class="pull-right"> <h:outputText
+																value="#{address.totalValue}">
 																<f:convertNumber minFractionDigits="2" />
 															</h:outputText> HUF
+													</a></li>
+
+
+												</ul>
+
+												<p:dataTable id="table" var="item" value="#{address.items}"
+													styleClass="datatable">
+													<f:facet name="header">
+      												#{out.items}
+   												</f:facet>
+													<p:column styleClass="customHeader"
+														headerText="#{out.item}">
+														<h:outputText value="#{item.name}" />
 													</p:column>
-														<p:column headerText="#{out.quantity}">
-															<h:outputText value="#{item.quantity}" />
-														</p:column>
-													</p:dataTable>
-													<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
-															<h:selectOneMenu id="paymentStatus"
-																value="#{address.payment}" class="form-control">
-																<f:ajax event="change" render="paymentStatus"
-																	listener="#{inProgressBean.paymentStatusChanged(3)}" />
-																<f:attribute name="addressId" value="#{address.id}" />
-																<f:selectItems
-																	value="#{inProgressBean.allPaymentStatus}" />
-															</h:selectOneMenu>
-														</h:form></a>
+													<p:column headerText="#{out.price}">
+														<h:outputText value="#{item.price}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
+													</p:column>
+													<p:column headerText="#{out.quantity}">
+														<h:outputText value="#{item.quantity}" />
+													</p:column>
+												</p:dataTable>
+												<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
+														<h:selectOneMenu id="paymentStatus"
+															value="#{address.payment}" class="form-control">
+															<f:ajax event="change" render="paymentStatus"
+																listener="#{mapBean.paymentStatusChanged}" />
+															<f:attribute name="addressId" value="#{address.id}" />
+															<f:selectItems value="#{mapBean.allPaymentStatus}" />
+														</h:selectOneMenu>
+													</h:form></a>
 
-												</div>
-
-												<div class="box-footer">
-													<b>#{out.status}</b>
-													<div class="pull-right">
-														<h:form id="buttons">
-															<h:commandButton value="#{out.success}"
-																style="margin: 3px;" class="btn btn-success"
-																action="#{mapBean.addressStatusChanged(address.id, 1)}"
-																onclick="reinitialize();">
-
-															</h:commandButton>
-															<h:commandButton value="#{out.failed}"
-																style="margin: 3px;" class="btn btn-danger"
-																action="#{mapBean.addressStatusChanged(address.id, 2)}"
-																onclick="reinitialize();">
-
-															</h:commandButton>
-														</h:form>
-													</div>
-												</div>
-
-												<!-- /.box-body -->
 											</div>
-											<!-- /.box -->
-										</p:dataGrid>
-									</h:form>
+
+											<div class="box-footer">
+												<b>#{out.status}</b>
+												<div class="pull-right">
+													<h:form>
+														<h:commandButton value="#{out.success}"
+															class="btn btn-success" style="margin: 3px;"
+															action="#{mapBean.addressStatusChanged(address.id, 1)}">
+														</h:commandButton>
+														<h:commandButton value="#{out.failed}"
+															class="btn btn-danger" style="margin: 3px;"
+															action="#{mapBean.addressStatusChanged(address.id, 2)}">
+														</h:commandButton>
+													</h:form>
+												</div>
+											</div>
+
+											<!-- /.box-body -->
+										</div>
+										<!-- /.box -->
+									</p:dataGrid>
+
 								</div>
-								<div class="box-footer"></div>
+
 							</div>
 						</p:layout>
 					</div>

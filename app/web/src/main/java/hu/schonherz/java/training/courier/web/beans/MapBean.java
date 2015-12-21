@@ -2,19 +2,23 @@ package hu.schonherz.java.training.courier.web.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIOutput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
 import hu.schonherz.java.training.courier.entities.AddressStatus;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.AddressService;
 import hu.schonherz.java.training.courier.service.CargoService;
 import hu.schonherz.java.training.courier.service.UserService;
@@ -37,6 +41,7 @@ public class MapBean implements Serializable {
 	private AddressService addressService;
 	private CargoVO selectedCargo;
 	private String addressList;
+	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
 
 	@PostConstruct
 	public void init() {
@@ -81,7 +86,6 @@ public class MapBean implements Serializable {
 		if (status.equals(CargoStatus.getValue(4L))) {
 			getUserSessionBean().getUserVO().setTransporting(0L);
 			getUserService().save(getUserSessionBean().getUserVO());
-
 			getFacesExternalContext().redirect("../secured/available.xhtml");
 		}
 
@@ -93,15 +97,14 @@ public class MapBean implements Serializable {
 		List<String> stringAddress = new ArrayList<String>();
 
 		for (int j = 0; j < addresses.size(); j++) {
-//updatelni vagy kitorolni kellene a listabol a cimeket
-			//if (addresses.get(j).getStatus() == null)
-				stringAddress.add(addresses.get(j).getAddress());
+			stringAddress.add(addresses.get(j).getAddress());
 		}
 
 		if (addresses.size() > 1)
 			addressList = StringUtils.join(stringAddress, ";");
 		else
 			addressList = stringAddress.toString();
+
 	}
 
 	public void addressStatusChanged(Long address, Long buttonValue) throws Exception {
@@ -109,11 +112,25 @@ public class MapBean implements Serializable {
 		Long addressId = (Long) address;
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
 		addressVO.setStatus(addressStatus);
+		List<AddressVO> addresses = selectedCargo.getAddresses();
+
+		int index = 0;
+		if (addresses.contains(addressVO)) {
+			addresses.remove(index);
+		}
 		getAddressService().save(addressVO);
-		
+
 		updateRoute();
-		System.out.println("status = " + addressStatus + " address id = " + addressId);
-		// Update cargo status in database!
+
+	}
+
+	public void paymentStatusChanged(AjaxBehaviorEvent e) throws Exception {
+		Payment paymentStatus = (Payment) ((UIOutput) e.getSource()).getValue();
+		Long addressId = (long) (Long) e.getComponent().getAttributes().get("addressId");
+		AddressVO addressVO = getAddressService().findAddressById(addressId);
+		addressVO.setPayment(paymentStatus);
+		getAddressService().save(addressVO);
+
 	}
 
 	public CargoService getCargoService() {
@@ -172,6 +189,14 @@ public class MapBean implements Serializable {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	public List<Payment> getAllPaymentStatus() {
+		return allPaymentStatus;
+	}
+
+	public void setAllPaymentStatus(List<Payment> allPaymentStatus) {
+		this.allPaymentStatus = allPaymentStatus;
 	}
 
 }

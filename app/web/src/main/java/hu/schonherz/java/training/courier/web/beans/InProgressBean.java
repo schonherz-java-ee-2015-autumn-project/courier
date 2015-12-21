@@ -2,7 +2,6 @@ package hu.schonherz.java.training.courier.web.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,9 +11,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import hu.schonherz.java.training.courier.entities.AddressStatus;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
-import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoService;
 import hu.schonherz.java.training.courier.service.UserService;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
@@ -36,9 +33,6 @@ public class InProgressBean implements Serializable {
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 	UserVO userVO;
-	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
-	private List<CargoStatus> allCargoStatus = Arrays.asList(CargoStatus.values());
-	private List<AddressStatus> allAddressStatus = Arrays.asList(AddressStatus.values());
 
 	@PostConstruct
 	public void init() {
@@ -78,16 +72,6 @@ public class InProgressBean implements Serializable {
 		this.cargoService = cargoService;
 	}
 
-	/*public void paymentStatusChanged(AjaxBehaviorEvent e) throws Exception {
-		Payment paymentStatus = (Payment) ((UIOutput) e.getSource()).getValue();
-		Long addressId = (long) (Long) e.getComponent().getAttributes().get("addressId");
-		AddressVO addressVO = getAddressService().findAddressById(addressId);
-		addressVO.setPayment(paymentStatus);
-		getAddressService().save(addressVO);
-		System.out.println("status = " + paymentStatus + " address id " + addressId);
-		// Update cargo status in database!
-	}*/
-
 	public void showOnMap(Long cargoId) throws IOException {
 		getFacesExternalContext().getSessionMap().put("cargoId", cargoId);
 		getFacesExternalContext().redirect("../secured/map.xhtml");
@@ -99,30 +83,6 @@ public class InProgressBean implements Serializable {
 
 	public void setCargo(List<CargoVO> cargo) {
 		this.cargo = cargo;
-	}
-
-	public List<CargoStatus> getAllCargoStatus() {
-		return allCargoStatus;
-	}
-
-	public void setAllCargoStatus(List<CargoStatus> allCargoStatus) {
-		this.allCargoStatus = allCargoStatus;
-	}
-
-	public List<AddressStatus> getAllAddressStatus() {
-		return allAddressStatus;
-	}
-
-	public void setAllAddressStatus(List<AddressStatus> allAddressStatus) {
-		this.allAddressStatus = allAddressStatus;
-	}
-
-	public List<Payment> getAllPaymentStatus() {
-		return allPaymentStatus;
-	}
-
-	public void setAllPaymentStatus(List<Payment> allPaymentStatus) {
-		this.allPaymentStatus = allPaymentStatus;
 	}
 
 	public UserSessionBean getUserSessionBean() {
