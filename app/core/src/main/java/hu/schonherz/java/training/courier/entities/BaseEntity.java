@@ -13,44 +13,45 @@ public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date RegDate = new Date();
+
+	private Date regdate = new Date();
 	@Column(columnDefinition = "DATETIME DEFAULT NOW()")
-	private Date ModDate = new Date();
+	private Date moddate = new Date();
 	@Column(columnDefinition="int default 1",nullable=false)
-	private Long RegUser = (long) 1;
+	private Long regUser = (long) 1;
 	@Column(columnDefinition="int default 1",nullable=false)
-	private Long ModUser = (long) 1;
+	private Long modUser = (long) 1;
 
-	public Date getRegDate() {
-		return RegDate;
+	public Date getRegdate() {
+		return regdate;
 	}
 
-	public void setRegDate(Date regDate) {
-		RegDate = regDate;
+	public void setRegdate(Date regDate) {
+		regDate = regDate;
 	}
 
-	public Date getModDate() {
-		return ModDate;
+	public Date getModdate() {
+		return moddate;
 	}
 
-	public void setModDate(Date modDate) {
-		ModDate = modDate;
+	public void setModdate(Date modDate) {
+		modDate = modDate;
 	}
 
 	public Long getRegUser() {
-		return RegUser;
+		return regUser;
 	}
 
 	public void setRegUser(Long regUser) {
-		RegUser = regUser;
+		regUser = regUser;
 	}
 
 	public Long getModUser() {
-		return ModUser;
+		return modUser;
 	}
 
 	public void setModUser(Long modUser) {
-		ModUser = modUser;
+		modUser = modUser;
 	}
 
 	public Long getId() {

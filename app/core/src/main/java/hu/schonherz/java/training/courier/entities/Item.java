@@ -11,7 +11,7 @@ public class Item extends BaseEntity implements Serializable {
 	private String name;
 	private Long quantity;
 	private double price;
-
+	private Long globalid;
 	public String getName() {
 		return name;
 	}
@@ -34,6 +34,14 @@ public class Item extends BaseEntity implements Serializable {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }
