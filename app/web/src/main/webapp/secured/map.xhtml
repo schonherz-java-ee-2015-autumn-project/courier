@@ -299,25 +299,28 @@
 									<li class="list-group-item"><b>#{out.status}</b> <a
 										class="pull-right">#{mapBean.selectedCargo.status}</a></li>
 								</ul>
-								<b>#{out.changeStatus}</b>
-								<div class="pull-right">
-									<h:form id="cargoStatus">
-										<h:commandButton value="#{out.pickedUp}" style="margin: 3px;"
-											rendered="#{mapBean.selectedCargo.status == 'Foglalt'}"
-											class="btn btn-success"
-											action="#{mapBean.cargoStatusChanged(3)}"
-											onclick="reinitialize();">
-										</h:commandButton>
+								<p:layout
+									rendered="#{mapBean.selectedCargo.status == 'Foglalt'}">
+									<b>#{out.changeStatus}</b>
+									<div class="pull-right">
+										<h:form id="cargoStatus">
+											<h:commandButton value="#{out.pickedUp}" style="margin: 3px;"
+												rendered="#{mapBean.selectedCargo.status == 'Foglalt'}"
+												class="btn btn-success"
+												action="#{mapBean.cargoStatusChanged(3)}"
+												onclick="reinitialize();">
+											</h:commandButton>
 
-										<h:commandButton value="#{out.delivered}" style="margin: 3px;"
-											rendered="#{mapBean.selectedCargo.status == 'Átvéve'}"
-											class="btn btn-success"
-											action="#{mapBean.cargoStatusChanged(4)}"
-											onclick="reinitialize();">
-										</h:commandButton>
-									</h:form>
-								</div>
-
+											<h:commandButton value="#{out.delivered}"
+												style="margin: 3px;"
+												rendered="#{mapBean.selectedCargo.status == 'Átvéve'}"
+												class="btn btn-success"
+												action="#{mapBean.cargoStatusChanged(4)}"
+												onclick="reinitialize();">
+											</h:commandButton>
+										</h:form>
+									</div>
+								</p:layout>
 							</div>
 
 						</div>
