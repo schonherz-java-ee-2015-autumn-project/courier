@@ -3,7 +3,7 @@ package hu.schonherz.java.training.courier.service.vo;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserVO implements Serializable {
+public class UserVO extends BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -12,7 +12,7 @@ public class UserVO implements Serializable {
 	private String password;
 	private Long transporting;
 	private List<RoleVO> roles;
-
+	private Long globalid;
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +65,14 @@ public class UserVO implements Serializable {
 
 	public void setTransporting(Long transporting) {
 		this.transporting = transporting;
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }

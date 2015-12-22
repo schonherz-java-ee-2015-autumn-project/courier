@@ -5,7 +5,7 @@ import java.util.List;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 
-public class CargoVO implements Serializable {
+public class CargoVO extends BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -14,7 +14,7 @@ public class CargoVO implements Serializable {
 	List<AddressVO> addresses;
 	private CargoStatus status;
 	private double totalValue;
-
+	private Long globalid;
 	public Long getId() {
 		return id;
 	}
@@ -67,6 +67,14 @@ public class CargoVO implements Serializable {
 
 	public void setUser(UserVO user) {
 		this.user = user;
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }
