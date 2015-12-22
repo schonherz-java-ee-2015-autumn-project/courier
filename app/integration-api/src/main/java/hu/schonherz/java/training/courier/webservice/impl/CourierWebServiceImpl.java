@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 import hu.schonherz.java.training.courier.webservice.CourierWebService;
@@ -21,6 +22,11 @@ public class CourierWebServiceImpl implements CourierWebService {
 	public List<CargoVO> getFreeCargos() {
 		List<CargoVO> cargos = new ArrayList<>();
 		return cargos;
+	}
+
+	@Override
+	public Long setCargoStatus(CargoStatus cargoStatus) {
+		return null;
 	}
 
 }

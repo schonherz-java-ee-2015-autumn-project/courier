@@ -12,10 +12,10 @@ public class CargoVO extends BaseVO implements Serializable {
 	private UserVO user;
 	private RestaurantVO restaurant;
 	List<AddressVO> addresses;
-
 	private CargoStatus status;
 	private double totalValue;
 	private Long globalid;
+
 	public Long getId() {
 		return id;
 	}
