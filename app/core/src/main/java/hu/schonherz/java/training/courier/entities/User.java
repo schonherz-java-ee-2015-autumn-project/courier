@@ -15,6 +15,7 @@ public class User extends BaseEntity implements Serializable {
 	private String fullname;
 	private String password;
 	private Long transporting;
+	private Long globalid;
 	@ManyToMany
 	private List<Role> roles;
 
@@ -60,6 +61,14 @@ public class User extends BaseEntity implements Serializable {
 
 	public void setTransporting(Long transporting) {
 		this.transporting = transporting;
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }

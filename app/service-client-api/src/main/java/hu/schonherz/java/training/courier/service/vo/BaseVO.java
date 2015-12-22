@@ -3,29 +3,27 @@ package hu.schonherz.java.training.courier.service.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-
 public class BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Date regDate;
-	private Date modDate;
+	private Date regdate;
+	private Date moddate;
 
-	public Date getRegDate() {
-		return regDate;
+	public Date getRegdate() {
+		return regdate;
 	}
 
-	public void setRegDate(Date regDate) {
-		regDate = regDate;
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
 	}
 
-	public Date getModDate() {
-		return modDate;
+	public Date getModdate() {
+		return moddate;
 	}
 
-	public void setModDate(Date modDate) {
-		modDate = modDate;
+	public void setModdate(Date moddate) {
+		this.moddate = moddate;
 	}
 
 }

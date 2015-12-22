@@ -9,7 +9,7 @@ public class ItemVO implements Serializable {
 	private String name;
 	private Long quantity;
 	private double price;
-
+	private Long globalid;
 	public String getName() {
 		return name;
 	}
@@ -45,6 +45,14 @@ public class ItemVO implements Serializable {
 	@Override
 	public String toString() {
 		return "ItemVO [id=" + id + ", name=" + name + ", quantity=" + quantity + ", price=" + price + "]";
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }

@@ -15,6 +15,7 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoService;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.webservice.CourierWebService;
@@ -87,7 +88,7 @@ public class CargoListBean implements Serializable {
 		this.cargoList = cargoList;
 	}
 
-	public void updateCargos(Long status) {
+	public void updateCargos(CargoStatus status) {
 
 		try {
 			List<CargoVO> cargosInDb = cargoService.findAllByStatus(status);

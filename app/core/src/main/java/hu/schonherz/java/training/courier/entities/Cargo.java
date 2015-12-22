@@ -24,6 +24,7 @@ public class Cargo extends BaseEntity implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private CargoStatus status;
+	private Long globalid;
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -41,7 +42,6 @@ public class Cargo extends BaseEntity implements Serializable {
 		this.addresses = addresses;
 	}
 
-
 	public User getUser() {
 		return user;
 	}
@@ -56,6 +56,14 @@ public class Cargo extends BaseEntity implements Serializable {
 
 	public void setStatus(CargoStatus status) {
 		this.status = status;
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }

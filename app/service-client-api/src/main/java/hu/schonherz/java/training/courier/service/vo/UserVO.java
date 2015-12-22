@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class UserVO implements Serializable {
+public class UserVO extends BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -14,8 +14,7 @@ public class UserVO implements Serializable {
 	private String password;
 	private Long transporting;
 	private List<RoleVO> roles;
-	private Date regdate;
-	private Date moddate;
+	private Long globalid;
 
 	public Long getId() {
 		return id;
@@ -72,20 +71,12 @@ public class UserVO implements Serializable {
 		this.transporting = transporting;
 	}
 
-	public Date getRegdate() {
-		return regdate;
+	public Long getGlobalid() {
+		return globalid;
 	}
 
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
-
-	public Date getModdate() {
-		return moddate;
-	}
-
-	public void setModdate(Date moddate) {
-		this.moddate = moddate;
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }
