@@ -1,0 +1,16 @@
+pageTitle=Courier
+login=Sign In
+logout=Sign Out
+mainNavigation=MAIN NAVIGATION
+profile=Profile
+deliveries=Deliveries
+available=Available
+inProgress=In progress
+statistics=Statistics
+reports=Reports
+pickUp=Pick Up
+mainNavigation=MAIN NAVIGATION
+loginerror=Invalid username or password!
+username=Username
+password=Password
+rememberme=Remember Me

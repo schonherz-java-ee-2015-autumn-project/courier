@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -15,8 +19,10 @@ public class Address extends BaseEntity implements Serializable {
 	@ManyToMany
 	private List<Item> items;
 	private Date deadline;
-	private Long payment;
-	private Long status;
+	@Enumerated(EnumType.STRING)
+	private Payment payment;
+	@Enumerated(EnumType.STRING)
+	private AddressStatus status;
 
 	public List<Item> getItems() {
 		return items;
@@ -34,19 +40,19 @@ public class Address extends BaseEntity implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public Long getPayment() {
+	public Payment getPayment() {
 		return payment;
 	}
 
-	public void setPayment(Long payment) {
+	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
 
-	public Long getStatus() {
+	public AddressStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Long status) {
+	public void setStatus(AddressStatus status) {
 		this.status = status;
 	}
 

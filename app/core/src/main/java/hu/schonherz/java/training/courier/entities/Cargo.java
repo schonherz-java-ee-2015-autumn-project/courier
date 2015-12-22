@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -18,7 +21,9 @@ public class Cargo extends BaseEntity implements Serializable {
 	private Restaurant restaurant;
 	@OneToMany
 	List<Address> addresses;
-	private Long status;
+
+	@Enumerated(EnumType.STRING)
+	private CargoStatus status;
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -36,13 +41,6 @@ public class Cargo extends BaseEntity implements Serializable {
 		this.addresses = addresses;
 	}
 
-	public Long getStatus() {
-		return status;
-	}
-
-	public void setStatus(Long status) {
-		this.status = status;
-	}
 
 	public User getUser() {
 		return user;
@@ -50,6 +48,14 @@ public class Cargo extends BaseEntity implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public CargoStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(CargoStatus status) {
+		this.status = status;
 	}
 
 }

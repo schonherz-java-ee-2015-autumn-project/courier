@@ -14,7 +14,7 @@ public interface UserDao extends JpaRepository<User, Long> {
 
 	@SuppressWarnings("unchecked")
 	User save(User user);
-	
+
 	@Modifying(clearAutomatically = true)
 	@Query(value="update user set id = ?2 where id = ?1",nativeQuery=true)
 	void updateUserId(Long existingId, Long newId);

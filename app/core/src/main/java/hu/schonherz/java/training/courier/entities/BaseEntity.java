@@ -13,6 +13,7 @@ public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	private Date regdate = new Date();
 	@Column(columnDefinition = "DATETIME DEFAULT NOW()")
 	private Date moddate = new Date();

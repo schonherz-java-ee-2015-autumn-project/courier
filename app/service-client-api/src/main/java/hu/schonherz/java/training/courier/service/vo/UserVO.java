@@ -60,8 +60,8 @@ public class UserVO implements Serializable {
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", fullname=" + fullname + ", username=" + username + ", password=" + password
-				+ ", transporting=" + transporting + ", roles=" + roles + ", regdate=" + getRegdate() + ", moddate="
-				+ getModdate() + "]";
+				+ ", transporting=" + transporting + ", roles=" + roles + "]";
+
 	}
 
 	public Long getTransporting() {

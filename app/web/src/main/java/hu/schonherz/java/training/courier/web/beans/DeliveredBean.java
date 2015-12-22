@@ -1,43 +1,38 @@
 package hu.schonherz.java.training.courier.web.beans;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoService;
-import hu.schonherz.java.training.courier.service.UserService;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
-import hu.schonherz.java.training.courier.service.vo.UserVO;
 
-@ManagedBean(name = "availableBean")
+@ManagedBean(name = "deliveredBean")
 @ViewScoped
-public class AvailableBean implements Serializable {
+public class DeliveredBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<CargoVO> cargoes;
 	@ManagedProperty("#{cargoService}")
 	private CargoService cargoService;
-	@ManagedProperty("#{userService}")
-	private UserService userService;
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
-	UserVO userVO;
+	private Date currentDate;
 
 	@PostConstruct
 	public void init() {
 		try {
-			userVO = getUserSessionBean().getUserVO();
-			cargoes = getCargoService().findAllByStatus(CargoStatus.getValue(1L));
+			currentDate = new Date();
+			cargoes = getCargoService().findCargoesByUserIdAndStatus(getUserSessionBean().getUserVO().getId(),
+					CargoStatus.getValue(4L));
 			double cargoPrice;
 			double addressPrice;
 			for (int i = 0; i < cargoes.size(); i++) {
@@ -77,33 +72,6 @@ public class AvailableBean implements Serializable {
 		this.cargoService = cargoService;
 	}
 
-	public void showOnMap(Long cargoId) throws IOException {
-		getFacesExternalContext().getSessionMap().put("cargoId", cargoId);
-		getFacesExternalContext().redirect("../secured/map.xhtml");
-	}
-
-	public void pickUpCargo(CargoVO cargo) {
-
-		cargo.setUser(userVO);
-		cargo.setStatus(CargoStatus.getValue(2L));
-		try {
-			getCargoService().save(cargo);
-			userVO.setTransporting(1L);
-			getUserService().save(userVO);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			getFacesExternalContext().redirect("../secured/inprogress.xhtml");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
 	public UserSessionBean getUserSessionBean() {
 		return userSessionBean;
 	}
@@ -112,29 +80,12 @@ public class AvailableBean implements Serializable {
 		this.userSessionBean = userSessionBean;
 	}
 
-	public UserService getUserService() {
-		return userService;
+	public Date getCurrentDate() {
+		return currentDate;
 	}
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	public void setCurrentDate(Date currentDate) {
+		this.currentDate = currentDate;
 	}
 
-	public UserVO getUserVO() {
-		return userVO;
-	}
-
-	public void setUserVO(UserVO userVO) {
-		this.userVO = userVO;
-	}
-
-	public ExternalContext getFacesExternalContext() {
-
-		return getFacesContext().getExternalContext();
-	}
-
-	public FacesContext getFacesContext() {
-
-		return FacesContext.getCurrentInstance();
-	}
 }
