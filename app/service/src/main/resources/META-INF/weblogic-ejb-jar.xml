@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wls:weblogic-ejb-jar
+	xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-ejb-jar"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd http://xmlns.oracle.com/weblogic/weblogic-ejb-jar http://xmlns.oracle.com/weblogic/weblogic-ejb-jar/1.4/weblogic-ejb-jar.xsd">
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>UserService</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>UserService</wls:jndi-name>
+		<wls:local-jndi-name>UserServiceLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>AddressServiceImpl</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>AddressService</wls:jndi-name>
+		<wls:local-jndi-name>AddressServiceLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>LogServiceImpl</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>LogServiceImpl</wls:jndi-name>
+		<wls:local-jndi-name>LogServiceLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>CargoServiceImpl</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>CargoService</wls:jndi-name>
+		<wls:local-jndi-name>CargoServiceLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
+</wls:weblogic-ejb-jar>

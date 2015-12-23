@@ -17,12 +17,13 @@
 	<import resource="classpath:spring-service.xml" />
 	<import resource="classpath:spring-security.xml" />
 
-	<!-- <jee:local-slsb id="userService" jndi-name="ejb.UserServiceLocal" -->
-	<!-- business-interface="hu.neuron.java.service.UserServiceLocal" /> -->
-
-
-
-
-
+	<jee:local-slsb id="UserService" jndi-name="hu.schonherz.service.UserServiceLocal"
+		business-interface="hu.schonherz.java.training.courier.service.UserServiceLocal" />
+		
+	<jee:local-slsb id="cargoService" jndi-name="hu.schonherz.service.CargoServiceLocal" 
+		business-interface="hu.schonherz.java.training.courier.service.CargoServiceLocal" />
+	
+	<jee:local-slsb id="logService" jndi-name="hu.schonherz.service.LogServiceLocal"
+		business-interface="hu.schonherz.java.training.courier.service.LogServiceLocal" />
 
 </beans>

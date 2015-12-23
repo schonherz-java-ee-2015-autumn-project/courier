@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.ejb.EJB;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,17 +14,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import hu.schonherz.java.training.courier.service.UserService;
+import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 import hu.schonherz.java.training.courier.service.vo.RoleVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @Service("customUserDetailsService")
+@EJB(name = "hu.schonherz.service.UserServiceLocal", beanInterface = UserServiceLocal.class)
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	UserService userService;
+	@EJB(name="UserService")
+	UserServiceLocal userService;
 
+	
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 

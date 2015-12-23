@@ -58,4 +58,20 @@
             480
         </session-timeout>
     </session-config>
+ 	<ejb-local-ref>
+ 		<ejb-ref-name>hu.schonherz.service.UserServiceLocal</ejb-ref-name>
+ 		<local>hu.schonherz.java.training.courier.service.UserServiceLocal</local>
+ 	</ejb-local-ref>
+ 	<ejb-local-ref>
+ 		<ejb-ref-name>hu.schonherz.service.CargoServiceLocal</ejb-ref-name>
+ 		<local>hu.schonherz.java.training.courier.service.CargoServiceLocal</local>
+ 	</ejb-local-ref>
+ 	<ejb-local-ref>
+ 		<ejb-ref-name>hu.schonherz.service.AddressServiceLocal</ejb-ref-name>
+ 		<local>hu.schonherz.java.training.courier.service.AddressServiceLocal</local>
+ 	</ejb-local-ref>
+ 	<ejb-local-ref>
+ 		<ejb-ref-name>hu.schonherz.service.LogServiceLocal</ejb-ref-name>
+ 		<local>hu.schonherz.java.training.courier.service.LogServiceLocal</local>
+ 	</ejb-local-ref>
 </web-app>

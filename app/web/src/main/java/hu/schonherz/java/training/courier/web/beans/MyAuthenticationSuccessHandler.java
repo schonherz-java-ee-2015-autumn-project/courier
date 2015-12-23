@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,14 +17,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import hu.schonherz.java.training.courier.service.LogService;
+import hu.schonherz.java.training.courier.service.LogServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 
 @Component
+@EJB(name = "hu.schonherz.service.LogServiceLocal", beanInterface = LogServiceLocal.class)
 public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-	@Autowired
-	private LogService logService;
+	@EJB
+	LogServiceLocal logService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

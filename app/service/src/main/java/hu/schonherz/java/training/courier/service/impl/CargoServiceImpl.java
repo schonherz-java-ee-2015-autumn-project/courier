@@ -2,20 +2,29 @@ package hu.schonherz.java.training.courier.service.impl;
 
 import java.util.List;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.java.training.courier.dao.CargoDao;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
-import hu.schonherz.java.training.courier.service.CargoService;
+import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 
-@Service("cargoService")
-@Transactional(propagation = Propagation.REQUIRED)
-public class CargoServiceImpl implements CargoService {
+@Stateless(mappedName="CargoService")
+@Local(CargoServiceLocal.class)
+@Remote(CargoServiceRemote.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({ SpringBeanAutowiringInterceptor.class })
+public class CargoServiceImpl implements CargoServiceLocal,CargoServiceRemote {
 
 	@Autowired
 	CargoDao cargoDao;

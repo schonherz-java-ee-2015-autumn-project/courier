@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -12,8 +13,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
-import hu.schonherz.java.training.courier.service.CargoService;
-import hu.schonherz.java.training.courier.service.UserService;
+import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
@@ -25,13 +26,12 @@ public class InProgressBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<CargoVO> cargo;
-	@ManagedProperty("#{cargoService}")
-	private CargoService cargoService;
-
-	@ManagedProperty("#{userService}")
-	private UserService userService;
+	@EJB
+	CargoServiceLocal cargoService;
+	@EJB
+	UserServiceLocal userService;
 	@ManagedProperty(value = "#{userSessionBean}")
-	private UserSessionBean userSessionBean;
+	UserSessionBean userSessionBean;
 	UserVO userVO;
 
 	@PostConstruct
@@ -64,11 +64,11 @@ public class InProgressBean implements Serializable {
 
 	}
 
-	public CargoService getCargoService() {
+	public CargoServiceLocal getCargoService() {
 		return cargoService;
 	}
 
-	public void setCargoService(CargoService cargoService) {
+	public void setCargoService(CargoServiceLocal cargoService) {
 		this.cargoService = cargoService;
 	}
 
@@ -101,11 +101,11 @@ public class InProgressBean implements Serializable {
 		this.userVO = userVO;
 	}
 
-	public UserService getUserService() {
+	public UserServiceLocal getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UserService userService) {
+	public void setUserService(UserServiceLocal userService) {
 		this.userService = userService;
 	}
 
