@@ -16,13 +16,12 @@ import hu.schonherz.java.training.courier.service.AddressServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.AddressConverter;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 
-
-@Stateless(mappedName="AddressService")
+@Stateless(mappedName = "AddressService")
 @Local(AddressServiceLocal.class)
 @Remote(AddressServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Interceptors({ SpringBeanAutowiringInterceptor.class })
-public class AddressServiceImpl implements AddressServiceLocal,AddressServiceRemote {
+public class AddressServiceImpl implements AddressServiceLocal, AddressServiceRemote {
 
 	@Autowired
 	AddressDao addressDao;

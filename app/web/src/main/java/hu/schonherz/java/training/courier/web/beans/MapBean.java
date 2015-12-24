@@ -43,6 +43,15 @@ public class MapBean implements Serializable {
 	private CargoVO selectedCargo;
 	private String addressList;
 	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
+	List<AddressVO> addresses;
+
+	public List<AddressVO> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<AddressVO> addresses) {
+		this.addresses = addresses;
+	}
 
 	@PostConstruct
 	public void init() {
@@ -53,7 +62,7 @@ public class MapBean implements Serializable {
 			double cargoPrice = 0;
 			double addressPrice = 0;
 
-			List<AddressVO> addresses = selectedCargo.getAddresses();
+			addresses = selectedCargo.getAddresses();
 			for (int j = 0; j < addresses.size(); j++) {
 				addressPrice = 0;
 				List<ItemVO> items = addresses.get(j).getItems();
@@ -80,8 +89,8 @@ public class MapBean implements Serializable {
 	public void cargoStatusChanged(Long value) throws Exception {
 		CargoStatus status = CargoStatus.getValue(value);
 		selectedCargo.setStatus(status);
-		getCargoService().save(selectedCargo);
-		updateRoute();
+		getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString());
+		updateRoute(0L);
 		System.out.println(addressList);
 
 		if (status.equals(CargoStatus.getValue(4L))) {
@@ -92,13 +101,16 @@ public class MapBean implements Serializable {
 
 	}
 
-	public void updateRoute() {
-		List<AddressVO> addresses = selectedCargo.getAddresses();
+	public void updateRoute(Long id) {
 
 		List<String> stringAddress = new ArrayList<String>();
 
 		for (int j = 0; j < addresses.size(); j++) {
-			stringAddress.add(addresses.get(j).getAddress());
+
+			if (addresses.get(j).getId() != id) {
+				stringAddress.add(addresses.get(j).getAddress());
+
+			}
 		}
 
 		if (addresses.size() > 1)
@@ -108,20 +120,14 @@ public class MapBean implements Serializable {
 
 	}
 
-	public void addressStatusChanged(Long address, Long buttonValue) throws Exception {
-		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(buttonValue);
-		Long addressId = (Long) address;
+	public void addressStatusChanged(Long addressId, Long addressStatusId) throws Exception {
+		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(addressStatusId);
+
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
 		addressVO.setStatus(addressStatus);
-		List<AddressVO> addresses = selectedCargo.getAddresses();
-
-		int index = 0;
-		if (addresses.contains(addressVO)) {
-			addresses.remove(index);
-		}
 		getAddressService().save(addressVO);
-
-		updateRoute();
+		addresses.remove(addressVO);
+		updateRoute(addressId);
 
 	}
 

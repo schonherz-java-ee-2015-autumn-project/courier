@@ -1,7 +1,7 @@
 package hu.schonherz.java.training.courier.entities;
 
 public enum Payment {
-	Bankkártya(1L), Készpénz(2L), Utalvány(3L), SZÉP(4L);
+	Card(1L), Cash(2L), Voucher(3L), SZEP(4L);
 
 	public final Long value;
 
