@@ -27,13 +27,13 @@
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!-- 	felvesszük föggőségnek a service-client-api -t -->
+		<!-- felvesszük föggőségnek a service-client-api -t -->
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>service-client-api</artifactId>
 			<version>${version}</version>
 		</dependency>
-<!-- 	felvesszük függőségnek a core-t -->
+		<!-- felvesszük függőségnek a core-t -->
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>core</artifactId>
@@ -56,6 +56,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.8.5</version>
+		</dependency>
+
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
@@ -63,9 +69,11 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ejb-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
+					<filterDeploymentDescriptor>true</filterDeploymentDescriptor>
 					<ejbVersion>3.1</ejbVersion>
 				</configuration>
 			</plugin>

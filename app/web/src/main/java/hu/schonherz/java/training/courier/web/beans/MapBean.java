@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -21,9 +22,9 @@ import org.apache.commons.lang3.StringUtils;
 import hu.schonherz.java.training.courier.entities.AddressStatus;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.entities.Payment;
-import hu.schonherz.java.training.courier.service.AddressService;
-import hu.schonherz.java.training.courier.service.CargoService;
-import hu.schonherz.java.training.courier.service.UserService;
+import hu.schonherz.java.training.courier.service.AddressServiceLocal;
+import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
@@ -33,15 +34,14 @@ import hu.schonherz.java.training.courier.service.vo.ItemVO;
 public class MapBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	@ManagedProperty("#{cargoService}")
-	private CargoService cargoService;
-
-	@ManagedProperty("#{userService}")
-	private UserService userService;
+	@EJB
+	CargoServiceLocal cargoService;
+	@EJB
+	UserServiceLocal userService;
 	@ManagedProperty(value = "#{userSessionBean}")
-	private UserSessionBean userSessionBean;
-	@ManagedProperty("#{addressService}")
-	private AddressService addressService;
+	UserSessionBean userSessionBean;
+	@EJB
+	AddressServiceLocal addressService;
 	private CargoVO selectedCargo;
 	private String addressList;
 	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
@@ -137,19 +137,19 @@ public class MapBean implements Serializable {
 
 	}
 
-	public CargoService getCargoService() {
+	public CargoServiceLocal getCargoService() {
 		return cargoService;
 	}
 
-	public void setCargoService(CargoService cargoService) {
+	public void setCargoService(CargoServiceLocal cargoService) {
 		this.cargoService = cargoService;
 	}
 
-	public AddressService getAddressService() {
+	public AddressServiceLocal getAddressService() {
 		return addressService;
 	}
 
-	public void setAddressService(AddressService addressService) {
+	public void setAddressService(AddressServiceLocal addressService) {
 		this.addressService = addressService;
 	}
 
@@ -187,11 +187,11 @@ public class MapBean implements Serializable {
 		this.userSessionBean = userSessionBean;
 	}
 
-	public UserService getUserService() {
+	public UserServiceLocal getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UserService userService) {
+	public void setUserService(UserServiceLocal userService) {
 		this.userService = userService;
 	}
 

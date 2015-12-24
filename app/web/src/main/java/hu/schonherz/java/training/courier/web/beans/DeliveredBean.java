@@ -5,12 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
-import hu.schonherz.java.training.courier.service.CargoService;
+import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
@@ -21,8 +22,8 @@ public class DeliveredBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<CargoVO> cargoes;
-	@ManagedProperty("#{cargoService}")
-	private CargoService cargoService;
+	@EJB
+	CargoServiceLocal cargoService;
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 	private Date currentDate;
@@ -64,11 +65,11 @@ public class DeliveredBean implements Serializable {
 		this.cargoes = cargoes;
 	}
 
-	public CargoService getCargoService() {
+	public CargoServiceLocal getCargoService() {
 		return cargoService;
 	}
 
-	public void setCargoService(CargoService cargoService) {
+	public void setCargoService(CargoServiceLocal cargoService) {
 		this.cargoService = cargoService;
 	}
 

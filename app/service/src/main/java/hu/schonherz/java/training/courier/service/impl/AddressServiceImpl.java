@@ -1,18 +1,28 @@
 package hu.schonherz.java.training.courier.service.impl;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.java.training.courier.dao.AddressDao;
-import hu.schonherz.java.training.courier.service.AddressService;
+import hu.schonherz.java.training.courier.service.AddressServiceLocal;
+import hu.schonherz.java.training.courier.service.AddressServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.AddressConverter;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 
-@Service("addressService")
-@Transactional(propagation = Propagation.REQUIRED)
-public class AddressServiceImpl implements AddressService {
+
+@Stateless(mappedName="AddressService")
+@Local(AddressServiceLocal.class)
+@Remote(AddressServiceRemote.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({ SpringBeanAutowiringInterceptor.class })
+public class AddressServiceImpl implements AddressServiceLocal,AddressServiceRemote {
 
 	@Autowired
 	AddressDao addressDao;

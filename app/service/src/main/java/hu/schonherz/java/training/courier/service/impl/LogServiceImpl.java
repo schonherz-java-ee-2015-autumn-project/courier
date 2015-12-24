@@ -2,20 +2,30 @@ package hu.schonherz.java.training.courier.service.impl;
 
 import java.util.List;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.java.training.courier.dao.LogDao;
 import hu.schonherz.java.training.courier.entities.Log;
-import hu.schonherz.java.training.courier.service.LogService;
+import hu.schonherz.java.training.courier.service.LogServiceLocal;
+import hu.schonherz.java.training.courier.service.LogServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.LogConverter;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 
-@Service("logService")
-@Transactional(propagation = Propagation.REQUIRED)
-public class LogServiceImpl implements LogService {
+
+@Stateless
+@Local(LogServiceLocal.class)
+@Remote(LogServiceRemote.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({ SpringBeanAutowiringInterceptor.class })
+public class LogServiceImpl implements LogServiceLocal, LogServiceRemote {
 
 	@Autowired
 	LogDao logDao;

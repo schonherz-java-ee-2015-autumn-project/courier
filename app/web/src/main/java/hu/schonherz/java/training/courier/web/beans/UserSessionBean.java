@@ -3,21 +3,21 @@ package hu.schonherz.java.training.courier.web.beans;
 import java.security.Principal;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import hu.schonherz.java.training.courier.service.UserService;
+import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @SessionScoped
 @ManagedBean(name = "userSessionBean")
 public class UserSessionBean {
 
-	@ManagedProperty(value = "#{userService}")
-	private UserService userService;
+	@EJB
+	UserServiceLocal userService;
 
 	private UserVO userVO;
 
@@ -45,11 +45,11 @@ public class UserSessionBean {
 
 	}
 
-	public UserService getUserService() {
+	public UserServiceLocal getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UserService userService) {
+	public void setUserService(UserServiceLocal userService) {
 		this.userService = userService;
 	}
 

@@ -2,20 +2,23 @@ package hu.schonherz.java.training.courier.web.beans;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.ejb.EJB;
+
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.session.SessionDestroyedEvent;
 import org.springframework.stereotype.Component;
 
-import hu.schonherz.java.training.courier.service.LogService;
+import hu.schonherz.java.training.courier.service.LogServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
 
 @Component
+@EJB(name = "hu.schonherz.service.LogServiceLocal", beanInterface = LogServiceLocal.class)
 public class SessionEndedListener implements ApplicationListener<SessionDestroyedEvent> {
-	@Autowired
-	private LogService logService;
+	
+	@EJB
+	LogServiceLocal logService;
 
 	@Override
 	public void onApplicationEvent(SessionDestroyedEvent event) {
