@@ -31,4 +31,11 @@
 		<wls:jndi-name>CargoService</wls:jndi-name>
 		<wls:local-jndi-name>CargoServiceLocal</wls:local-jndi-name>
 	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>SchedulerService</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>SchedulerService</wls:jndi-name>
+		<wls:local-jndi-name>SchedulerServiceLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
 </wls:weblogic-ejb-jar>

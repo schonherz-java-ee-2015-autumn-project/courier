@@ -4,4 +4,14 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
 	version="3.1">
 	<display-name>service</display-name>
+<!-- 	<enterprise-beans> -->
+<!-- 		<session> -->
+<!-- 			<ejb-name>SchedulerService</ejb-name> -->
+<!-- 			<home>hu.schonherz.java.training.courier.service.SchedulerServiceLocal</home> -->
+<!-- 			<remote>hu.schonherz.java.training.courier.service.SchedulerServiceRemote</remote> -->
+<!-- 			<ejb-class>hu.schonherz.java.training.courier.service.impl.SchedulerServiceImpl</ejb-class> -->
+<!-- 			<session-type>Stateless</session-type> -->
+<!-- 			<transaction-type>Container</transaction-type> -->
+<!-- 		</session> -->
+<!-- 	</enterprise-beans> -->
 </ejb-jar>

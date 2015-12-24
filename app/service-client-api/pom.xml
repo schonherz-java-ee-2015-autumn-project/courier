@@ -15,5 +15,10 @@
 			<artifactId>core</artifactId>
 			<version>${version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
