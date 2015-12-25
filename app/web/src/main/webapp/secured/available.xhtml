@@ -125,7 +125,7 @@
 														</h:outputText> HUF
 												</a></li>
 												<li class="list-group-item"><b>#{out.payment}</b> <a
-													class="pull-right">#{address.payment}</a></li>
+													class="pull-right">#{out['paymentStatus.'.concat(address.payment)]}</a></li>
 											</ul>
 											<p:dataTable id="table" var="item" value="#{address.items}"
 												styleClass="datatable">
