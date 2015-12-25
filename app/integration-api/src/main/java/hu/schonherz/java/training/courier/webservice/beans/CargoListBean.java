@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
-import hu.schonherz.java.training.courier.service.CargoService;
+import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.webservice.CourierWebService;
 import hu.schonherz.java.training.courier.webservice.CourierWebServiceImplService;
@@ -61,8 +61,8 @@ public class CargoListBean implements Serializable {
 		this.localPart = localPart;
 	}
 
-	@Autowired
-	CargoService cargoService;
+	@EJB
+	CargoServiceLocal cargoService;
 
 	@PostConstruct
 	public void init() {

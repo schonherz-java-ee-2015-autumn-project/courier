@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 
-import hu.schonherz.java.training.courier.service.UserService;
+import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 import hu.schonherz.java.training.courier.webservice.CourierWebService;
 import hu.schonherz.java.training.courier.webservice.CourierWebServiceImplService;
@@ -31,8 +31,8 @@ public class UserListBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{userService}")
-	private UserService userService;
+	@EJB
+	UserServiceLocal userService;
 
 	private Properties wsdlProperties;
 
@@ -178,7 +178,7 @@ public class UserListBean implements Serializable {
 		setUserListFromWS(serviceImpl.getUsers());
 		writeUsersToConsolefromWS();
 		try {
-			setUserListFromDB(getUserService().findAll());
+			setUserListFromDB(userService.findAll());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -206,12 +206,5 @@ public class UserListBean implements Serializable {
 		setUserList(getUserListFromWS());
 	}
 
-	public UserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
 
 }
