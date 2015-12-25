@@ -3,19 +3,12 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:ns0="http://webservice.courier.training.java.schonherz.hu/"
 	targetNamespace="http://webservice.courier.training.java.schonherz.hu/">
-	<xsd:complexType name="cargoVO">
+	<xsd:complexType name="getUsersList" />
+	<xsd:complexType name="setCargoStatusResponse">
 		<xsd:sequence>
-			<xsd:element name="addresses" type="ns0:addressVO"
-				minOccurs="0" maxOccurs="unbounded" nillable="true" />
-			<xsd:element name="id" type="xsd:long" minOccurs="0" />
-			<xsd:element name="restaurant" type="ns0:restaurantVO"
-				minOccurs="0" />
-			<xsd:element name="status" type="xsd:long" minOccurs="0" />
-			<xsd:element name="totalValue" type="xsd:double" />
-			<xsd:element name="user" type="ns0:userVO" minOccurs="0" />
+			<xsd:element name="errorCode" type="xsd:long" minOccurs="0" />
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="getUsersList" />
 	<xsd:complexType name="restaurantVO">
 		<xsd:sequence>
 			<xsd:element name="address" type="xsd:string" minOccurs="0" />
@@ -24,19 +17,86 @@
 			<xsd:element name="phone" type="xsd:string" minOccurs="0" />
 		</xsd:sequence>
 	</xsd:complexType>
+	<xsd:complexType name="getFreeCargosList" />
+	<xsd:complexType name="getFreeCargosListResponse">
+		<xsd:sequence>
+			<xsd:element name="freeCargosListResponse" type="ns0:cargoVO"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="baseVO">
+		<xsd:sequence>
+			<xsd:element name="moddate" type="xsd:dateTime"
+				minOccurs="0" />
+			<xsd:element name="regdate" type="xsd:dateTime"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="addressVO">
+		<xsd:sequence>
+			<xsd:element name="address" type="xsd:string" minOccurs="0" />
+			<xsd:element name="deadline" type="xsd:dateTime"
+				minOccurs="0" />
+			<xsd:element name="id" type="xsd:long" minOccurs="0" />
+			<xsd:element name="items" type="ns0:itemVO" minOccurs="0"
+				maxOccurs="unbounded" nillable="true" />
+			<xsd:element name="payment" type="ns0:payment" minOccurs="0" />
+			<xsd:element name="status" type="ns0:addressStatus"
+				minOccurs="0" />
+			<xsd:element name="totalValue" type="xsd:double" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="userVO">
+		<xsd:complexContent>
+			<xsd:extension base="ns0:baseVO">
+				<xsd:sequence>
+					<xsd:element name="fullname" type="xsd:string"
+						minOccurs="0" />
+					<xsd:element name="globalid" type="xsd:long" minOccurs="0" />
+					<xsd:element name="id" type="xsd:long" minOccurs="0" />
+					<xsd:element name="password" type="xsd:string"
+						minOccurs="0" />
+					<xsd:element name="roles" type="ns0:roleVO" minOccurs="0"
+						maxOccurs="unbounded" nillable="true" />
+					<xsd:element name="transporting" type="xsd:long"
+						minOccurs="0" />
+					<xsd:element name="username" type="xsd:string"
+						minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="cargoVO">
+		<xsd:complexContent>
+			<xsd:extension base="ns0:baseVO">
+				<xsd:sequence>
+					<xsd:element name="addresses" type="ns0:addressVO"
+						minOccurs="0" maxOccurs="unbounded" nillable="true" />
+					<xsd:element name="globalid" type="xsd:long" minOccurs="0" />
+					<xsd:element name="id" type="xsd:long" minOccurs="0" />
+					<xsd:element name="restaurant" type="ns0:restaurantVO"
+						minOccurs="0" />
+					<xsd:element name="status" type="ns0:cargoStatus"
+						minOccurs="0" />
+					<xsd:element name="totalValue" type="xsd:double" />
+					<xsd:element name="user" type="ns0:userVO" minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="itemVO">
 		<xsd:sequence>
+			<xsd:element name="globalid" type="xsd:long" minOccurs="0" />
 			<xsd:element name="id" type="xsd:long" minOccurs="0" />
 			<xsd:element name="name" type="xsd:string" minOccurs="0" />
 			<xsd:element name="price" type="xsd:double" />
 			<xsd:element name="quantity" type="xsd:long" minOccurs="0" />
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="getFreeCargosList" />
-	<xsd:complexType name="getFreeCargosListResponse">
+	<xsd:complexType name="setCargoStatus">
 		<xsd:sequence>
-			<xsd:element name="freeCargosListResponse" type="ns0:cargoVO"
-				minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="cargoStatus" type="ns0:cargoStatus"
+				minOccurs="0" />
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="roleVO">
@@ -51,37 +111,32 @@
 				minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="addressVO">
-		<xsd:sequence>
-			<xsd:element name="address" type="xsd:string" minOccurs="0" />
-			<xsd:element name="deadline" type="xsd:dateTime"
-				minOccurs="0" />
-			<xsd:element name="id" type="xsd:long" minOccurs="0" />
-			<xsd:element name="items" type="ns0:itemVO" minOccurs="0"
-				maxOccurs="unbounded" nillable="true" />
-			<xsd:element name="payment" type="xsd:long" minOccurs="0" />
-			<xsd:element name="status" type="xsd:long" minOccurs="0" />
-			<xsd:element name="totalValue" type="xsd:double" />
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="userVO">
-		<xsd:sequence>
-			<xsd:element name="fullname" type="xsd:string" minOccurs="0" />
-			<xsd:element name="id" type="xsd:long" minOccurs="0" />
-			<xsd:element name="moddate" type="xsd:dateTime"
-				minOccurs="0" />
-			<xsd:element name="password" type="xsd:string" minOccurs="0" />
-			<xsd:element name="regdate" type="xsd:dateTime"
-				minOccurs="0" />
-			<xsd:element name="roles" type="ns0:roleVO" minOccurs="0"
-				maxOccurs="unbounded" nillable="true" />
-			<xsd:element name="transporting" type="xsd:long"
-				minOccurs="0" />
-			<xsd:element name="username" type="xsd:string" minOccurs="0" />
-		</xsd:sequence>
-	</xsd:complexType>
 	<xsd:element name="getUsersList" type="ns0:getUsersList" />
+	<xsd:element name="setCargoStatusResponse" type="ns0:setCargoStatusResponse" />
+	<xsd:element name="setCargoStatus" type="ns0:setCargoStatus" />
 	<xsd:element name="getFreeCargosList" type="ns0:getFreeCargosList" />
 	<xsd:element name="getFreeCargosListResponse" type="ns0:getFreeCargosListResponse" />
 	<xsd:element name="getUsersListResponse" type="ns0:getUsersListResponse" />
+	<xsd:simpleType name="cargoStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Free" />
+			<xsd:enumeration value="Reserved" />
+			<xsd:enumeration value="Received" />
+			<xsd:enumeration value="Delivered" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="payment">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Card" />
+			<xsd:enumeration value="Cash" />
+			<xsd:enumeration value="Voucher" />
+			<xsd:enumeration value="SZEP" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="addressStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Delivered" />
+			<xsd:enumeration value="Failed" />
+		</xsd:restriction>
+	</xsd:simpleType>
 </xsd:schema>

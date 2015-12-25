@@ -11,4 +11,8 @@ public interface UserServiceRemote {
 	public List<UserVO> findAll() throws Exception;
 
 	UserVO save(UserVO userVO) throws Exception;
+	
+	UserVO saveUserById(UserVO userVO) throws Exception;
+	
+	Integer updateUserByGlobalId(UserVO userVO) throws Exception;
 }

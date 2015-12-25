@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -55,5 +56,10 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 		userVO = UserConverter.toVo(userDao.findOne(id));
 		// System.out.println("Saved user:"+userVO.toString());
 		return userVO;
+	}
+
+	@Override
+	public Integer updateUserByGlobalId(UserVO userVO) throws Exception {
+		return userDao.updateUserByGlobalId(userVO.getUsername(), userVO.getFullname(), userVO.getPassword(),new Date(),userVO.getGlobalid());
 	}
 }

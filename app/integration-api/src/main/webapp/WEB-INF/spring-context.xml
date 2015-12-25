@@ -12,15 +12,7 @@
 
 
 	<context:component-scan base-package="hu.schonherz.java.training.courier.integration-api" />
-	
-	<import resource="classpath:spring-core.xml" />
-	<import resource="classpath:spring-service.xml" />
-	<!-- <jee:local-slsb id="userService" jndi-name="ejb.UserServiceLocal" -->
-	<!-- business-interface="hu.neuron.java.service.UserServiceLocal" /> -->
-
-
-
-
-
+	<jee:local-slsb id="UserService" jndi-name="hu.schonherz.service.UserServiceLocal"
+		business-interface="hu.schonherz.java.training.courier.service.UserServiceLocal" />
 
 </beans>

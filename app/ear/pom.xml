@@ -48,6 +48,11 @@
 							<artifactId>web</artifactId>
 							<contextRoot>courier</contextRoot>
 						</webModule>
+<!-- 						<webModule> -->
+<!-- 							<groupId>hu.schonherz.java.training.courier</groupId> -->
+<!-- 							<artifactId>integration-api</artifactId> -->
+<!-- 							<contextRoot>integration</contextRoot> -->
+<!-- 						</webModule> -->
 						<ejbModule>
 							<groupId>hu.schonherz.java.training.courier</groupId>
 							<artifactId>service</artifactId>

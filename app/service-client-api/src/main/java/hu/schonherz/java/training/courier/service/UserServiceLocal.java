@@ -13,4 +13,6 @@ public interface UserServiceLocal {
 	UserVO save(UserVO userVO) throws Exception;
 	
 	UserVO saveUserById(UserVO userVO) throws Exception;
+	
+	Integer updateUserByGlobalId(UserVO userVO) throws Exception;
 }

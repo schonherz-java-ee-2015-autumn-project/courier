@@ -33,7 +33,7 @@ public class UserListBean implements Serializable {
 
 	@EJB
 	UserServiceLocal userService;
-
+	
 	private Properties wsdlProperties;
 
 	public String getUrl() {
@@ -119,12 +119,13 @@ public class UserListBean implements Serializable {
 		Integer updatedUsers = 0;
 		for (UserVO dbUser : userListFromDB) {
 			for (UserVO wsUser : userListFromWS) {
-				if (dbUser.getId() == wsUser.getId() && wsUser.getModdate().after(dbUser.getModdate())) {
+				if (dbUser.getGlobalid() == wsUser.getGlobalid() && wsUser.getModdate().after(dbUser.getModdate())) {
 					try {
-						userService.save(wsUser);
+						userService.updateUserByGlobalId(wsUser);
 						updatedUsers++;
 					} catch (Exception e) {
-						logger.error("Error:" + e.getMessage());
+						System.out.println("Error whilw updating users:"+e.getMessage());
+						logger.info("Error:" + e.getMessage());
 					}
 				}
 			}
@@ -141,15 +142,16 @@ public class UserListBean implements Serializable {
 		UserVO newUser;
 		List<Long> existingIds = new ArrayList<>();
 		for (UserVO dbUser : userListFromDB) {
-			existingIds.add(dbUser.getId());
+			existingIds.add(dbUser.getGlobalid());
 		}
 
 		for (UserVO wsUser : userListFromWS) {
-			if (!existingIds.contains((Long) wsUser.getId())) {
+			if (!existingIds.contains((Long) wsUser.getGlobalid())) {
 				try {
-					newUser = userService.saveUserById(wsUser);
+					newUser = userService.save(wsUser);
 					newUsers++;
 				} catch (Exception e) {
+					System.out.println("ERROR:"+e.getMessage());
 					logger.error("Error:" + e.getMessage());
 				}
 			}
@@ -177,13 +179,14 @@ public class UserListBean implements Serializable {
 		System.out.println("Getting users list from WebService...");
 		setUserListFromWS(serviceImpl.getUsers());
 		writeUsersToConsolefromWS();
+		
 		try {
 			setUserListFromDB(userService.findAll());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		writeUsersToConsolefromDB();
-		updateUsers();
+		//updateUsers();
 		saveNewUsers();
 	}
 
