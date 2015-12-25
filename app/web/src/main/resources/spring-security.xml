@@ -29,6 +29,7 @@
 				expired-url="/expired-session" max-sessions="1"
 				error-if-maximum-exceeded="true" />
 		</security:session-management>
+
 	</security:http>
 
 	<security:authentication-manager>

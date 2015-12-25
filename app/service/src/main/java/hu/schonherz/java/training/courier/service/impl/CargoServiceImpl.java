@@ -54,4 +54,10 @@ public class CargoServiceImpl implements CargoServiceLocal,CargoServiceRemote {
 	public List<CargoVO> findAllByStatus(CargoStatus status) throws Exception {
 		return CargoConverter.toVo(cargoDao.findAllByStatus(status));
 	}
+
+	@Override
+	public void updateCargoStatusById(Long id, String status) throws Exception {
+		cargoDao.updateCargoStatusById(id, status);
+		
+	}
 }
