@@ -18,15 +18,12 @@
 			username-parameter="j_username" password-parameter="j_password"
 			authentication-success-handler-ref="myAuthenticationSuccessHandler" />
 		<security:logout logout-url="/logout"
-			invalidate-session="true"
-			delete-cookies="JSESSIONID" />
+			invalidate-session="true" delete-cookies="JSESSIONID" />
 		<security:remember-me key="key"
-			remember-me-parameter="remember-me" token-validity-seconds="10" />
-		<security:session-management
-			invalid-session-url="/public/login.xhtml?error=0"
-			session-fixation-protection="migrateSession">
+			remember-me-parameter="remember-me" token-validity-seconds="28800" />
+		<security:session-management>
 			<security:concurrency-control
-				expired-url="/expired-session" max-sessions="1"
+				expired-url="" max-sessions="1"
 				error-if-maximum-exceeded="true" />
 		</security:session-management>
 

@@ -102,56 +102,53 @@
 							<div class="box-body">
 
 								<p:dataGrid var="address" value="#{cargo.addresses}" columns="1">
+									<div class="box box-primary box-solid collapsed-box">
+										<div class="box-header with-border">
+											<h5>#{out.address} #{address.address}</h5>
+											<h6>
+												#{out.deadline}
+												<h:outputText value="#{address.deadline}">
+													<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+												</h:outputText>
+											</h6>
+											<div class="box-tools pull-right">
+												<button class="btn btn-box-tool" data-widget="collapse">
+													<i class="fa fa-plus"></i>
+												</button>
+											</div>
+										</div>
+										<div class="box-body">
+											<ul class="list-group list-group-unbordered">
 
-												<div class="box box-primary box-solid collapsed-box">
-													<div class="box-header with-border">
-														<h5>#{out.address} #{address.address}</h5>
-														<h6>
-															#{out.deadline}
-															<h:outputText value="#{address.deadline}">
-																<f:convertDateTime type="date"
-																	pattern="yyyy-MM-dd HH:mm" />
-															</h:outputText>
-														</h6>
-														<div class="box-tools pull-right">
-															<button class="btn btn-box-tool" data-widget="collapse">
-																<i class="fa fa-plus"></i>
-															</button>
-														</div>
-													</div>
-													<div class="box-body">
-														<ul class="list-group list-group-unbordered">
-
-															<li class="list-group-item"><b>#{out.addressValue}</b>
-																<a class="pull-right"> <h:outputText
-																		value="#{address.totalValue}">
-																		<f:convertNumber minFractionDigits="2" />
-																	</h:outputText> HUF
-															</a></li>
-															<li class="list-group-item"><b>#{out.payment}</b> <a class="pull-right">#{address.payment}
-															</a>
-															</li>
-														</ul>
-														<p:dataTable id="table" var="item"
-															value="#{address.items}" styleClass="datatable">
-															<f:facet name="header">
+												<li class="list-group-item"><b>#{out.addressValue}</b>
+													<a class="pull-right"> <h:outputText
+															value="#{address.totalValue}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
+												</a></li>
+												<li class="list-group-item"><b>#{out.payment}</b> <a
+													class="pull-right">#{out['paymentStatus.'.concat(address.payment)]}</a></li>
+											</ul>
+											<p:dataTable id="table" var="item" value="#{address.items}"
+												styleClass="datatable">
+												<f:facet name="header">
       												#{out.items}
    												</f:facet>
 												<p:column headerText="#{out.item}">
-																<h:outputText value="#{item.name}" />
-															</p:column>
-															<p:column headerText="#{out.price}">
-																<h:outputText value="#{item.price}">
-																	<f:convertNumber minFractionDigits="2" />
-																</h:outputText> HUF
+													<h:outputText value="#{item.name}" />
+												</p:column>
+												<p:column headerText="#{out.price}">
+													<h:outputText value="#{item.price}">
+														<f:convertNumber minFractionDigits="2" />
+													</h:outputText> HUF
 													</p:column>
-															<p:column headerText="#{out.quantity}">
-																<h:outputText value="#{item.quantity}" />
-															</p:column>
+												<p:column headerText="#{out.quantity}">
+													<h:outputText value="#{item.quantity}" />
+												</p:column>
 											</p:dataTable>
 
-													</div>
-												</div>
+										</div>
+									</div>
 								</p:dataGrid>
 
 							</div>
