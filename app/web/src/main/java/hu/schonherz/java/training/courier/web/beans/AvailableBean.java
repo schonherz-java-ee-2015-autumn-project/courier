@@ -90,9 +90,9 @@ public class AvailableBean implements Serializable {
 		cargo.setStatus(CargoStatus.getValue(2L));
 
 		getCargoService().save(cargo);
-		userVO.setTransporting(1L);
+		userVO.setTransporting(cargo.getId());
 		getUserService().save(userVO);
-
+		getUserSessionBean().getUserVO().setTransporting(cargo.getId());
 		showOnMap(cargo.getId());
 
 	}

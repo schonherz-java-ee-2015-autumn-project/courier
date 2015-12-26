@@ -57,43 +57,51 @@ public class MapBean implements Serializable {
 	@PostConstruct
 	public void init() {
 
-		Long id = (Long) getFacesExternalContext().getSessionMap().get("cargoId");
+		Long id = getUserSessionBean().getUserVO().getTransporting();
 
-		if (id != null) {
-			try {
-				selectedCargo = getCargoService().findCargoById(id);
-				double cargoPrice = 0;
-				double addressPrice = 0;
-				addresses = new ArrayList<>();
-				List<AddressVO> allAddress = selectedCargo.getAddresses();
-				for (AddressVO addressVO : allAddress) {
-					if (addressVO.getStatus() == null) {
-						addresses.add(addressVO);
-					}
+		if (id == null || id == 0) {
+			id = (Long) getFacesExternalContext().getSessionMap().get("cargoId");
+			if (id == null)
+				try {
+					getFacesExternalContext().redirect("../secured/available.xhtml");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+		}
 
-				for (int j = 0; j < addresses.size(); j++) {
-					addressPrice = 0;
-					List<ItemVO> items = addresses.get(j).getItems();
-					for (int k = 0; k < items.size(); k++)
-						addressPrice += items.get(k).getPrice() * items.get(k).getQuantity();
-					addresses.get(j).setTotalValue(addressPrice);
-					cargoPrice += addressPrice;
+		loadCargo(id);
+
+	}
+
+	public void loadCargo(Long id) {
+		try {
+			selectedCargo = getCargoService().findCargoById(id);
+			double cargoPrice = 0;
+			double addressPrice = 0;
+			addresses = new ArrayList<>();
+			List<AddressVO> allAddress = selectedCargo.getAddresses();
+			for (AddressVO addressVO : allAddress) {
+				if (addressVO.getStatus() == null) {
+					addresses.add(addressVO);
 				}
-				selectedCargo.setTotalValue(cargoPrice);
-				addressList = selectedCargo.getRestaurant().getAddress();
+			}
 
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			for (int j = 0; j < addresses.size(); j++) {
+				addressPrice = 0;
+				List<ItemVO> items = addresses.get(j).getItems();
+				for (int k = 0; k < items.size(); k++)
+					addressPrice += items.get(k).getPrice() * items.get(k).getQuantity();
+				addresses.get(j).setTotalValue(addressPrice);
+				cargoPrice += addressPrice;
 			}
-		} else
-			try {
-				getFacesExternalContext().redirect("../secured/available.xhtml");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			selectedCargo.setTotalValue(cargoPrice);
+			addressList = selectedCargo.getRestaurant().getAddress();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void cargoStatusChanged(Long value) throws Exception {
