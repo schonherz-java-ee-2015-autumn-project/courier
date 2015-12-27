@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -66,6 +67,7 @@ public class CargoListBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		System.out.println("CargoListBean: init");
 		wsdlProperties = new Properties();
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		try {
@@ -79,6 +81,8 @@ public class CargoListBean implements Serializable {
 	}
 
 	private List<CargoVO> cargoList;
+	private List<CargoVO> cargoListFromDB;
+	private List<CargoVO> cargoListFromWS;
 
 	public List<CargoVO> getCargoList() {
 		return cargoList;
@@ -88,17 +92,47 @@ public class CargoListBean implements Serializable {
 		this.cargoList = cargoList;
 	}
 
-	public void updateCargos(CargoStatus status) {
+	public List<CargoVO> getCargoListFromDB() {
+		return cargoListFromDB;
+	}
 
-		try {
-			List<CargoVO> cargosInDb = cargoService.findAllByStatus(status);
+	public void setCargoListFromDB(List<CargoVO> cargoListFromDB) {
+		this.cargoListFromDB = cargoListFromDB;
+	}
 
-		} catch (Exception e) {
-			logger.info(e.getMessage());
+	public List<CargoVO> getCargoListFromWS() {
+		return cargoListFromWS;
+	}
+
+	public void setCargoListFromWS(List<CargoVO> cargoListFromWS) {
+		this.cargoListFromWS = cargoListFromWS;
+	}
+
+	public void updateCargos() {
+		Integer newCargos = 0;
+		CargoVO newCargo;
+		List<Long> existingIds = new ArrayList<>();
+		for(CargoVO dbCargo : cargoListFromDB) {
+			existingIds.add(dbCargo.getGlobalid());
 		}
+		
+		for(CargoVO wsCargo : cargoListFromWS) {
+			
+			if(!existingIds.contains((Long) wsCargo.getGlobalid())) {
+				try {
+					newCargo = cargoService.save(wsCargo);
+					newCargos++;
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("Error:" + e.getMessage());
+				}
+			}
+		}
+		System.out.println("Update Success! New Cargos: " + newCargos);
 	}
 
 	public void getCargos() {
+		System.out.println("CargoListBean: getCargos");
 		URL wsdl = null;
 		try {
 			wsdl = new URL(url);
@@ -110,7 +144,19 @@ public class CargoListBean implements Serializable {
 		CourierWebServiceImplService courierWebService = new CourierWebServiceImplService(wsdl, qName);
 		CourierWebService serviceImpl = courierWebService.getCourierWebServiceImplPort();
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
-		//setCargoList(serviceImpl.getFreeCargos());
+		setCargoListFromWS(serviceImpl.getFreeCargos());
+		try {
+			setCargoListFromDB(cargoService.findAllByStatus(CargoStatus.getValue(1L)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		updateCargos();
+		try {
+			setCargoListFromDB(cargoService.findAllByStatus(CargoStatus.getValue(1L)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		setCargoList(getCargoListFromDB());
 	}
 
 }
