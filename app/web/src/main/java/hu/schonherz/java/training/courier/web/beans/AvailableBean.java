@@ -83,25 +83,16 @@ public class AvailableBean implements Serializable {
 		getFacesExternalContext().redirect("../secured/map.xhtml");
 	}
 
-	public void pickUpCargo(CargoVO cargo) {
+	public void pickUpCargo(CargoVO cargo) throws Exception {
 
 		cargo.setUser(userVO);
 		cargo.setStatus(CargoStatus.getValue(2L));
-		try {
-			getCargoService().save(cargo);
-			userVO.setTransporting(1L);
-			getUserService().save(userVO);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		try {
-			getFacesExternalContext().redirect("../secured/inprogress.xhtml");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		getCargoService().save(cargo);
+		userVO.setTransporting(cargo.getId());
+		getUserService().save(userVO);
+		getUserSessionBean().getUserVO().setTransporting(cargo.getId());
+		showOnMap(cargo.getId());
 
 	}
 

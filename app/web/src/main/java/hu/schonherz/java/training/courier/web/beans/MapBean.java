@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.web.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -58,13 +59,36 @@ public class MapBean implements Serializable {
 	@PostConstruct
 	public void init() {
 
-		Long id = (Long) getFacesExternalContext().getSessionMap().get("cargoId");
+		Long id = getUserSessionBean().getUserVO().getTransporting();
+
+		if (id == null || id == 0) {
+			id = (Long) getFacesExternalContext().getSessionMap().get("cargoId");
+			if (id == null)
+				try {
+					getFacesExternalContext().redirect("../secured/available.xhtml");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+
+		loadCargo(id);
+
+	}
+
+	public void loadCargo(Long id) {
 		try {
 			selectedCargo = getCargoService().findCargoById(id);
 			double cargoPrice = 0;
 			double addressPrice = 0;
+			addresses = new ArrayList<>();
+			List<AddressVO> allAddress = selectedCargo.getAddresses();
+			for (AddressVO addressVO : allAddress) {
+				if (addressVO.getStatus() == null) {
+					addresses.add(addressVO);
+				}
+			}
 
-			addresses = selectedCargo.getAddresses();
 			for (int j = 0; j < addresses.size(); j++) {
 				addressPrice = 0;
 				List<ItemVO> items = addresses.get(j).getItems();
@@ -74,43 +98,37 @@ public class MapBean implements Serializable {
 				cargoPrice += addressPrice;
 			}
 			selectedCargo.setTotalValue(cargoPrice);
+			addressList = selectedCargo.getRestaurant().getAddress();
 
-		} catch (
-
-		Exception e)
-
-		{
-
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		addressList = selectedCargo.getRestaurant().getAddress();
-
 	}
 
 	public void cargoStatusChanged(Long value) throws Exception {
 		CargoStatus status = CargoStatus.getValue(value);
 		selectedCargo.setStatus(status);
 		getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString());
-		updateRoute(0L);
+		updateRoute();
 		System.out.println(addressList);
 
 		if (status.equals(CargoStatus.getValue(4L))) {
 			getUserSessionBean().getUserVO().setTransporting(0L);
 			getUserService().save(getUserSessionBean().getUserVO());
+			getFacesExternalContext().getSessionMap().remove("cargoId");
 			getFacesExternalContext().redirect("../secured/available.xhtml");
 		}
 
 	}
 
-	public void updateRoute(Long id) {
+	public void updateRoute() {
 
 		List<String> stringAddress = new ArrayList<String>();
 
 		for (int j = 0; j < addresses.size(); j++) {
 
-			if (addresses.get(j).getId() != id) {
+			if (addresses.get(j).getStatus() == null) {
 				stringAddress.add(addresses.get(j).getAddress());
 
 			}
@@ -130,7 +148,7 @@ public class MapBean implements Serializable {
 		addressVO.setStatus(addressStatus);
 		getAddressService().save(addressVO);
 		addresses.remove(addressVO);
-		updateRoute(addressId);
+		updateRoute();
 
 	}
 
