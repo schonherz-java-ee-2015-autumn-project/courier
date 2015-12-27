@@ -16,6 +16,13 @@ public class UserVO extends BaseVO implements Serializable {
 	private List<RoleVO> roles;
 	private Long globalid;
 
+	@Override
+	public String toString() {
+		return "UserVO [id=" + id + ", fullname=" + fullname + ", username=" + username + ", password=" + password
+				+ ", transporting=" + transporting + ", roles=" + roles + ", globalid=" + globalid + ", getModdate()="
+				+ getModdate() + "]";
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -54,13 +61,6 @@ public class UserVO extends BaseVO implements Serializable {
 
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
-	}
-
-	@Override
-	public String toString() {
-		return "UserVO [id=" + id + ", fullname=" + fullname + ", username=" + username + ", password=" + password
-				+ ", transporting=" + transporting + ", roles=" + roles + "]";
-
 	}
 
 	public Long getTransporting() {

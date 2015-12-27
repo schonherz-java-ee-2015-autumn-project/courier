@@ -39,6 +39,12 @@
 			<artifactId>core</artifactId>
 			<version>${version}</version>
 		</dependency>
+<!-- 		felvesszük függőségnek a wsdl-ből már kigenerált modult -->
+		<dependency>
+			<groupId>hu.schonherz.java.training.courier</groupId>
+			<artifactId>integration-service-client</artifactId>
+			<version>${version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
@@ -65,6 +71,9 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
+
+
+
 	</dependencies>
 	<build>
 		<plugins>

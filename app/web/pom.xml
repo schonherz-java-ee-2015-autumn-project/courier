@@ -25,6 +25,7 @@
 			<artifactId>service-client-api</artifactId>
 			<version>${version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -34,7 +35,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>javax</groupId>
@@ -56,7 +56,6 @@
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>humanity</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -109,11 +108,11 @@
 			<artifactId>spring-security-web</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -122,6 +121,5 @@
 	</dependencies>
 	<build>
 		<finalName>WebApp</finalName>
-
 	</build>
 </project>

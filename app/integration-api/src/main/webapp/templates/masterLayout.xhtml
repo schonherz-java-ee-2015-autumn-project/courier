@@ -108,11 +108,6 @@
 							class="fa fa-sign-out"></i> <span>#{out.logout}</span>
 					</a></li>
 				</sec:authorize>
-				<sec:authorize ifNotGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
-					<li><a href="#{request.contextPath}/public/login.xhtml"> <i
-							class="fa fa-sign-in"></i> <span>#{out.login}</span>
-					</a></li>
-				</sec:authorize>
 			</ul>
 			</section> <!-- /.sidebar --> </aside>
 

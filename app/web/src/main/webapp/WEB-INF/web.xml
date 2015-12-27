@@ -75,23 +75,37 @@
  		<local>hu.schonherz.java.training.courier.service.LogServiceLocal</local>
  	</ejb-local-ref>
  	
- 	<servlet>
- 		<servlet-name>QuartzInitializer</servlet-name>
- 		<servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
- 		<load-on-startup>1</load-on-startup>
- 	</servlet>
  	
  	<servlet>
- 		<servlet-name>QuartzServlet</servlet-name>
- 		<servlet-class>hu.schonherz.java.training.courier.web.scheduler.SchedulerServlet</servlet-class>
- 		<init-param><param-name>cronExpr</param-name><param-value>0 0 8 * * ?</param-value></init-param>
- 		<load-on-startup>2</load-on-startup>
- 	</servlet>
- 	
- 	<ejb-ref>
- 		<ejb-ref-name>ejb/SchedulerService</ejb-ref-name>
- 		<ejb-ref-type>Session</ejb-ref-type>
- 		<home>hu.schonherz.java.training.courier.service.SchedulerServiceLocal</home>
- 		<remote>hu.schonherz.java.training.courier.service.SchedulerServiceRemote</remote>
- 	</ejb-ref>
+    <servlet-name>QuartzInitializer</servlet-name>
+    <servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>QuartzServlet</servlet-name>
+    <servlet-class>hu.schonherz.java.training.courier.web.scheduler.SchedulerServlet</servlet-class>
+    <init-param>
+      <param-name>getUsersFrequency</param-name>
+      <param-value>0 0 8 * * ?</param-value>
+    </init-param>
+    <init-param>
+      <param-name>getUsersMethodName</param-name>
+      <param-value>getUsersViaWebService</param-value>
+    </init-param>
+    <init-param>
+      <param-name>getFreeCargosFrequency</param-name>
+      <param-value>0 0/5 0 * * ?</param-value>
+    </init-param>
+    <init-param>
+      <param-name>getFreeCargosMethodName</param-name>
+      <param-value>getFreeCargosViaWebService</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <ejb-ref>
+    <ejb-ref-name>ejb/SchedulerService</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <home>hu.schonherz.java.training.courier.service.SchedulerServiceLocal</home>
+    <remote>hu.schonherz.java.training.courier.service.SchedulerServiceRemote</remote>
+  </ejb-ref>
 </web-app>

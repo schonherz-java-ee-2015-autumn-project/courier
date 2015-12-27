@@ -4,6 +4,6 @@ import javax.ejb.Remote;
 
 @Remote
 public interface QuartzManagerRemote {
-	public void initialize(String cronExpr);
+	public void initialize(String cronExpr,String methodName);
     public void shutdown();
 }

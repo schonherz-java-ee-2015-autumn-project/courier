@@ -38,4 +38,11 @@
 		<wls:jndi-name>SchedulerService</wls:jndi-name>
 		<wls:local-jndi-name>SchedulerServiceLocal</wls:local-jndi-name>
 	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>WebServiceClient</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>WebServiceClient</wls:jndi-name>
+		<wls:local-jndi-name>WebServiceClientLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
 </wls:weblogic-ejb-jar>

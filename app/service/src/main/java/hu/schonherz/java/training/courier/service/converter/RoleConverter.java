@@ -42,4 +42,21 @@ public class RoleConverter {
 		}
 		return rv;
 	}
+	
+	public static List<RoleVO> toVofromWS(List<hu.schonherz.java.training.courier.webservice.RoleVO> roles)  {
+		List<RoleVO> localRoles = new ArrayList<>();
+		for (hu.schonherz.java.training.courier.webservice.RoleVO roleVO : roles) {
+			localRoles.add(toVo(roleVO));
+		}
+		return localRoles;
+		
+	}
+	public static RoleVO toVo(hu.schonherz.java.training.courier.webservice.RoleVO roleVO) {
+		RoleVO localRoleVO = new RoleVO();
+		localRoleVO.setId(roleVO.getId());
+		localRoleVO.setName(roleVO.getName());
+		
+		return null;
+		
+	}
 }
