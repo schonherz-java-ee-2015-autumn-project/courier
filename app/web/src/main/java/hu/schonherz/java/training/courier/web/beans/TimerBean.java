@@ -1,6 +1,7 @@
 package hu.schonherz.java.training.courier.web.beans;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -41,18 +42,25 @@ public class TimerBean {
 
 	@PostConstruct
 	public void init() {
-		Calendar now = Calendar.getInstance();
-		now.set(Calendar.HOUR, 0);
-		now.set(Calendar.MINUTE, 0);
-		now.set(Calendar.SECOND, 0);
+
 		try {
-			logs = getLogService().getLogsFrom(now.getTime());
+			logs = getLogService().getLogsFrom(getMidnight());
 			getLoginDurationFromLog();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+
+	public Date getMidnight() {
+
+		Calendar now = Calendar.getInstance();
+		now.set(Calendar.HOUR, 0);
+		now.set(Calendar.MINUTE, 0);
+		now.set(Calendar.SECOND, 0);
+
+		return now.getTime();
 	}
 
 	public void getLoginDurationFromLog() {
