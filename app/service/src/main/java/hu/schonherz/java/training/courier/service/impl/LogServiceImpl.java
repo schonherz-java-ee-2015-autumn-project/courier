@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -18,7 +19,6 @@ import hu.schonherz.java.training.courier.service.LogServiceLocal;
 import hu.schonherz.java.training.courier.service.LogServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.LogConverter;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
-
 
 @Stateless
 @Local(LogServiceLocal.class)
@@ -39,5 +39,10 @@ public class LogServiceImpl implements LogServiceLocal, LogServiceRemote {
 	@Override
 	public List<LogVO> findByUserId(Long id) throws Exception {
 		return LogConverter.toVo(logDao.findByUserId(id));
+	}
+
+	@Override
+	public List<LogVO> getLogsFrom(Date date) throws Exception {
+		return LogConverter.toVo(logDao.getLogsFrom(date));
 	}
 }
