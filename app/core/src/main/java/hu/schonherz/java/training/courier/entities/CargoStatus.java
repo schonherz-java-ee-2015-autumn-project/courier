@@ -4,7 +4,7 @@ public enum CargoStatus {
 
 	Free(1L), Reserved(2L), Received(3L), Delivered(4L);
 
-	public final Long value;
+	private final Long value;
 
 	CargoStatus(final Long value) {
 		this.value = value;
@@ -17,5 +17,9 @@ public enum CargoStatus {
 			}
 		}
 		return null;// not found
+	}
+
+	public Long getValue() {
+		return value;
 	}
 }
