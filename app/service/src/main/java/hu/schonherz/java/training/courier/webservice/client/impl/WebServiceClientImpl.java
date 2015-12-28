@@ -15,15 +15,18 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.jws.WebService;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.WebServiceClientLocal;
 import hu.schonherz.java.training.courier.service.WebServiceClientRemote;
+import hu.schonherz.java.training.courier.service.converter.CargoConverter;
 import hu.schonherz.java.training.courier.service.converter.UserConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
@@ -42,27 +45,34 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 	private String localPart;
 	private Properties wsdlProperties;
 	private final static Logger logger = Logger.getLogger(WebServiceClientImpl.class);
+	// listák ami majd az adatbázistól jön illetve a web servicetől.
 	private List<UserVO> userListFromDB;
 	private List<UserVO> userListFromWS;
-	
-	private List<CargoVO> cargoList;
+
 	private List<CargoVO> cargoListFromDB;
 	private List<CargoVO> cargoListFromWS;
+	// WebService Implementáció
 	private CourierWebServiceImplService courierWebService;
 	private CourierWebService serviceImpl;
+
 	@EJB
 	UserServiceLocal userService;
+
+	@EJB
+	CargoServiceLocal cargoService;
 
 	@PostConstruct
 	public void init() {
 		logger.info("Starting WebServiceClient as EJB service");
 		wsdlProperties = new Properties();
+
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			wsdlProperties.load(classLoader.getResourceAsStream("wsdllocation.properties"));
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.info("Error:", e1);
 		}
+
 		url = wsdlProperties.getProperty("url");
 		namespaceURI = wsdlProperties.getProperty("namespaceURI");
 		localPart = wsdlProperties.getProperty("localPart");
@@ -74,7 +84,7 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 		try {
 			wsdl = new URL(url);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.info("Error:", e);
 		}
 
 		QName qName = new QName(namespaceURI, localPart);
@@ -98,7 +108,7 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 						userService.updateUserByGlobalId(wsUser);
 						updatedUsers++;
 					} catch (Exception e) {
-						logger.info("Error:" + e.getMessage());
+						logger.info("Error:", e);
 					}
 				}
 			}
@@ -107,7 +117,7 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 	}
 
 	/**
-	 * Az adatb�zisban m�g nem szerepl� felhaszn�l�k ment�s�re szolg�l.
+	 * Az adatbázisban még nem szereplő felhasználók mentésére szolgál.
 	 */
 	private void saveNewUsers() {
 		Integer newUsers = 0;
@@ -124,7 +134,7 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 					newUser = userService.save(wsUser);
 					newUsers++;
 				} catch (Exception e) {
-					logger.error("Error:" + e.getMessage());
+					logger.error("Error:", e);
 				}
 			}
 		}
@@ -132,7 +142,7 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 	}
 
 	/**
-	 * Ezzel fogjuk lek�rni a Web Service-t�l az adatokat megadott
+	 * Ezzel fogjuk lekérni a Web Service-től az adatokat megadott
 	 * pillanatokban.
 	 */
 	public void getUsersFromWebService() {
@@ -147,47 +157,59 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 		saveNewUsers();
 	}
 
+	/**
+	 * A szabad szállítások lekérése az adminisztároti modultól.
+	 */
 	private void updateCargos() {
 		Integer newCargos = 0;
 		CargoVO newCargo;
 		List<Long> existingIds = new ArrayList<>();
-		for(CargoVO dbCargo : cargoListFromDB) {
+		for (CargoVO dbCargo : cargoListFromDB) {
 			existingIds.add(dbCargo.getGlobalid());
 		}
-		
-		for(CargoVO wsCargo : cargoListFromWS) {
-			
-			if(!existingIds.contains((Long) wsCargo.getGlobalid())) {
+
+		for (CargoVO wsCargo : cargoListFromWS) {
+
+			if (!existingIds.contains((Long) wsCargo.getGlobalid())) {
 				try {
-				//	newCargo = cargoService.save(wsCargo);
+					newCargo = cargoService.save(wsCargo);
 					newCargos++;
 				} catch (Exception e) {
-					e.printStackTrace();
-					logger.error("Error:" + e.getMessage());
+
+					logger.error("Error:", e);
 				}
 			}
 		}
-		System.out.println("Update Success! New Cargos: " + newCargos);
+		logger.info("INFO: Update Success! New Cargos: " + newCargos);
 	}
 
 	public void getCargos() {
-		
-		/*System.out.println("CargoListBean: getCargos");
-		
+
+		logger.info("getCargos()");
+
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
-		setCargoListFromWS(serviceImpl.getFreeCargosList());
+		setCargoListFromWS(CargoConverter.toVoFromWS(serviceImpl.getFreeCargosList()));
 		try {
 			setCargoListFromDB(cargoService.findAllByStatus(CargoStatus.getValue(1L)));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("ERROR:", e);
 		}
 		updateCargos();
 		try {
 			setCargoListFromDB(cargoService.findAllByStatus(CargoStatus.getValue(1L)));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("ERROR:", e);
 		}
-		setCargoList(getCargoListFromDB());*/
+	}
+
+	/**
+	 * A Web Servicen keresztül küldük el az információt az adminisztrátori
+	 * modul felé hogy egy aktuális megrendelés státusza milyen.
+	 */
+	@Override
+	public Long setCargoStatus(Long globalId, CargoStatus cargoStatus) {
+		// return new Long(1);
+		return serviceImpl.setCargoStatus(CargoConverter.convertCargoStatus(cargoStatus));
 	}
 
 	public String getUrl() {
@@ -239,23 +261,9 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 	}
 
 	@Override
-	public Long setCargoStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<UserVO> getUserList() {
 		getUsersFromWebService();
 		return getUserListFromWS();
-	}
-	
-	public List<CargoVO> getCargoList() {
-		return cargoList;
-	}
-
-	public void setCargoList(List<CargoVO> cargoList) {
-		this.cargoList = cargoList;
 	}
 
 	public List<CargoVO> getCargoListFromDB() {

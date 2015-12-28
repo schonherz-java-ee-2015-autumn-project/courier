@@ -2,23 +2,23 @@ package hu.schonherz.java.training.courier.web.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-
 import javax.faces.component.UIOutput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import hu.schonherz.java.training.courier.entities.AddressStatus;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
@@ -26,6 +26,7 @@ import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.AddressServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
+import hu.schonherz.java.training.courier.service.WebServiceClientLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
@@ -33,20 +34,22 @@ import hu.schonherz.java.training.courier.service.vo.ItemVO;
 @ManagedBean(name = "mapBean")
 @ViewScoped
 public class MapBean implements Serializable {
-
+	private final static Logger logger = Logger.getLogger(MapBean.class);
 	private static final long serialVersionUID = 1L;
-	@EJB
-	CargoServiceLocal cargoService;
-	@EJB
-	UserServiceLocal userService;
 	@ManagedProperty(value = "#{userSessionBean}")
 	UserSessionBean userSessionBean;
 	@EJB
 	AddressServiceLocal addressService;
+	@EJB
+	CargoServiceLocal cargoService;
+	@EJB
+	UserServiceLocal userService;
 	private CargoVO selectedCargo;
 	private String addressList;
 	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
 	List<AddressVO> addresses;
+	@EJB
+	private WebServiceClientLocal webServiceClient;
 
 	public List<AddressVO> getAddresses() {
 		return addresses;
@@ -67,8 +70,7 @@ public class MapBean implements Serializable {
 				try {
 					getFacesExternalContext().redirect("../secured/available.xhtml");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.info("Error:", e);
 				}
 		}
 
@@ -101,23 +103,29 @@ public class MapBean implements Serializable {
 			addressList = selectedCargo.getRestaurant().getAddress();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Error:", e);
 		}
 	}
 
 	public void cargoStatusChanged(Long value) throws Exception {
 		CargoStatus status = CargoStatus.getValue(value);
-		selectedCargo.setStatus(status);
-		getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString());
-		updateRoute();
-		System.out.println(addressList);
 
-		if (status.equals(CargoStatus.getValue(4L))) {
-			getUserSessionBean().getUserVO().setTransporting(0L);
-			getUserService().save(getUserSessionBean().getUserVO());
-			getFacesExternalContext().getSessionMap().remove("cargoId");
-			getFacesExternalContext().redirect("../secured/available.xhtml");
+		if (webServiceClient.setCargoStatus(selectedCargo.getGlobalid(), status) == 0) {
+			selectedCargo.setStatus(status);
+			getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString());
+			updateRoute();
+			logger.info("INFO:AddressList -> " + addressList);
+
+			if (status.equals(CargoStatus.getValue(4L))) {
+				getUserSessionBean().getUserVO().setTransporting(0L);
+				getUserService().save(getUserSessionBean().getUserVO());
+				getFacesExternalContext().getSessionMap().remove("cargoId");
+				getFacesExternalContext().redirect("../secured/available.xhtml");
+			}
+		} else {
+			getFacesContext().addMessage("errorMessage",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened!"));
+			logger.info("INFO:Error while setting cargo status.");
 		}
 
 	}

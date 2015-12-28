@@ -21,7 +21,7 @@
 	<xsd:complexType name="getFreeCargosListResponse">
 		<xsd:sequence>
 			<xsd:element name="freeCargosListResponse" type="ns0:cargoVO"
-				minOccurs="0" maxOccurs="unbounded" />
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="baseVO">
@@ -108,7 +108,7 @@
 	<xsd:complexType name="getUsersListResponse">
 		<xsd:sequence>
 			<xsd:element name="usersListResponse" type="ns0:userVO"
-				minOccurs="0" maxOccurs="unbounded" />
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="getUsersList" type="ns0:getUsersList" />

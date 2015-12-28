@@ -67,7 +67,7 @@
 		<section class="content">
 			<div class="row">
 				<div class="col-md-12">
-
+					<p:messages id="errorMessage" showDetail="true" autoUpdate="true" closable="true" />
 					<p:dataGrid id="availableCargoes" var="cargo"
 						value="#{availableBean.cargoes}" columns="1">
 						<f:facet name="emptyMessage">
@@ -153,6 +153,7 @@
 
 							</div>
 							<h:form>
+
 								<div class="box-footer">
 
 									<h:commandButton value="#{out.map}"
@@ -162,7 +163,7 @@
 									<h:commandButton value="#{out.pickUp}"
 										action="#{availableBean.pickUpCargo(cargo)}"
 										rendered="#{availableBean.userVO.transporting != 1}"
-										class="btn btn-success pull-right">
+										class="btn btn-success pull-right" update="errorMessage">
 									</h:commandButton>
 
 								</div>

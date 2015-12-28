@@ -6,15 +6,19 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.jboss.logging.Logger;
+
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
+import hu.schonherz.java.training.courier.service.WebServiceClientLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
@@ -23,9 +27,12 @@ import hu.schonherz.java.training.courier.service.vo.UserVO;
 @ManagedBean(name = "availableBean")
 @ViewScoped
 public class AvailableBean implements Serializable {
-
+	private final static Logger logger = Logger.getLogger(AvailableBean.class);
 	private static final long serialVersionUID = 1L;
 	private List<CargoVO> cargoes;
+	@EJB
+	WebServiceClientLocal webServiceClient;
+
 	@EJB
 	CargoServiceLocal cargoService;
 	@EJB
@@ -85,14 +92,25 @@ public class AvailableBean implements Serializable {
 
 	public void pickUpCargo(CargoVO cargo) throws Exception {
 
-		cargo.setUser(userVO);
-		cargo.setStatus(CargoStatus.getValue(2L));
+		// ellenõrizzük hogy a Web Servicen keresztül képesek voltunk-e menteni
+		// az aktuális cargoStatus-t, ha igen akkor mi is mentünk adatbázisba
+		// ha viszont nem akkor egyértelmûen nem csinálunk semmit, csak egy
+		// hibát dobunk majd az oldalra
+		if (webServiceClient.setCargoStatus(cargo.getGlobalid(), CargoStatus.getValue(2L)) == 0) {
+			cargo.setUser(userVO);
+			cargo.setStatus(CargoStatus.getValue(2L));
 
-		getCargoService().save(cargo);
-		userVO.setTransporting(cargo.getId());
-		getUserService().save(userVO);
-		getUserSessionBean().getUserVO().setTransporting(cargo.getId());
-		showOnMap(cargo.getId());
+			getCargoService().save(cargo);
+			userVO.setTransporting(cargo.getId());
+			getUserService().save(userVO);
+			getUserSessionBean().getUserVO().setTransporting(cargo.getId());
+			showOnMap(cargo.getId());
+			logger.info("INFO:Succes cargoStatus setting with WebService. ");
+		} else {
+			getFacesContext().addMessage("errorMessage",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened."));
+			logger.info("ERROR:Error while setting cargoStatus with WebService.");
+		}
 
 	}
 

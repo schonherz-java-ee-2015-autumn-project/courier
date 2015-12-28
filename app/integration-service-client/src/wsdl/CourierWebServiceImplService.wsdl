@@ -12,14 +12,14 @@
 	<types>
 		<xsd:schema>
 			<xsd:import namespace="http://webservice.courier.training.java.schonherz.hu/"
-				schemaLocation="http://192.168.0.101:7001/integration-api/CourierWebServiceImplService?xsd=1" />
+				schemaLocation="file:///D:/Java/courier/app/integration-service-client/src/wsdl/CourierWebServiceImplService.xsd" />
 		</xsd:schema>
 	</types>
-	<message name="getFreeCargosList">
-		<part name="parameters" element="tns:getFreeCargosList" />
+	<message name="setCargoStatus">
+		<part name="parameters" element="tns:setCargoStatus" />
 	</message>
-	<message name="getFreeCargosListResponse">
-		<part name="parameters" element="tns:getFreeCargosListResponse" />
+	<message name="setCargoStatusResponse">
+		<part name="parameters" element="tns:setCargoStatusResponse" />
 	</message>
 	<message name="getUsersList">
 		<part name="parameters" element="tns:getUsersList" />
@@ -27,20 +27,20 @@
 	<message name="getUsersListResponse">
 		<part name="parameters" element="tns:getUsersListResponse" />
 	</message>
-	<message name="setCargoStatus">
-		<part name="parameters" element="tns:setCargoStatus" />
+	<message name="getFreeCargosList">
+		<part name="parameters" element="tns:getFreeCargosList" />
 	</message>
-	<message name="setCargoStatusResponse">
-		<part name="parameters" element="tns:setCargoStatusResponse" />
+	<message name="getFreeCargosListResponse">
+		<part name="parameters" element="tns:getFreeCargosListResponse" />
 	</message>
 	<portType name="courierWebService">
-		<operation name="getFreeCargosList">
+		<operation name="setCargoStatus">
 			<input
-				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getFreeCargosListRequest"
-				message="tns:getFreeCargosList" />
+				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/setCargoStatusRequest"
+				message="tns:setCargoStatus" />
 			<output
-				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getFreeCargosListResponse"
-				message="tns:getFreeCargosListResponse" />
+				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/setCargoStatusResponse"
+				message="tns:setCargoStatusResponse" />
 		</operation>
 		<operation name="getUsersList">
 			<input
@@ -50,19 +50,19 @@
 				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getUsersListResponse"
 				message="tns:getUsersListResponse" />
 		</operation>
-		<operation name="setCargoStatus">
+		<operation name="getFreeCargosList">
 			<input
-				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/setCargoStatusRequest"
-				message="tns:setCargoStatus" />
+				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getFreeCargosListRequest"
+				message="tns:getFreeCargosList" />
 			<output
-				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/setCargoStatusResponse"
-				message="tns:setCargoStatusResponse" />
+				wsam:Action="http://webservice.courier.training.java.schonherz.hu/courierWebService/getFreeCargosListResponse"
+				message="tns:getFreeCargosListResponse" />
 		</operation>
 	</portType>
 	<binding name="CourierWebServiceImplPortBinding" type="tns:courierWebService">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
 			style="document" />
-		<operation name="getFreeCargosList">
+		<operation name="setCargoStatus">
 			<soap:operation soapAction="" />
 			<input>
 				<soap:body use="literal" />
@@ -80,7 +80,7 @@
 				<soap:body use="literal" />
 			</output>
 		</operation>
-		<operation name="setCargoStatus">
+		<operation name="getFreeCargosList">
 			<soap:operation soapAction="" />
 			<input>
 				<soap:body use="literal" />
@@ -93,7 +93,7 @@
 	<service name="CourierWebServiceImplService">
 		<port name="CourierWebServiceImplPort" binding="tns:CourierWebServiceImplPortBinding">
 			<soap:address
-				location="http://192.168.0.101:7001/integration-api/CourierWebServiceImplService" />
+				location="http://192.168.0.101:7001/integration/CourierWebServiceImplService" />
 		</port>
 	</service>
 </definitions>

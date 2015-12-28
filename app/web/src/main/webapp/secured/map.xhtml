@@ -302,6 +302,8 @@
 									<li class="list-group-item"><b>#{out.status}</b> <a
 										class="pull-right">#{out['cargoStatus.'.concat(mapBean.selectedCargo.status)]}</a></li>
 								</ul>
+								<p:messages id="errorMessage" showDetail="true"
+									autoUpdate="true" closable="true" />
 								<p:layout
 									rendered="#{mapBean.selectedCargo.status == 'Reserved' or mapBean.selectedCargo.status == 'Received'}">
 									<b>#{out.changeStatus}</b>
@@ -331,6 +333,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-4">
+
 						<p:layout rendered="#{mapBean.selectedCargo.status == 'Received'}">
 							<div class="box box-danger box-solid">
 								<div class="box-header with-border">
