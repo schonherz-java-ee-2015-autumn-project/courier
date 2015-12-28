@@ -8,7 +8,7 @@
 	</parent>
 	<packaging>war</packaging>
 	<artifactId>integration-api</artifactId>
-	
+
 	<repositories>
 		<repository>
 			<id>prime-repo</id>
@@ -31,7 +31,7 @@
 			<artifactId>core</artifactId>
 			<version>${version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>integration-service-client</artifactId>
@@ -128,28 +128,38 @@
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
-			<version>2.2.8</version>
+			<version>2.1.4</version>
 		</dependency>
 	</dependencies>
 	<build>
-		<plugins>
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.axis2</groupId> -->
-			<!-- <artifactId>axis2-java2wsdl-maven-plugin</artifactId> -->
-			<!-- <configuration> -->
-			<!-- <className>hu.schonherz.java.training.courier.webservice.CourierWebService</className> -->
-			<!-- <outputFileName>D:\Java\courier\app\integration-service-client\src\wsdl\CourierWSDL.wsdl</outputFileName> -->
-			<!-- </configuration> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <goals> -->
-			<!-- <goal>java2wsdl</goal> -->
-			<!-- </goals> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- </plugin> -->
+<!-- 		<plugins> -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.jvnet.jax-ws-commons</groupId> -->
+<!-- 				<artifactId>jaxws-maven-plugin</artifactId> -->
+<!-- 				<version>2.2</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>wsgen</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<sourceDestDir>${project.build.directory}/generated</sourceDestDir> -->
+<!-- 							<verbose>true</verbose> -->
+<!-- 							<genWsdl>true</genWsdl> -->
+<!-- 							<sei>hu.schonherz.java.training.courier.webservice.impl.CourierWebServiceImpl</sei> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
 
-		</plugins>
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
+<!-- 				<configuration> -->
+<!-- 					<source>1.8</source> -->
+<!-- 					<target>1.8</target> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+<!-- 		</plugins> -->
 	</build>
 
 </project>

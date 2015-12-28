@@ -1,6 +1,5 @@
 package hu.schonherz.java.training.courier.webservice;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -9,14 +8,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
-import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
-import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
-import hu.schonherz.java.training.courier.service.vo.RoleVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
-@WebService(name = "courierWebService")
-public interface CourierWebService {
+@WebService
+public interface CourierWeb {
 	
 	/**
 	 * A felhaszálnálókat adja vissza az adatbázisból amit utána egy UserVO listában dob át a Courier Modul-ra.
@@ -31,6 +27,7 @@ public interface CourierWebService {
 		Date regdate;
 	    Date moddate;
 	 */
+	
 	@WebMethod(operationName = "getUsersList")
 	@WebResult(name = "usersListResponse")
 	public List<UserVO> getUsers();
@@ -51,14 +48,14 @@ public interface CourierWebService {
 	public List<CargoVO> getFreeCargos();
 	
 	/**
-	 * Beállítja a szállítás státuszát: CargoStatus(enum): Szabad(1L), Foglalt(2L), Átvéve(3L), Kiszállítva(4L),
+	 * Beállítja a szállítás státuszát: CargoStatus(enum): Free(1L), Reserved(2L), Received(3L), Delivered(4L),
 	 * Illetve visszadob egy "hibakódot": Ha sikeres volt a mûvelet (az adatbázisba való frissítés/mentés) akkor 0, ha nem akkor 1.
-	 * @param cargoStatus
+	 * @param globalId,cargoStatus
 	 * @return
 	 */
 	
 	@WebMethod(operationName="setCargoStatus")
 	@WebResult(name="errorCode")
-	public Long setCargoStatus(@WebParam(name="cargoStatus") CargoStatus cargoStatus);
+	public Long setCargoStatus(@WebParam(name="globalId") Long globalId,@WebParam(name="cargoStatus") CargoStatus cargoStatus);
 
 }
