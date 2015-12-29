@@ -25,4 +25,6 @@ public interface UserDao extends JpaRepository<User, Long> {
 	@Modifying(clearAutomatically=true)
 	@Query(value="update user set username = :userN, fullname = :fullN, password = :passW, moddate = :modD where globalid = :globalId",nativeQuery=true)
 	Integer updateUserByGlobalId(@Param("userN") String username,@Param("fullN") String fullname,@Param("passW") String password,@Param("modD") Date moddate, @Param("globalId") Long globalid);
+	
+	Date find
 }

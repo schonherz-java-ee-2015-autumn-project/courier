@@ -172,7 +172,9 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 
 			if (!existingIds.contains((Long) wsCargo.getGlobalid())) {
 				try {
+					System.out.println("saving cargo");
 					newCargo = cargoService.save(wsCargo);
+					System.out.println("cargo saved");
 					newCargos++;
 				} catch (Exception e) {
 
@@ -190,10 +192,12 @@ public class WebServiceClientImpl implements WebServiceClientLocal, WebServiceCl
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
 		setCargoListFromWS(CargoConverter.toVoFromWS(serviceImpl.getFreeCargosList()));
 		try {
+			System.out.println("setting cargos to list from DB");
 			setCargoListFromDB(cargoService.findAllByStatus(CargoStatus.getValue(1L)));
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 		}
+		System.out.println("updateCargos to run....");
 		updateCargos();
 		try {
 			setCargoListFromDB(cargoService.findAllByStatus(CargoStatus.getValue(1L)));
