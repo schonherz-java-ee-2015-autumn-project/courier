@@ -7,7 +7,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:sec="http://www.springframework.org/security/tags"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <f:view>
 
@@ -54,7 +55,11 @@
 		<h:outputScript library="plugins"
 			name="slimScroll/jquery.slimscroll.min.js" />
 
-
+		<style>
+.ui-timer {
+	padding: 0px;
+}
+</style>
 	</h:head>
 
 	<h:body class="hold-transition skin-blue sidebar-mini">
@@ -69,7 +74,23 @@
 				class="navbar navbar-static-top" role="navigation"> <!-- Sidebar toggle button-->
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
 				role="button"> <span class="sr-only">Toggle navigation</span>
-			</a> </nav> </header>
+			</a>
+			<div class="navbar-custom-menu">
+				
+				<h:form id="timer">
+					<h:outputText value="#{out.loggedIn} " />
+
+					<h:outputText rendered="#{timerBean.hours != 0}"
+						value="#{timerBean.hours} #{out.hours} "/>
+						
+					<h:outputText value="#{timerBean.minutes} #{out.minutes}"/>
+		
+					<pe:timer timeout="60" singleRun="false" visible="false"
+						listener="#{timerBean.onTimeout}" update="timer" />
+				</h:form>
+				
+			</div>
+			</nav> </header>
 			<!-- Left side column. contains the logo and sidebar -->
 			<aside class="main-sidebar"> <!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar"> <!-- Sidebar user panel --> <!-- sidebar menu: : style can be found in sidebar.less -->
