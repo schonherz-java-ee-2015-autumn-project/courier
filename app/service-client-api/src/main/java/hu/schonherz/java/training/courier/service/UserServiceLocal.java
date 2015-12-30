@@ -15,4 +15,6 @@ public interface UserServiceLocal {
 	UserVO saveUserById(UserVO userVO) throws Exception;
 	
 	Integer updateUserByGlobalId(UserVO userVO) throws Exception;
+
+	public UserVO findUserByNameWhereIsRemovedZero(String username);
 }

@@ -23,6 +23,8 @@ public class UserVO extends BaseVO implements Serializable {
 				+ getModdate() + "]";
 	}
 
+	private boolean isRemoved;
+	
 	public Long getId() {
 		return id;
 	}
@@ -78,5 +80,14 @@ public class UserVO extends BaseVO implements Serializable {
 	public void setGlobalid(Long globalid) {
 		this.globalid = globalid;
 	}
+
+	public boolean isRemoved() {
+		return isRemoved;
+	}
+
+	public void setRemoved(boolean isRemoved) {
+		this.isRemoved = isRemoved;
+	}
+
 
 }

@@ -62,4 +62,9 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 	public Integer updateUserByGlobalId(UserVO userVO) throws Exception {
 		return userDao.updateUserByGlobalId(userVO.getUsername(), userVO.getFullname(), userVO.getPassword(),new Date(),userVO.getGlobalid());
 	}
+
+	@Override
+	public UserVO findUserByNameWhereIsRemovedZero(String username) {
+		return UserConverter.toVo(userDao.findUserByNameWhereIsRemovedZero(username));
+	}
 }

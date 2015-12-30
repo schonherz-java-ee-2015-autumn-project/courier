@@ -3,6 +3,7 @@ package hu.schonherz.java.training.courier.dao;
 import java.util.Date;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +27,10 @@ public interface UserDao extends JpaRepository<User, Long> {
 	@Query(value="update user set username = :userN, fullname = :fullN, password = :passW, moddate = :modD where globalid = :globalId",nativeQuery=true)
 	Integer updateUserByGlobalId(@Param("userN") String username,@Param("fullN") String fullname,@Param("passW") String password,@Param("modD") Date moddate, @Param("globalId") Long globalid);
 	
-	Date find
+	@Query(value = "SELECT * from user where username = :name and removed = 0", nativeQuery = true)
+	User findUserByNameWhereIsRemovedZero(@Param("name") String name);
+
+	@Query(value = "select moddate from user where id = 1 ", nativeQuery = true)
+	Date findLastModDate();
+
 }
