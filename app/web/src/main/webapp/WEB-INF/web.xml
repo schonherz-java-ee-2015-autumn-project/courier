@@ -85,13 +85,13 @@
  		<servlet-name>QuartzServlet</servlet-name>
  		<servlet-class>hu.schonherz.java.training.courier.web.scheduler.SchedulerServlet</servlet-class>
  		<init-param><param-name>cronExpr</param-name><param-value>0 0 8 * * ?</param-value></init-param>
- 		<load-on-startup>2</load-on-startup>
+<!--  		<load-on-startup>2</load-on-startup> -->
  	</servlet>
  	
- 	<ejb-ref>
- 		<ejb-ref-name>ejb/SchedulerService</ejb-ref-name>
- 		<ejb-ref-type>Session</ejb-ref-type>
- 		<home>hu.schonherz.java.training.courier.service.SchedulerServiceLocal</home>
- 		<remote>hu.schonherz.java.training.courier.service.SchedulerServiceRemote</remote>
- 	</ejb-ref>
+<!--  	<ejb-ref> -->
+<!--  		<ejb-ref-name>ejb/SchedulerService</ejb-ref-name> -->
+<!--  		<ejb-ref-type>Session</ejb-ref-type> -->
+<!--  		<home>hu.schonherz.java.training.courier.service.SchedulerServiceLocal</home> -->
+<!--  		<remote>hu.schonherz.java.training.courier.service.SchedulerServiceRemote</remote> -->
+<!--  	</ejb-ref> -->
 </web-app>

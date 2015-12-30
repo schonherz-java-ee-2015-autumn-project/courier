@@ -3,6 +3,7 @@ package hu.schonherz.java.training.courier.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
@@ -16,6 +17,8 @@ public class User extends BaseEntity implements Serializable {
 	private String password;
 	private Long transporting;
 	private Long globalid;
+	@Column(nullable=false)
+	private boolean removed;
 	@ManyToMany
 	private List<Role> roles;
 
@@ -69,6 +72,14 @@ public class User extends BaseEntity implements Serializable {
 
 	public void setGlobalid(Long globalid) {
 		this.globalid = globalid;
+	}
+
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
 
 }
