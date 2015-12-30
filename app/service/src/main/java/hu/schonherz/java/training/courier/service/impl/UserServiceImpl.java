@@ -31,9 +31,7 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Override
 	public UserVO save(UserVO user) throws Exception {
-
 		return UserConverter.toVo(userDao.save(UserConverter.toEntity(user)));
-
 	}
 
 	@Override
@@ -44,7 +42,11 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Override
 	public List<UserVO> findAll() throws Exception {
-
 		return UserConverter.toVo(userDao.findAll());
+	}
+
+	@Override
+	public UserVO findUserByNameWhereIsRemovedZero(String username) throws Exception {
+		return UserConverter.toVo(userDao.findUserByNameWhereIsRemovedZero(username));
 	}
 }
