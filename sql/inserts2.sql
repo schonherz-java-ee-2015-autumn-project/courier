@@ -14,13 +14,13 @@ ALTER TABLE cargo AUTO_INCREMENT = 1;
 ALTER TABLE item AUTO_INCREMENT = 1;
 ALTER TABLE restaurant AUTO_INCREMENT = 1;
 
-insert into address (address, deadline,  payment) values ("Debrecen, Piac utca 68", '2015-12-07 14:36:12',  "Készpénz");
-insert into address (address, deadline,  payment) values ("Debrecen, Böszörményi út 68", '2015-12-07 14:36:12',  "Bankkártya");
-insert into address (address, deadline,  payment) values ("Debrecen, Bihari utca 25", '2015-12-07 14:36:12', "Utalvány");
-insert into address (address, deadline,  payment) values ("Debrecen, Kassai út 26", '2015-12-07 14:36:12', "Készpénz");
-insert into address (address, deadline,  payment) values ("Debrecen, Baross Gábor utca 27", '2015-12-07 14:36:12', "SZÉP");
-insert into address (address, deadline,  payment) values ("Debrecen, Kishatár utca 7", '2015-12-07 14:36:12', "Készpénz");
-insert into address (address, deadline,  payment) values ("Debrecen, Derék utca 31", '2015-12-07 14:36:12', "Bankkártya");
+insert into address (address, deadline,  payment) values ("Debrecen, Piac utca 68", '2015-12-07 14:36:12',  "Cash");
+insert into address (address, deadline,  payment) values ("Debrecen, Böszörményi út 68", '2015-12-07 14:36:12',  "Card");
+insert into address (address, deadline,  payment) values ("Debrecen, Bihari utca 25", '2015-12-07 14:36:12', "Voucher");
+insert into address (address, deadline,  payment) values ("Debrecen, Kassai út 26", '2015-12-07 14:36:12', "Cash");
+insert into address (address, deadline,  payment) values ("Debrecen, Baross Gábor utca 27", '2015-12-07 14:36:12', "SZEP");
+insert into address (address, deadline,  payment) values ("Debrecen, Kishatár utca 7", '2015-12-07 14:36:12', "Cash");
+insert into address (address, deadline,  payment) values ("Debrecen, Derék utca 31", '2015-12-07 14:36:12', "Card");
 
 insert into restaurant (name, address, phone) values ("Rozsdás Rákolló", "Debrecen, Piac utca 17", "+36202050010");
 insert into restaurant (name, address, phone) values ("Kaja tanya", "Debrecen, Bethlen utca 46", "+36205780066");
@@ -47,7 +47,7 @@ insert into item (name, price, quantity) values ('Ötsajtos Pizza', '1590', '1')
 
 
 
-insert into cargo (status, restaurant_id) values ("Szabad", 1);
+insert into cargo (status, restaurant_id) values ("Free", 1);
 insert into address_item (Address_id, items_id) values (1, 1);
 insert into address_item (Address_id, items_id) values (1, 2);
 insert into cargo_address (Cargo_id, addresses_id) values (1, 1);
@@ -55,7 +55,7 @@ insert into address_item (Address_id, items_id) values (5, 11);
 insert into address_item (Address_id, items_id) values (5, 12);
 insert into cargo_address (Cargo_id, addresses_id) values (1, 5);
 
-insert into cargo (status, restaurant_id) values ("Szabad", 2);
+insert into cargo (status, restaurant_id) values ("Free", 2);
 insert into address_item (Address_id, items_id) values (2, 3);
 insert into address_item (Address_id, items_id) values (2, 4);
 insert into address_item (Address_id, items_id) values (2, 5);
@@ -66,14 +66,14 @@ insert into address_item (Address_id, items_id) values (7, 14);
 insert into cargo_address (Cargo_id, addresses_id) values (2, 7);
 
 
-insert into cargo (status, restaurant_id) values ("Szabad", 3);
+insert into cargo (status, restaurant_id) values ("Free", 3);
 insert into address_item (Address_id, items_id) values (3, 6);
 insert into address_item (Address_id, items_id) values (3, 7);
 insert into address_item (Address_id, items_id) values (3, 8);
 insert into cargo_address (Cargo_id, addresses_id) values (3, 3);
 
 
-insert into cargo (status, restaurant_id) values ("Szabad", 4);
+insert into cargo (status, restaurant_id) values ("Free", 4);
 insert into address_item (Address_id, items_id) values (4, 9);
 insert into address_item (Address_id, items_id) values (4, 10);
 insert into cargo_address (Cargo_id, addresses_id) values (4, 4);

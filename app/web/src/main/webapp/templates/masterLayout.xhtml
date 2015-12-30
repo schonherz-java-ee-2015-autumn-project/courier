@@ -36,24 +36,11 @@
          folder instead of downloading all of them to reduce the load. -->
 		<h:outputStylesheet library="dist" name="css/skins/_all-skins.min.css" />
 		<!-- jQuery 2.1.4 -->
-		<h:outputScript library="plugins" name="jQuery/jQuery-2.1.4.min.js" />
+		<h:outputScript library="primefaces" name="jquery/jquery.js" />
 		<!-- Bootstrap 3.3.5 -->
 		<h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
-		<!-- FastClick -->
-		<h:outputScript library="plugins" name="fastclick/fastclick.min.js" />
 		<!-- AdminLTE App -->
 		<h:outputScript library="dist" name="js/app.min.js" />
-		<!-- Sparkline -->
-		<h:outputScript library="plugins"
-			name="sparkline/jquery.sparkline.min.js" />
-		<!-- jvectormap -->
-		<h:outputScript library="plugins"
-			name="jvectormap/jquery-jvectormap-1.2.2.min.js" />
-		<h:outputScript library="plugins"
-			name="jvectormap/jquery-jvectormap-world-mill-en.js" />
-		<!-- SlimScroll 1.3.0 -->
-		<h:outputScript library="plugins"
-			name="slimScroll/jquery.slimscroll.min.js" />
 
 		<style>
 .ui-timer {
@@ -76,19 +63,19 @@
 				role="button"> <span class="sr-only">Toggle navigation</span>
 			</a>
 			<div class="navbar-custom-menu">
-				
+
 				<h:form id="timer">
 					<h:outputText value="#{out.loggedIn} " />
 
 					<h:outputText rendered="#{timerBean.hours != 0}"
-						value="#{timerBean.hours} #{out.hours} "/>
-						
-					<h:outputText value="#{timerBean.minutes} #{out.minutes}"/>
-		
+						value="#{timerBean.hours} #{out.hours} " />
+
+					<h:outputText value="#{timerBean.minutes} #{out.minutes}" />
+
 					<pe:timer timeout="60" singleRun="false" visible="false"
 						listener="#{timerBean.onTimeout}" update="timer" />
 				</h:form>
-				
+
 			</div>
 			</nav> </header>
 			<!-- Left side column. contains the logo and sidebar -->
