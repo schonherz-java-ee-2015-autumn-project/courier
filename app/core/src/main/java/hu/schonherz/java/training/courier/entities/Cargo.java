@@ -3,26 +3,29 @@ package hu.schonherz.java.training.courier.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
-public class Cargo extends BaseEntity implements Serializable {
+public class Cargo extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne
+	@ManyToOne
 	private User user;
-	@OneToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Restaurant restaurant;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	List<Address> addresses;
+
+	@Column(length = 32, columnDefinition = "varchar(32) default 'Free'")
 	@Enumerated(EnumType.STRING)
-	private CargoStatus status;
-	private Long globalid;
+	private CargoStatus status = CargoStatus.getValue(1L);
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -54,14 +57,6 @@ public class Cargo extends BaseEntity implements Serializable {
 
 	public void setStatus(CargoStatus status) {
 		this.status = status;
-	}
-
-	public Long getGlobalid() {
-		return globalid;
-	}
-
-	public void setGlobalid(Long globalid) {
-		this.globalid = globalid;
 	}
 
 }

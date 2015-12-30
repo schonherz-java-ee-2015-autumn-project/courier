@@ -13,8 +13,9 @@ public class CargoVO extends BaseVO implements Serializable {
 	private RestaurantVO restaurant;
 	List<AddressVO> addresses;
 	private CargoStatus status;
-	private double totalValue;
+	private Double totalValue;
 	private Long globalid;
+
 	public Long getId() {
 		return id;
 	}
@@ -39,11 +40,11 @@ public class CargoVO extends BaseVO implements Serializable {
 		this.addresses = addresses;
 	}
 
-	public double getTotalValue() {
+	public Double getTotalValue() {
 		return totalValue;
 	}
 
-	public void setTotalValue(double totalValue) {
+	public void setTotalValue(Double totalValue) {
 		this.totalValue = totalValue;
 	}
 
@@ -52,6 +53,7 @@ public class CargoVO extends BaseVO implements Serializable {
 	}
 
 	public void setStatus(CargoStatus status) {
+
 		this.status = status;
 	}
 

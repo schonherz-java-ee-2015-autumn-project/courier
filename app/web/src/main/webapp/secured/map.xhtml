@@ -369,22 +369,22 @@
 
 												</ul>
 
-												<p:dataTable id="table" var="item" value="#{address.items}"
+												<p:dataTable id="table" var="detail" value="#{address.details}"
 													styleClass="datatable">
 													<f:facet name="header">
       												#{out.items}
    												</f:facet>
 													<p:column styleClass="customHeader"
 														headerText="#{out.item}">
-														<h:outputText value="#{item.name}" />
+														<h:outputText value="#{detail.item.name}" />
 													</p:column>
 													<p:column headerText="#{out.price}">
-														<h:outputText value="#{item.price}">
+														<h:outputText value="#{detail.item.price}">
 															<f:convertNumber minFractionDigits="2" />
 														</h:outputText> HUF
 													</p:column>
 													<p:column headerText="#{out.quantity}">
-														<h:outputText value="#{item.quantity}" />
+														<h:outputText value="#{detail.quantity}" />
 													</p:column>
 												</p:dataTable>
 												<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
