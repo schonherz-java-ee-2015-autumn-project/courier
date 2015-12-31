@@ -21,6 +21,17 @@ public class TimerBean {
 	LogServiceLocal logService;
 	List<LogVO> logs;
 	private Long hours;
+	private static final Long workingTime = 28800000L;
+	private Long workingPercentage;
+	Long duration;
+
+	public Long getWorkingPercentage() {
+		return workingPercentage;
+	}
+
+	public void setWorkingPercentage(Long workingPercentage) {
+		this.workingPercentage = workingPercentage;
+	}
 
 	public Long getHours() {
 		return hours;
@@ -64,7 +75,7 @@ public class TimerBean {
 	}
 
 	public void getLoginDurationFromLog() {
-		long duration = 0L;
+		duration = 0L;
 		for (LogVO logVO : logs) {
 			if (logVO.getLogoutDate() != null)
 				duration += logVO.getLogoutDate().getTime() - logVO.getLoginDate().getTime();
@@ -72,7 +83,7 @@ public class TimerBean {
 
 		minutes = TimeUnit.MILLISECONDS.toMinutes(duration);
 		hours = TimeUnit.MILLISECONDS.toHours(duration);
-
+		workingPercentage = getWorkingTimeInPercentage();
 		// long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(duration);
 
 	}
@@ -84,6 +95,16 @@ public class TimerBean {
 
 		} else
 			minutes++;
+
+		duration += 60000;
+
+		workingPercentage = getWorkingTimeInPercentage();
+	}
+
+	public Long getWorkingTimeInPercentage() {
+
+		return (duration * 100) / workingTime;
+
 	}
 
 	public LogServiceLocal getLogService() {

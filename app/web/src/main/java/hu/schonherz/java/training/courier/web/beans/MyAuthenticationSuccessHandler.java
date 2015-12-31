@@ -50,7 +50,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 		Authentication newAuth = new UsernamePasswordAuthenticationToken(currentUser, auth.getCredentials(),
 				authorities);
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
-		setDefaultTargetUrl("/secured/index.xhtml");
+		setDefaultTargetUrl("/secured/profile.xhtml");
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 }
