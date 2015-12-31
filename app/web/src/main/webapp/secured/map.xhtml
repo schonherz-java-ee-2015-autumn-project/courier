@@ -37,17 +37,7 @@
 		<h:outputScript library="plugins" name="fastclick/fastclick.min.js" />
 		<!-- AdminLTE App -->
 		<h:outputScript library="dist" name="js/app.min.js" />
-		<!-- Sparkline -->
-		<h:outputScript library="plugins"
-			name="sparkline/jquery.sparkline.min.js" />
-		<!-- jvectormap -->
-		<h:outputScript library="plugins"
-			name="jvectormap/jquery-jvectormap-1.2.2.min.js" />
-		<h:outputScript library="plugins"
-			name="jvectormap/jquery-jvectormap-world-mill-en.js" />
-		<!-- SlimScroll 1.3.0 -->
-		<h:outputScript library="plugins"
-			name="slimScroll/jquery.slimscroll.min.js" />
+	
 		<script
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo54L8yC4OrNibZr25ggrhv0egXe-Cey4" />
 		<script>
@@ -189,7 +179,6 @@
 
 			google.maps.event.addDomListener(window, 'load', initialize);
 			
-			function reinitialize(){google.maps.event.trigger(map, 'resize');}
 		</script>
 
 		<style>
@@ -308,8 +297,7 @@
 												value="#{out['cargoStatus.'.concat('Received')]}"
 												rendered="#{mapBean.selectedCargo.status == 'Reserved'}"
 												style="margin: 3px;" class="btn btn-success"
-												action="#{mapBean.cargoStatusChanged(3)}"
-												onclick="reinitialize();">
+												action="#{mapBean.cargoStatusChanged(3)}">
 											</h:commandButton>
 
 											<h:commandButton
@@ -318,7 +306,7 @@
 												rendered="#{mapBean.selectedCargo.status == 'Received'}"
 												class="btn btn-success"
 												action="#{mapBean.cargoStatusChanged(4)}"
-												onclick="reinitialize();">
+												disabled="#{mapBean.addresses.size() > 0}">
 											</h:commandButton>
 										</h:form>
 									</div>
@@ -369,8 +357,8 @@
 
 												</ul>
 
-												<p:dataTable id="table" var="detail" value="#{address.details}"
-													styleClass="datatable">
+												<p:dataTable id="table" var="detail"
+													value="#{address.details}" styleClass="datatable">
 													<f:facet name="header">
       												#{out.items}
    												</f:facet>
