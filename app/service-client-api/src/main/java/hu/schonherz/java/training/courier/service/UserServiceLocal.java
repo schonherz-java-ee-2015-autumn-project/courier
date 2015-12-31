@@ -11,10 +11,10 @@ public interface UserServiceLocal {
 	public List<UserVO> findAll() throws Exception;
 
 	UserVO save(UserVO userVO) throws Exception;
-	
+
 	UserVO saveUserById(UserVO userVO) throws Exception;
-	
+
 	Integer updateUserByGlobalId(UserVO userVO) throws Exception;
 
-	public UserVO findUserByNameWhereIsRemovedZero(String username);
+	public UserVO findUserByNameWhereIsRemovedZero(String username) throws Exception;
 }

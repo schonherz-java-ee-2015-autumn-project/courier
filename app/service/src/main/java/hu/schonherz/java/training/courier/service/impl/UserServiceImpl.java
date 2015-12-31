@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 	}
 
 	@Override
-	public UserVO findUserByNameWhereIsRemovedZero(String username) {
+	public UserVO findUserByNameWhereIsRemovedZero(String username) throws Exception {
 		return UserConverter.toVo(userDao.findUserByNameWhereIsRemovedZero(username));
 	}
 }
