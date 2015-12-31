@@ -15,8 +15,9 @@ public class User extends GlobalEntity implements Serializable {
 	private String username;
 	private String fullname;
 	private String password;
-	private Long transporting;
-	@Column(nullable=false)
+	@Column(length = 20, columnDefinition = "bigint(20) default 0")
+	private Long transporting = 0L;
+	@Column(nullable = false)
 	private boolean removed;
 	@ManyToMany
 	private List<Role> roles;
