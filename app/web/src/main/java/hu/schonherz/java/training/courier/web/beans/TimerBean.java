@@ -79,6 +79,8 @@ public class TimerBean {
 		for (LogVO logVO : logs) {
 			if (logVO.getLogoutDate() != null)
 				duration += logVO.getLogoutDate().getTime() - logVO.getLoginDate().getTime();
+			else
+				duration += new Date().getTime() - logVO.getLoginDate().getTime();
 		}
 
 		minutes = TimeUnit.MILLISECONDS.toMinutes(duration);

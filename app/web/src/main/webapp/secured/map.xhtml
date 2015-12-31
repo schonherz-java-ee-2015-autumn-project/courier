@@ -37,7 +37,7 @@
 		<h:outputScript library="plugins" name="fastclick/fastclick.min.js" />
 		<!-- AdminLTE App -->
 		<h:outputScript library="dist" name="js/app.min.js" />
-	
+
 		<script
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo54L8yC4OrNibZr25ggrhv0egXe-Cey4" />
 		<script>
@@ -50,6 +50,8 @@
 			var directionsDisplay;
 			var directionsService = new google.maps.DirectionsService();
 			var geocoder;
+			var totalDistance = 0;
+			var totalDuration = 0;
 
 			function calculateDistances() {
 
@@ -74,7 +76,10 @@
 					//build the waypoints.
 
 					for (var i = routes.elements.length - 1; i >= 0; i--) {
-						var rteLength = routes.elements[i].duration.value;
+						var rteLength = routes.elements[i].distance.value;
+						var rteDuration = routes.elements[i].duration.value;
+						totalDistance = totalDistance + rteLength;
+						totalDuration = totalDuration + rteDuration;
 						sortable.push([ destinations[i], rteLength ]);
 					}
 					//sort the result lengths from shortest to longest.
@@ -112,6 +117,12 @@
 				};
 				directionsService.route(request, function(result, status) {
 					if (status == google.maps.DirectionsStatus.OK) {
+					 var summaryPanel = document.getElementById('directions-panel');
+					 summaryPanel.innerHTML = '';
+					  summaryPanel.innerHTML += 
+					    '<strong><i class="fa fa-globe margin-r-5"></i>'+'#{out.distance}'+'</strong> '+ totalDistance/1000+ ' km<br></br>'+
+					    '<strong><i class="fa fa-clock-o margin-r-5"></i>'+'#{out.duration}'+'</strong> '+ (totalDuration/60).toFixed(0)+ ' minute(s)';
+					
 						directionsDisplay.setDirections(result);
 					}
 				});
@@ -272,6 +283,7 @@
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">#{mapBean.selectedCargo.restaurant.name}</h3>
+
 							</div>
 
 							<div class="box-body">
@@ -315,7 +327,18 @@
 
 						</div>
 					</div>
+
 					<div class="col-xs-12 col-sm-12 col-md-4">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">#{out.routeInfo}</h3>
+
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div id="directions-panel"></div>
+							</div>
+						</div>
 						<p:layout rendered="#{mapBean.selectedCargo.status == 'Received'}">
 							<div class="box box-danger box-solid">
 								<div class="box-header with-border">
@@ -414,8 +437,11 @@
 
 							</div>
 						</p:layout>
+
 					</div>
 				</div>
+
+
 				</section>
 			</div>
 		</div>
