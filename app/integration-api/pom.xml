@@ -26,11 +26,6 @@
 			<version>${version}</version>
 		</dependency>
 		<!-- felvesszük függőségnek a core-t -->
-		<dependency>
-			<groupId>hu.schonherz.java.training.courier</groupId>
-			<artifactId>core</artifactId>
-			<version>${version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
