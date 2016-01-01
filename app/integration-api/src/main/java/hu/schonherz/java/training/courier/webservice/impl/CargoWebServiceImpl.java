@@ -28,6 +28,7 @@ import hu.schonherz.administration.wsserviceapi.SynchronizationService;
 import hu.schonherz.administration.wsserviceapi.SynchronizationServiceImpl;
 import hu.schonherz.administration.wsserviceapi.UserRole;
 import hu.schonherz.administration.wsserviceapi.WebUserDTO;
+import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
@@ -83,6 +84,11 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	@Override
 	public void getFreeCargosFromAdministration() throws Exception {
 		
+	}
+
+	@Override
+	public Long setCargoStatus(CargoStatus status) throws Exception {
+		return null;
 	}
 
 	
