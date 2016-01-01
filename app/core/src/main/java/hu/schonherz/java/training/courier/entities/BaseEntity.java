@@ -27,7 +27,7 @@ public class BaseEntity {
 	}
 
 	public void setRegdate(Date regDate) {
-		regDate = regDate;
+		this.regdate = regDate;
 	}
 
 	public Date getModdate() {
@@ -35,7 +35,7 @@ public class BaseEntity {
 	}
 
 	public void setModdate(Date modDate) {
-		modDate = modDate;
+		this.moddate = modDate;
 	}
 
 	public Long getRegUser() {
@@ -43,7 +43,7 @@ public class BaseEntity {
 	}
 
 	public void setRegUser(Long regUser) {
-		regUser = regUser;
+		this.regUser = regUser;
 	}
 
 	public Long getModUser() {
@@ -51,7 +51,7 @@ public class BaseEntity {
 	}
 
 	public void setModUser(Long modUser) {
-		modUser = modUser;
+		this.modUser = modUser;
 	}
 
 	public Long getId() {

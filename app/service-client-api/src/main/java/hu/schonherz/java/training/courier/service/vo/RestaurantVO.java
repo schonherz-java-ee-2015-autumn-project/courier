@@ -9,6 +9,7 @@ public class RestaurantVO implements Serializable {
 	private String name;
 	private String address;
 	private String phone;
+	private Long globalid;
 
 	public Long getId() {
 		return id;
@@ -40,6 +41,14 @@ public class RestaurantVO implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 	@Override

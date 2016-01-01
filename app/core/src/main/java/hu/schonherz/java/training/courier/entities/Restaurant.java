@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class Restaurant extends BaseEntity implements Serializable {
+public class Restaurant extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String name;

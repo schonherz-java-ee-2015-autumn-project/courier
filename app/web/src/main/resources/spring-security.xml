@@ -13,7 +13,7 @@
 		<security:intercept-url pattern="/secured/admin/*"
 			requires-channel="https" access="hasRole('ADMIN')" />
 		<security:form-login login-page="/public/login.xhtml"
-			login-processing-url="/login" default-target-url="/secured/index.xhtml"
+			login-processing-url="/login" default-target-url="/secured/profile.xhtml"
 			authentication-failure-url="/public/login.xhtml?error=1"
 			username-parameter="j_username" password-parameter="j_password"
 			authentication-success-handler-ref="myAuthenticationSuccessHandler" />

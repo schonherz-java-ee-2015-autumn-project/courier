@@ -7,8 +7,7 @@ public class ItemVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
-	private Long quantity;
-	private double price;
+	private Double price;
 	private Long globalid;
 	public String getName() {
 		return name;
@@ -16,14 +15,6 @@ public class ItemVO implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Long getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Long quantity) {
-		this.quantity = quantity;
 	}
 
 	public Long getId() {
@@ -44,7 +35,7 @@ public class ItemVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ItemVO [id=" + id + ", name=" + name + ", quantity=" + quantity + ", price=" + price + "]";
+		return "ItemVO [id=" + id + ", name=" + name + ", price=" + price + "]";
 	}
 
 	public Long getGlobalid() {

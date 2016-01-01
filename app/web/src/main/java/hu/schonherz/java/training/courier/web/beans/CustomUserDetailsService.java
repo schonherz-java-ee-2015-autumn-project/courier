@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		UserVO user;
 
 		try {
-			user = userService.findUserByName(username);
+			user = userService.findUserByNameWhereIsRemovedZero(username);
 			if (user == null) {
 				throw new UsernameNotFoundException(username);
 			}

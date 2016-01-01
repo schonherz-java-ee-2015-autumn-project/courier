@@ -4,30 +4,31 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Address extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String address;
-	@ManyToMany
-	private List<Item> items;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<AddressDetails> details;
 	private Date deadline;
 	@Enumerated(EnumType.STRING)
 	private Payment payment;
 	@Enumerated(EnumType.STRING)
 	private AddressStatus status;
 
-	public List<Item> getItems() {
-		return items;
+	public List<AddressDetails> getDetails() {
+		return details;
 	}
 
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public void setDetails(List<AddressDetails> details) {
+		this.details = details;
 	}
 
 	public Date getDeadline() {

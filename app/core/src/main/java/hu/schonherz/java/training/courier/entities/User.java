@@ -3,19 +3,22 @@ package hu.schonherz.java.training.courier.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class User extends BaseEntity implements Serializable {
+public class User extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String username;
 	private String fullname;
 	private String password;
-	private Long transporting;
-	private Long globalid;
+	@Column(length = 20, columnDefinition = "bigint(20) default 0")
+	private Long transporting = 0L;
+	@Column(nullable = false)
+	private boolean removed;
 	@ManyToMany
 	private List<Role> roles;
 
@@ -63,12 +66,12 @@ public class User extends BaseEntity implements Serializable {
 		this.transporting = transporting;
 	}
 
-	public Long getGlobalid() {
-		return globalid;
+	public boolean isRemoved() {
+		return removed;
 	}
 
-	public void setGlobalid(Long globalid) {
-		this.globalid = globalid;
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
 
 }
