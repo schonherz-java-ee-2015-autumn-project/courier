@@ -39,7 +39,7 @@
 			<artifactId>core</artifactId>
 			<version>${version}</version>
 		</dependency>
-<!-- 		felvesszük függőségnek a wsdl-ből már kigenerált modult -->
+		<!-- felvesszük függőségnek a wsdl-ből már kigenerált modult -->
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>integration-service-client</artifactId>
@@ -64,7 +64,12 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>1.8.5</version>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>2.2.1</version>
 		</dependency>
 
 		<dependency>
