@@ -21,7 +21,6 @@ import hu.schonherz.java.training.courier.service.vo.CargoVO;
 
 @ManagedBean(name = "cargoListBean")
 @ViewScoped
-@EJB(name = "hu.schonherz.service.WebServiceClientLocal", beanInterface = WebServiceClientLocal.class)
 public class CargoListBean implements Serializable {
 	private static final Logger logger = Logger.getLogger(CargoListBean.class);
 	/**
@@ -59,8 +58,8 @@ public class CargoListBean implements Serializable {
 		this.localPart = localPart;
 	}
 
-	@EJB
-	WebServiceClientLocal webServiceClientLocal;
+//	@EJB
+//	WebServiceClientLocal webServiceClientLocal;
 	
 	@EJB
 	CargoServiceLocal cargoService;
@@ -110,7 +109,7 @@ public class CargoListBean implements Serializable {
 		//CourierWebServiceImplService courierWebService = new CourierWebServiceImplService(wsdl, qName);
 		//CourierWebService serviceImpl = courierWebService.getCourierWebServiceImplPort();
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
-		webServiceClientLocal.getCargos();
+//		webServiceClientLocal.getCargos();
 		//setCargoList();
 		//setCargoList(serviceImpl.getFreeCargos());
 	}

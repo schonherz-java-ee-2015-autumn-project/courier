@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.service;
 
+import java.util.Date;
 import java.util.List;
 
 import hu.schonherz.java.training.courier.service.vo.UserVO;
@@ -17,4 +18,8 @@ public interface UserServiceLocal {
 	Integer updateUserByGlobalId(UserVO userVO) throws Exception;
 
 	public UserVO findUserByNameWhereIsRemovedZero(String username) throws Exception;
+	
+	public UserVO findByGlobalId(Long globalId) throws Exception;
+	
+	Date findLastModDate() throws Exception;
 }

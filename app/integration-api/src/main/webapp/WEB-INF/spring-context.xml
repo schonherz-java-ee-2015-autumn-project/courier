@@ -23,5 +23,6 @@
 <!-- 	<jee:local-slsb id="webServiceClientLocal" -->
 <!-- 		jndi-name="hu.schonherz.service.WebServiceClientLocal" -->
 <!-- 		business-interface="hu.schonherz.java.training.courier.service.WebServiceClientLocal" /> -->
+<!-- 	<jee:local-slsb id="userWebService" business-interface="hu.schonherz.java.training.courier.service.UserWebServiceLocal" jndi-name="hu.schonherz.service.UserWebService"></jee:local-slsb> -->
 
 </beans>

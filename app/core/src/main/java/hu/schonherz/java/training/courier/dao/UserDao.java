@@ -20,17 +20,20 @@ public interface UserDao extends JpaRepository<User, Long> {
 	User save(User user);
 
 	@Modifying(clearAutomatically = true)
-	@Query(value="update user set id = ?2 where id = ?1",nativeQuery=true)
+	@Query(value = "update user set id = ?2 where id = ?1", nativeQuery = true)
 	void updateUserId(Long existingId, Long newId);
-	
-	@Modifying(clearAutomatically=true)
-	@Query(value="update user set username = :userN, fullname = :fullN, password = :passW, moddate = :modD where globalid = :globalId",nativeQuery=true)
-	Integer updateUserByGlobalId(@Param("userN") String username,@Param("fullN") String fullname,@Param("passW") String password,@Param("modD") Date moddate, @Param("globalId") Long globalid);
-	
+
+	@Modifying(clearAutomatically = true)
+	@Query(value = "update user set username = :userN, fullname = :fullN, password = :passW, moddate = :modD where globalid = :globalId", nativeQuery = true)
+	Integer updateUserByGlobalId(@Param("userN") String username, @Param("fullN") String fullname,
+			@Param("passW") String password, @Param("modD") Date moddate, @Param("globalId") Long globalid);
+
 	@Query(value = "SELECT * from user where username = :name and removed = 0", nativeQuery = true)
 	User findUserByNameWhereIsRemovedZero(@Param("name") String name);
 
-	@Query(value = "select moddate from user where id = 1 ", nativeQuery = true)
+	@Query(value = "SELECT MAX(moddate) FROM user", nativeQuery = true)
 	Date findLastModDate();
+	
+	User findByGlobalid(Long globalId);
 
 }
