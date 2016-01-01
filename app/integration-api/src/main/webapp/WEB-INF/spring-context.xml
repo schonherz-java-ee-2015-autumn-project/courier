@@ -15,14 +15,7 @@
 		base-package="hu.schonherz.java.training.courier.integration-api" />
 
 	<import resource="classpath:spring-service.xml" />
-	
-<!-- 	<jee:local-slsb id="UserService" -->
-<!-- 		jndi-name="hu.schonherz.service.UserServiceLocal" -->
-<!-- 		business-interface="hu.schonherz.java.training.courier.service.UserServiceLocal" /> -->
 
-<!-- 	<jee:local-slsb id="webServiceClientLocal" -->
-<!-- 		jndi-name="hu.schonherz.service.WebServiceClientLocal" -->
-<!-- 		business-interface="hu.schonherz.java.training.courier.service.WebServiceClientLocal" /> -->
 <!-- 	<jee:local-slsb id="userWebService" business-interface="hu.schonherz.java.training.courier.service.UserWebServiceLocal" jndi-name="hu.schonherz.service.UserWebService"></jee:local-slsb> -->
-
+	
 </beans>

@@ -51,6 +51,6 @@
   </ejb-local-ref>
    <ejb-local-ref>
     <ejb-ref-name>hu.schonherz.service.UserWebService</ejb-ref-name>
-    <local>hu.schonherz.java.training.courier.service.UserWebServiceLocal</local>
+    <local>hu.schonherz.java.training.courier.service.webservice.UserWebServiceLocal</local>
   </ejb-local-ref>
 </web-app>
