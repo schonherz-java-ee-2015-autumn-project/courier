@@ -15,9 +15,7 @@ import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
 
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
-import hu.schonherz.java.training.courier.service.WebServiceClientLocal;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
-
 
 @ManagedBean(name = "cargoListBean")
 @ViewScoped
@@ -58,12 +56,9 @@ public class CargoListBean implements Serializable {
 		this.localPart = localPart;
 	}
 
-//	@EJB
-//	WebServiceClientLocal webServiceClientLocal;
-	
 	@EJB
 	CargoServiceLocal cargoService;
-	
+
 	@PostConstruct
 	public void init() {
 		wsdlProperties = new Properties();
@@ -88,15 +83,13 @@ public class CargoListBean implements Serializable {
 		this.cargoList = cargoList;
 	}
 
-/*	public void updateCargos(Long status) {
-
-		try {
-			List<CargoVO> cargosInDb = cargoService.findAllByStatus(status);
-
-		} catch (Exception e) {
-			logger.info(e.getMessage());
-		}
-	}*/
+	/*
+	 * public void updateCargos(Long status) {
+	 * 
+	 * try { List<CargoVO> cargosInDb = cargoService.findAllByStatus(status);
+	 * 
+	 * } catch (Exception e) { logger.info(e.getMessage()); } }
+	 */
 	public void getCargos() {
 		URL wsdl = null;
 		try {
@@ -105,13 +98,15 @@ public class CargoListBean implements Serializable {
 			e.printStackTrace();
 		}
 
-		//QName qName = new QName(namespaceURI, localPart);
-		//CourierWebServiceImplService courierWebService = new CourierWebServiceImplService(wsdl, qName);
-		//CourierWebService serviceImpl = courierWebService.getCourierWebServiceImplPort();
+		// QName qName = new QName(namespaceURI, localPart);
+		// CourierWebServiceImplService courierWebService = new
+		// CourierWebServiceImplService(wsdl, qName);
+		// CourierWebService serviceImpl =
+		// courierWebService.getCourierWebServiceImplPort();
 		logger.info("LOG: Getting cargos list from webservice, right now we are mocking.");
-//		webServiceClientLocal.getCargos();
-		//setCargoList();
-		//setCargoList(serviceImpl.getFreeCargos());
+		// webServiceClientLocal.getCargos();
+		// setCargoList();
+		// setCargoList(serviceImpl.getFreeCargos());
 	}
 
 }

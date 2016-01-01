@@ -24,6 +24,7 @@ public class UserListBean implements Serializable {
 
 	@EJB
 	UserWebServiceLocal userWebServiceLocal;
+	
 	@EJB
 	UserServiceLocal userServiceLocal;
 	private List<UserVO> userList;
