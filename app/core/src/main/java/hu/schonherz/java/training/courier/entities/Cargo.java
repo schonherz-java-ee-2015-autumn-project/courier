@@ -27,6 +27,9 @@ public class Cargo extends GlobalEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private CargoStatus status = CargoStatus.getValue(1L);
 
+	private Long totalDistance;
+	private Long totalDuration;
+
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
@@ -57,6 +60,22 @@ public class Cargo extends GlobalEntity implements Serializable {
 
 	public void setStatus(CargoStatus status) {
 		this.status = status;
+	}
+
+	public Long getTotalDistance() {
+		return totalDistance;
+	}
+
+	public void setTotalDistance(Long totalDistance) {
+		this.totalDistance = totalDistance;
+	}
+
+	public Long getTotalDuration() {
+		return totalDuration;
+	}
+
+	public void setTotalDuration(Long totalDuration) {
+		this.totalDuration = totalDuration;
 	}
 
 }

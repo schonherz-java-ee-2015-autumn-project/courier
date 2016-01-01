@@ -111,21 +111,21 @@
 										</div>
 										<div class="box-body">
 											<ul class="list-group list-group-unbordered">
-												<li class="list-group-item"><b>#{out.deadline}</b> <a
+												<li class="list-group-item"><b>#{out.deadline}</b> <p
 													class="pull-right"> <h:outputText
 															value="#{address.deadline}">
 															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
-														</h:outputText></a></li>
+														</h:outputText></p></li>
 												<li class="list-group-item"><b>#{out.addressValue}</b>
-													<a class="pull-right"> <h:outputText
+													<p class="pull-right"> <h:outputText
 															value="#{address.totalValue}">
 															<f:convertNumber minFractionDigits="2" />
 														</h:outputText> HUF
-												</a></li>
-												<li class="list-group-item"><b>#{out.payment}</b> <a
-													class="pull-right">#{address.payment}</a></li>
-												<li class="list-group-item"><b>#{out.status}</b> <a
-													class="pull-right">#{address.status}</a></li>
+												</p></li>
+												<li class="list-group-item"><b>#{out.payment}</b> <p
+													class="pull-right">#{address.payment}</p></li>
+												<li class="list-group-item"><b>#{out.status}</b> <p
+													class="pull-right">#{address.status}</p></li>
 											</ul>
 											<p:dataTable id="table" var="detail" value="#{address.details}"
 												styleClass="datatable">

@@ -45,6 +45,7 @@
 			var origin;
 			var center;
 			var destinations = '#{mapBean.addressList}'.split(";");
+			var totalDestinations = destinations;
 			var lat;
 			var lng;
 			var directionsDisplay;
@@ -52,7 +53,9 @@
 			var geocoder;
 			var totalDistance = 0;
 			var totalDuration = 0;
-
+			var nextDistance = 0;
+			var nextDuration = 0;
+			
 			function calculateDistances() {
 
 				var service = new google.maps.DistanceMatrixService();
@@ -74,8 +77,15 @@
 					var routes = response.rows[0];
 					var sortable = [];
 					//build the waypoints.
+					
+					var to;
+					
+					if ('#{mapBean.selectedCargo.status}' == 'Free' || '#{mapBean.selectedCargo.status}' == 'Received')
+					to = 0;
+					else
+					to = 1;
 
-					for (var i = routes.elements.length - 1; i >= 0; i--) {
+					for (var i = routes.elements.length - 1; i >= to; i--) {
 						var rteLength = routes.elements[i].distance.value;
 						var rteDuration = routes.elements[i].duration.value;
 						totalDistance = totalDistance + rteLength;
@@ -89,8 +99,22 @@
 					//build the waypoints.
 					var waypoints = [];
 					
-					for (j = 0; j &lt; sortable.length - 1; j++) {
+					nextDistance = routes.elements[0].distance.value;
+					nextDuration = routes.elements[0].duration.value;
 					
+					if ('#{mapBean.selectedCargo.status}' == 'Free' || '#{mapBean.selectedCargo.status}' == 'Reserved'){
+					
+					var restaurantDistance = routes.elements[0].distance.value;
+					var restaurantDuration = routes.elements[0].duration.value;
+					totalDistance = totalDistance + restaurantDistance;
+					totalDuration = totalDuration + restaurantDuration;
+					
+					waypoints.push({
+							location : destinations[0],
+							stopover : true
+						});
+					}
+					for (j = 0; j &lt; sortable.length - 1; j++) {
 						waypoints.push({
 							location : sortable[j][0],
 							stopover : true
@@ -119,15 +143,45 @@
 					if (status == google.maps.DirectionsStatus.OK) {
 					 var summaryPanel = document.getElementById('directions-panel');
 					 summaryPanel.innerHTML = '';
-					  summaryPanel.innerHTML += 
-					    '<strong><i class="fa fa-globe margin-r-5"></i>'+'#{out.distance}'+'</strong> '+ totalDistance/1000+ ' km<br></br>'+
-					    '<strong><i class="fa fa-clock-o margin-r-5"></i>'+'#{out.duration}'+'</strong> '+ (totalDuration/60).toFixed(0)+ ' minute(s)';
-					
+					 
+					 var showTotalDistance = 0;
+					 var showTotalDuration = 0;
+					 
+					 if ('#{mapBean.totalDistance}' == 0){
+					 	showTotalDistance = totalDistance;
+					 	showTotalDuration = totalDuration;
+					 } else {
+					 	showTotalDistance = '#{mapBean.selectedCargo.totalDistance}';
+					 	showTotalDuration = '#{mapBean.selectedCargo.totalDuration}';
+					 }
+					 
+					 summaryPanel.innerHTML += 
+					 	 '<div class="alert alert-info">'+
+                 				'<h4>'+'#{out.totalRoute}'+'</h4>'+
+                  				'<strong><i class="fa fa-globe margin-r-5"></i>'+'#{out.distance}'+'</strong>'+
+                  				'<p class="pull-right">'+ showTotalDistance/1000+ ' km</p>'+
+                  				'<br></br>'+
+                  				'<strong><i class="fa fa-clock-o margin-r-5"></i>'+'#{out.duration}'+'</strong>'+
+                  				'<p class="pull-right">'+ (showTotalDuration/60).toFixed(0)+ ' minute(s)</p>'+         				
+               				'</div>'+
+               				 '<div class="alert alert-info">'+
+                 				'<h4>'+'#{out.nextRoute}'+'</h4>'+
+                  				'<strong><i class="fa fa-globe margin-r-5"></i>'+'#{out.distance}'+'</strong>'+
+                  				'<p class="pull-right">'+ nextDistance/1000+ ' km</p>'+
+                  				'<br></br>'+
+                  				'<strong><i class="fa fa-clock-o margin-r-5"></i>'+'#{out.duration}'+'</strong>'+
+                  				'<p class="pull-right">'+ (nextDuration/60).toFixed(0)+ ' minute(s)</p>'+         				
+               				'</div>'
+               				
+               				;
 						directionsDisplay.setDirections(result);
+						
+						
 					}
 				});
 			}
-
+			
+			
 			function initialize() {
 				directionsDisplay = new google.maps.DirectionsRenderer();
 				var centerPosition = new google.maps.LatLng(38.713107,
@@ -186,6 +240,11 @@
 						window.alert('Geocoder failed due to: ' + status);
 					}
 				});
+			}
+
+			function getCargoRouteDistance() {
+  				document.getElementById("cargoStatus:totalDistance").value = totalDistance;
+  				document.getElementById("cargoStatus:totalDuration").value = totalDuration;
 			}
 
 			google.maps.event.addDomListener(window, 'load', initialize);
@@ -289,27 +348,33 @@
 							<div class="box-body">
 								<div id="map"></div>
 								<ul class="list-group list-group-unbordered">
-									<li class="list-group-item"><b>#{out.address}</b> <a
-										class="pull-right">#{mapBean.selectedCargo.restaurant.address}</a></li>
-									<li class="list-group-item"><b>#{out.cargoValue}</b> <a
-										class="pull-right"> <h:outputText
-												value="#{mapBean.selectedCargo.totalValue}">
+									<li class="list-group-item"><b>#{out.address}</b>
+										<p class="pull-right">#{mapBean.selectedCargo.restaurant.address}</p></li>
+									<li class="list-group-item"><b>#{out.cargoValue}</b>
+										<p class="pull-right">
+											<h:outputText value="#{mapBean.selectedCargo.totalValue}">
 												<f:convertNumber minFractionDigits="2" />
-											</h:outputText> HUF
-									</a></li>
-									<li class="list-group-item"><b>#{out.status}</b> <a
-										class="pull-right">#{out['cargoStatus.'.concat(mapBean.selectedCargo.status)]}</a></li>
+											</h:outputText>
+											HUF
+										</p></li>
+									<li class="list-group-item"><b>#{out.status}</b>
+										<p class="pull-right">#{out['cargoStatus.'.concat(mapBean.selectedCargo.status)]}</p></li>
 								</ul>
 								<p:layout
 									rendered="#{mapBean.selectedCargo.status == 'Reserved' or mapBean.selectedCargo.status == 'Received'}">
 									<b>#{out.changeStatus}</b>
 									<div class="pull-right">
 										<h:form id="cargoStatus">
+											<h:inputHidden id="totalDistance"
+												value="#{mapBean.totalDistance}" />
+											<h:inputHidden id="totalDuration"
+												value="#{mapBean.totalDuration}" />
 											<h:commandButton
 												value="#{out['cargoStatus.'.concat('Received')]}"
 												rendered="#{mapBean.selectedCargo.status == 'Reserved'}"
 												style="margin: 3px;" class="btn btn-success"
-												action="#{mapBean.cargoStatusChanged(3)}">
+												action="#{mapBean.cargoStatusChanged(3)}"
+												onclick="getCargoRouteDistance()">
 											</h:commandButton>
 
 											<h:commandButton
@@ -339,7 +404,8 @@
 								<div id="directions-panel"></div>
 							</div>
 						</div>
-						<p:layout rendered="#{mapBean.selectedCargo.status == 'Received'}">
+						<p:layout
+							rendered="#{mapBean.selectedCargo.status == 'Reserved' or mapBean.selectedCargo.status == 'Received'}">
 							<div class="box box-danger box-solid">
 								<div class="box-header with-border">
 									<h3 class="box-title">#{out.addresses}</h3>
@@ -371,11 +437,12 @@
 												<ul class="list-group list-group-unbordered">
 
 													<li class="list-group-item"><b>#{out.addressValue}</b>
-														<a class="pull-right"> <h:outputText
-																value="#{address.totalValue}">
+														<p class="pull-right">
+															<h:outputText value="#{address.totalValue}">
 																<f:convertNumber minFractionDigits="2" />
-															</h:outputText> HUF
-													</a></li>
+															</h:outputText>
+															HUF
+														</p></li>
 
 
 												</ul>
@@ -398,15 +465,17 @@
 														<h:outputText value="#{detail.quantity}" />
 													</p:column>
 												</p:dataTable>
-												<br></br> <b>#{out.payment}</b> <a class="pull-right"><h:form>
+												<br></br> <b>#{out.payment}</b> <a class="pull-right"> <h:form>
 														<h:selectOneMenu id="paymentStatus"
-															value="#{address.payment}" class="form-control">
+															value="#{address.payment}" class="form-control"
+															disabled="#{mapBean.selectedCargo.status == 'Reserved'}">
 															<f:ajax event="change" render="paymentStatus"
 																listener="#{mapBean.paymentStatusChanged}" />
 															<f:attribute name="addressId" value="#{address.id}" />
 															<f:selectItems value="#{mapBean.allPaymentStatus}" />
 														</h:selectOneMenu>
-													</h:form></a>
+													</h:form>
+												</a>
 
 											</div>
 
@@ -417,12 +486,14 @@
 														<h:commandButton
 															value="#{out['addressStatus.'.concat('Delivered')]}"
 															class="btn btn-success" style="margin: 3px;"
-															action="#{mapBean.addressStatusChanged(address.id, 1)}">
+															action="#{mapBean.addressStatusChanged(address.id, 1)}"
+															disabled="#{mapBean.selectedCargo.status == 'Reserved'}">
 														</h:commandButton>
 														<h:commandButton
 															value="#{out['addressStatus.'.concat('Failed')]}"
 															class="btn btn-danger" style="margin: 3px;"
-															action="#{mapBean.addressStatusChanged(address.id, 2)}">
+															action="#{mapBean.addressStatusChanged(address.id, 2)}"
+															disabled="#{mapBean.selectedCargo.status == 'Reserved'}">
 														</h:commandButton>
 													</h:form>
 												</div>

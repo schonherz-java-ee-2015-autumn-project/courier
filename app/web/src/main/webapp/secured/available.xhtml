@@ -119,16 +119,17 @@
 											<ul class="list-group list-group-unbordered">
 
 												<li class="list-group-item"><b>#{out.addressValue}</b>
-													<a class="pull-right"> <h:outputText
-															value="#{address.totalValue}">
+													<p class="pull-right">
+														<h:outputText value="#{address.totalValue}">
 															<f:convertNumber minFractionDigits="2" />
-														</h:outputText> HUF
-												</a></li>
-												<li class="list-group-item"><b>#{out.payment}</b> <a
-													class="pull-right">#{out['paymentStatus.'.concat(address.payment)]}</a></li>
+														</h:outputText>
+														HUF
+													</p></li>
+												<li class="list-group-item"><b>#{out.payment}</b>
+													<p class="pull-right">#{out['paymentStatus.'.concat(address.payment)]}</p></li>
 											</ul>
-											<p:dataTable id="table" var="detail" value="#{address.details}"
-												styleClass="datatable">
+											<p:dataTable id="table" var="detail"
+												value="#{address.details}" styleClass="datatable">
 												<f:facet name="header">
       												#{out.items}
    												</f:facet>
@@ -155,11 +156,12 @@
 
 									<h:commandButton value="#{out.map}"
 										action="#{availableBean.showOnMap(cargo.id)}"
-										class="btn btn-default">
+										class="btn btn-default"
+										disabled="#{availableBean.userVO.transporting > 0}">
 									</h:commandButton>
 									<h:commandButton value="#{out.pickUp}"
 										action="#{availableBean.pickUpCargo(cargo)}"
-										rendered="#{availableBean.userVO.transporting != 1}"
+										disabled="#{availableBean.userVO.transporting > 0}"
 										class="btn btn-success pull-right">
 									</h:commandButton>
 

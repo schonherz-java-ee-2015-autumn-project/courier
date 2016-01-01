@@ -18,7 +18,6 @@ import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressDetailsVO;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
-import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @ManagedBean(name = "availableBean")
