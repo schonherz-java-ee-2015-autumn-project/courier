@@ -14,14 +14,7 @@
 
 
 	<context:component-scan base-package="hu.schonherz.java.training.courier.service" />
-	
 	<jee:local-slsb id="UserService"
 		jndi-name="hu.schonherz.service.UserServiceLocal"
 		business-interface="hu.schonherz.java.training.courier.service.UserServiceLocal" />
-		
-	<jee:local-slsb id="webServiceClient"
-		jndi-name="java:global.ear-0.0.1.service-0.0.1.WebServiceClientImpl!hu.schonherz.java.training.courier.service.WebServiceClientLocal"
-		business-interface="hu.schonherz.java.training.courier.service.WebServiceClientLocal" />
-
-
 </beans>
