@@ -26,24 +26,19 @@ import org.quartz.spi.JobFactory;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.scheduler.jobs.GetUsersViaWebServiceJob;
 
-@Startup
-@Singleton
-@TransactionManagement(TransactionManagementType.CONTAINER)
+
 public class SchedulerServiceImpl {
 
 	static Logger logger = Logger.getLogger(SchedulerServiceImpl.class);
 
 	private Scheduler scheduler;
 
-	@Inject
-	private JobFactory cdiJobFactory;
-
 	@PostConstruct
 	public void scheduleJobs() {
 
 		try {
 			scheduler = new StdSchedulerFactory().getScheduler();
-			scheduler.setJobFactory(cdiJobFactory);
+			// scheduler.setJobFactory(cdiJobFactory);
 
 			JobKey webServiceJobKey = JobKey.jobKey("getUsersViaWebService", "WebService");
 			JobDetail webServiceJob = JobBuilder.newJob(GetUsersViaWebServiceJob.class).withIdentity(webServiceJobKey)

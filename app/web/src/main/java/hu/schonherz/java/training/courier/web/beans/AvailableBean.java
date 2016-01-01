@@ -18,11 +18,11 @@ import org.jboss.logging.Logger;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
-import hu.schonherz.java.training.courier.service.WebServiceClientLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
+import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
 
 @ManagedBean(name = "availableBean")
 @ViewScoped
@@ -31,7 +31,7 @@ public class AvailableBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<CargoVO> cargoes;
 	@EJB
-	WebServiceClientLocal webServiceClient;
+	CargoWebServiceLocal cargoWebService;
 
 	@EJB
 	CargoServiceLocal cargoService;
@@ -96,7 +96,7 @@ public class AvailableBean implements Serializable {
 		// az aktuális cargoStatus-t, ha igen akkor mi is mentünk adatbázisba
 		// ha viszont nem akkor egyértelmûen nem csinálunk semmit, csak egy
 		// hibát dobunk majd az oldalra
-		if (webServiceClient.setCargoStatus(cargo.getGlobalid(), CargoStatus.getValue(2L)) == 0) {
+		if (cargoWebService.setCargoStatus(cargo.getGlobalid(), CargoStatus.getValue(2L)) == 0) {
 			cargo.setUser(userVO);
 			cargo.setStatus(CargoStatus.getValue(2L));
 

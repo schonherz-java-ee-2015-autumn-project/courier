@@ -26,10 +26,10 @@ import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.AddressServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
-import hu.schonherz.java.training.courier.service.WebServiceClientLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
+import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
 
 @ManagedBean(name = "mapBean")
 @ViewScoped
@@ -44,12 +44,13 @@ public class MapBean implements Serializable {
 	CargoServiceLocal cargoService;
 	@EJB
 	UserServiceLocal userService;
+
 	private CargoVO selectedCargo;
 	private String addressList;
 	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
 	List<AddressVO> addresses;
 	@EJB
-	private WebServiceClientLocal webServiceClient;
+	CargoWebServiceLocal cargoWebService;
 
 	public List<AddressVO> getAddresses() {
 		return addresses;
@@ -110,7 +111,7 @@ public class MapBean implements Serializable {
 	public void cargoStatusChanged(Long value) throws Exception {
 		CargoStatus status = CargoStatus.getValue(value);
 
-		if (webServiceClient.setCargoStatus(selectedCargo.getGlobalid(), status) == 0) {
+		if (cargoWebService.setCargoStatus(selectedCargo.getGlobalid(), status) == 0) {
 			selectedCargo.setStatus(status);
 			getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString());
 			updateRoute();
