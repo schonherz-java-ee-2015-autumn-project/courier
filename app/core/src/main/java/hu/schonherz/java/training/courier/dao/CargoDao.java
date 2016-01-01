@@ -25,6 +25,6 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 	List<Cargo> findAllByStatus(CargoStatus status);
 
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update cargo set status = ?2 where id = ?1", nativeQuery = true)
-	void updateCargoStatusById(Long id, String status);
+	@Query(value = "update cargo set status = ?2, totalDistance = ?3, totalDuration = ?4 where id = ?1", nativeQuery = true)
+	void updateCargoStatusById(Long id, String status, Long distance, Long duration);
 }

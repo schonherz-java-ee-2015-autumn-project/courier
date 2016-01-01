@@ -8,16 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class User extends BaseEntity implements Serializable {
+public class User extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String username;
 	private String fullname;
 	private String password;
-	private Long transporting;
-	private Long globalid;
-	@Column(nullable=false)
+	@Column(length = 20, columnDefinition = "bigint(20) default 0")
+	private Long transporting = 0L;
+	@Column(nullable = false)
 	private boolean removed;
 	@ManyToMany
 	private List<Role> roles;
@@ -64,14 +64,6 @@ public class User extends BaseEntity implements Serializable {
 
 	public void setTransporting(Long transporting) {
 		this.transporting = transporting;
-	}
-
-	public Long getGlobalid() {
-		return globalid;
-	}
-
-	public void setGlobalid(Long globalid) {
-		this.globalid = globalid;
 	}
 
 	public boolean isRemoved() {

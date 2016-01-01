@@ -67,7 +67,8 @@
 		<section class="content">
 			<div class="row">
 				<div class="col-md-12">
-					<p:messages id="errorMessage" showDetail="true" autoUpdate="true" closable="true" />
+					<p:messages id="errorMessage" showDetail="true" autoUpdate="true"
+						closable="true" />
 					<p:dataGrid id="availableCargoes" var="cargo"
 						value="#{availableBean.cargoes}" columns="1">
 						<f:facet name="emptyMessage">
@@ -121,29 +122,30 @@
 											<ul class="list-group list-group-unbordered">
 
 												<li class="list-group-item"><b>#{out.addressValue}</b>
-													<a class="pull-right"> <h:outputText
-															value="#{address.totalValue}">
+													<p class="pull-right">
+														<h:outputText value="#{address.totalValue}">
 															<f:convertNumber minFractionDigits="2" />
-														</h:outputText> HUF
-												</a></li>
-												<li class="list-group-item"><b>#{out.payment}</b> <a
-													class="pull-right">#{out['paymentStatus.'.concat(address.payment)]}</a></li>
+														</h:outputText>
+														HUF
+													</p></li>
+												<li class="list-group-item"><b>#{out.payment}</b>
+													<p class="pull-right">#{out['paymentStatus.'.concat(address.payment)]}</p></li>
 											</ul>
-											<p:dataTable id="table" var="item" value="#{address.items}"
-												styleClass="datatable">
+											<p:dataTable id="table" var="detail"
+												value="#{address.details}" styleClass="datatable">
 												<f:facet name="header">
       												#{out.items}
    												</f:facet>
 												<p:column headerText="#{out.item}">
-													<h:outputText value="#{item.name}" />
+													<h:outputText value="#{detail.item.name}" />
 												</p:column>
 												<p:column headerText="#{out.price}">
-													<h:outputText value="#{item.price}">
+													<h:outputText value="#{detail.item.price}">
 														<f:convertNumber minFractionDigits="2" />
 													</h:outputText> HUF
 													</p:column>
 												<p:column headerText="#{out.quantity}">
-													<h:outputText value="#{item.quantity}" />
+													<h:outputText value="#{detail.quantity}" />
 												</p:column>
 											</p:dataTable>
 
@@ -158,11 +160,12 @@
 
 									<h:commandButton value="#{out.map}"
 										action="#{availableBean.showOnMap(cargo.id)}"
-										class="btn btn-default">
+										class="btn btn-default"
+										disabled="#{availableBean.userVO.transporting > 0}">
 									</h:commandButton>
 									<h:commandButton value="#{out.pickUp}"
 										action="#{availableBean.pickUpCargo(cargo)}"
-										rendered="#{availableBean.userVO.transporting != 1}"
+										disabled="#{availableBean.userVO.transporting > 0}"
 										class="btn btn-success pull-right" update="errorMessage">
 									</h:commandButton>
 

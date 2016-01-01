@@ -17,5 +17,5 @@ public interface CargoServiceLocal {
 
 	public List<CargoVO> findAllByStatus(CargoStatus cargoStatus) throws Exception;
 
-	void updateCargoStatusById(Long id, String status) throws Exception;
+	void updateCargoStatusById(Long id, String status, Long distance, Long duration) throws Exception;
 }

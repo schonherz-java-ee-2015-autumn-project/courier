@@ -18,9 +18,9 @@ import org.jboss.logging.Logger;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
+import hu.schonherz.java.training.courier.service.vo.AddressDetailsVO;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
-import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
 
@@ -53,9 +53,9 @@ public class AvailableBean implements Serializable {
 				List<AddressVO> addresses = cargoes.get(i).getAddresses();
 				for (int j = 0; j < addresses.size(); j++) {
 					addressPrice = 0;
-					List<ItemVO> items = addresses.get(j).getItems();
-					for (int k = 0; k < items.size(); k++)
-						addressPrice += items.get(k).getPrice() * items.get(k).getQuantity();
+					List<AddressDetailsVO> details = addresses.get(j).getDetails();
+					for (int k = 0; k < details.size(); k++)
+						addressPrice += details.get(k).getItem().getPrice() * details.get(k).getQuantity();
 					addresses.get(j).setTotalValue(addressPrice);
 					cargoPrice += addressPrice;
 				}

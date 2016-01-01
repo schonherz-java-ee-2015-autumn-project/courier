@@ -19,12 +19,12 @@ import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 
-@Stateless(mappedName="CargoService")
+@Stateless(mappedName = "CargoService")
 @Local(CargoServiceLocal.class)
 @Remote(CargoServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Interceptors({ SpringBeanAutowiringInterceptor.class })
-public class CargoServiceImpl implements CargoServiceLocal,CargoServiceRemote {
+public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 
 	@Autowired
 	CargoDao cargoDao;
@@ -56,8 +56,8 @@ public class CargoServiceImpl implements CargoServiceLocal,CargoServiceRemote {
 	}
 
 	@Override
-	public void updateCargoStatusById(Long id, String status) throws Exception {
-		cargoDao.updateCargoStatusById(id, status);
-		
+	public void updateCargoStatusById(Long id, String status, Long distance, Long duration) throws Exception {
+		cargoDao.updateCargoStatusById(id, status, distance, duration);
+
 	}
 }

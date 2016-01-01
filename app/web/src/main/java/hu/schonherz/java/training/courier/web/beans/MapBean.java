@@ -26,12 +26,14 @@ import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.AddressServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
+import hu.schonherz.java.training.courier.service.vo.AddressDetailsVO;
 import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
 
 @ManagedBean(name = "mapBean")
+
 @ViewScoped
 public class MapBean implements Serializable {
 	private final static Logger logger = Logger.getLogger(MapBean.class);
@@ -51,14 +53,8 @@ public class MapBean implements Serializable {
 	List<AddressVO> addresses;
 	@EJB
 	CargoWebServiceLocal cargoWebService;
-
-	public List<AddressVO> getAddresses() {
-		return addresses;
-	}
-
-	public void setAddresses(List<AddressVO> addresses) {
-		this.addresses = addresses;
-	}
+	private Long totalDistance;
+	private Long totalDuration;
 
 	@PostConstruct
 	public void init() {
@@ -69,7 +65,7 @@ public class MapBean implements Serializable {
 			id = (Long) getFacesExternalContext().getSessionMap().get("cargoId");
 			if (id == null)
 				try {
-					getFacesExternalContext().redirect("../secured/available.xhtml");
+					getFacesExternalContext().redirect("../secured/profile.xhtml");
 				} catch (IOException e) {
 					logger.info("Error:", e);
 				}
@@ -94,14 +90,14 @@ public class MapBean implements Serializable {
 
 			for (int j = 0; j < addresses.size(); j++) {
 				addressPrice = 0;
-				List<ItemVO> items = addresses.get(j).getItems();
-				for (int k = 0; k < items.size(); k++)
-					addressPrice += items.get(k).getPrice() * items.get(k).getQuantity();
+				List<AddressDetailsVO> details = addresses.get(j).getDetails();
+				for (int k = 0; k < details.size(); k++)
+					addressPrice += details.get(k).getItem().getPrice() * details.get(k).getQuantity();
 				addresses.get(j).setTotalValue(addressPrice);
 				cargoPrice += addressPrice;
 			}
 			selectedCargo.setTotalValue(cargoPrice);
-			addressList = selectedCargo.getRestaurant().getAddress();
+			addressList = selectedCargo.getRestaurant().getAddress() + ";" + updateRoute();
 
 		} catch (Exception e) {
 			logger.info("Error:", e);
@@ -109,12 +105,16 @@ public class MapBean implements Serializable {
 	}
 
 	public void cargoStatusChanged(Long value) throws Exception {
+
 		CargoStatus status = CargoStatus.getValue(value);
 
 		if (cargoWebService.setCargoStatus(selectedCargo.getGlobalid(), status) == 0) {
 			selectedCargo.setStatus(status);
-			getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString());
-			updateRoute();
+			selectedCargo.setTotalDistance(getTotalDistance());
+			selectedCargo.setTotalDuration(getTotalDuration());
+			getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString(), getTotalDistance(),
+					getTotalDuration());
+			addressList = updateRoute();
 			logger.info("INFO:AddressList -> " + addressList);
 
 			if (status.equals(CargoStatus.getValue(4L))) {
@@ -131,7 +131,7 @@ public class MapBean implements Serializable {
 
 	}
 
-	public void updateRoute() {
+	public String updateRoute() {
 
 		List<String> stringAddress = new ArrayList<String>();
 
@@ -144,20 +144,20 @@ public class MapBean implements Serializable {
 		}
 
 		if (addresses.size() > 1)
-			addressList = StringUtils.join(stringAddress, ";");
+			return StringUtils.join(stringAddress, ";");
 		else
-			addressList = stringAddress.toString();
+			return stringAddress.toString();
 
 	}
 
 	public void addressStatusChanged(Long addressId, Long addressStatusId) throws Exception {
-		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(addressStatusId);
 
+		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(addressStatusId);
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
 		addressVO.setStatus(addressStatus);
 		getAddressService().save(addressVO);
 		addresses.remove(addressVO);
-		updateRoute();
+		addressList = updateRoute();
 
 	}
 
@@ -234,6 +234,30 @@ public class MapBean implements Serializable {
 
 	public void setAllPaymentStatus(List<Payment> allPaymentStatus) {
 		this.allPaymentStatus = allPaymentStatus;
+	}
+
+	public Long getTotalDistance() {
+		return totalDistance;
+	}
+
+	public void setTotalDistance(Long totalDistance) {
+		this.totalDistance = totalDistance;
+	}
+
+	public Long getTotalDuration() {
+		return totalDuration;
+	}
+
+	public void setTotalDuration(Long totalDuration) {
+		this.totalDuration = totalDuration;
+	}
+
+	public List<AddressVO> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<AddressVO> addresses) {
+		this.addresses = addresses;
 	}
 
 }

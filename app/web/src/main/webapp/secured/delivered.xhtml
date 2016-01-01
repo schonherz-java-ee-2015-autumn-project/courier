@@ -111,38 +111,38 @@
 										</div>
 										<div class="box-body">
 											<ul class="list-group list-group-unbordered">
-												<li class="list-group-item"><b>#{out.deadline}</b> <a
+												<li class="list-group-item"><b>#{out.deadline}</b> <p
 													class="pull-right"> <h:outputText
 															value="#{address.deadline}">
 															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
-														</h:outputText></a></li>
+														</h:outputText></p></li>
 												<li class="list-group-item"><b>#{out.addressValue}</b>
-													<a class="pull-right"> <h:outputText
+													<p class="pull-right"> <h:outputText
 															value="#{address.totalValue}">
 															<f:convertNumber minFractionDigits="2" />
 														</h:outputText> HUF
-												</a></li>
-												<li class="list-group-item"><b>#{out.payment}</b> <a
-													class="pull-right">#{address.payment}</a></li>
-												<li class="list-group-item"><b>#{out.status}</b> <a
-													class="pull-right">#{address.status}</a></li>
+												</p></li>
+												<li class="list-group-item"><b>#{out.payment}</b> <p
+													class="pull-right">#{address.payment}</p></li>
+												<li class="list-group-item"><b>#{out.status}</b> <p
+													class="pull-right">#{address.status}</p></li>
 											</ul>
-											<p:dataTable id="table" var="item" value="#{address.items}"
+											<p:dataTable id="table" var="detail" value="#{address.details}"
 												styleClass="datatable">
 												<f:facet name="header">
       												#{out.items}
    												</f:facet>
 												<p:column styleClass="customHeader" headerText="#{out.item}">
-													<h:outputText value="#{item.name}" />
+													<h:outputText value="#{detail.item.name}" />
 												</p:column>
 
 												<p:column headerText="#{out.price}">
-													<h:outputText value="#{item.price}">
+													<h:outputText value="#{detail.item.price}">
 														<f:convertNumber minFractionDigits="2" />
 													</h:outputText> HUF
 													</p:column>
 												<p:column headerText="#{out.quantity}">
-													<h:outputText value="#{item.quantity}" />
+													<h:outputText value="#{detail.quantity}" />
 												</p:column>
 											</p:dataTable>
 

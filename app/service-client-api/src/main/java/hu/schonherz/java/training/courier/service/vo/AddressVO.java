@@ -14,38 +14,13 @@ public class AddressVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AddressVO other = (AddressVO) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 	private String address;
 	@OneToMany
-	private List<ItemVO> items;
+	private List<AddressDetailsVO> details;
 	private Date deadline;
 
 	private Payment payment;
-	private double totalValue;
+	private Double totalValue;
 	private AddressStatus status;
 
 	public Long getId() {
@@ -54,14 +29,6 @@ public class AddressVO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public List<ItemVO> getItems() {
-		return items;
-	}
-
-	public void setItems(List<ItemVO> items) {
-		this.items = items;
 	}
 
 	public Date getDeadline() {
@@ -96,18 +63,51 @@ public class AddressVO implements Serializable {
 		this.address = address;
 	}
 
-	@Override
-	public String toString() {
-		return "AddressVO [id=" + id + ", address=" + address + ", items=" + items + ", deadline=" + deadline
-				+ ", payment=" + payment + ", totalValue=" + totalValue + ", status=" + status + "]";
+	public List<AddressDetailsVO> getDetails() {
+		return details;
 	}
 
-	public double getTotalValue() {
+	public void setDetails(List<AddressDetailsVO> details) {
+		this.details = details;
+	}
+
+	public Double getTotalValue() {
 		return totalValue;
 	}
 
-	public void setTotalValue(double totalValue) {
+	public void setTotalValue(Double totalValue) {
 		this.totalValue = totalValue;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AddressVO other = (AddressVO) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "AddressVO [id=" + id + ", address=" + address + ", details=" + details + ", deadline=" + deadline
+				+ ", payment=" + payment + ", totalValue=" + totalValue + ", status=" + status + "]";
 	}
 
 }

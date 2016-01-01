@@ -19,24 +19,24 @@
 		<sourceDirectory>${project.build.directory}/generated</sourceDirectory>
 		<defaultGoal>jaxws:wsimport</defaultGoal>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxws-maven-plugin</artifactId>
-				<version>1.10</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-						<configuration>
-							<sourceDestDir>${project.build.directory}/generated</sourceDestDir>
-							<verbose>true</verbose>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<artifactId>jaxws-maven-plugin</artifactId> -->
+<!-- 				<version>1.10</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>wsimport</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<sourceDestDir>${project.build.directory}/generated</sourceDestDir> -->
+<!-- 							<verbose>true</verbose> -->
 							
-						</configuration>
-					</execution>
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
 
-				</executions>
-			</plugin>
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>

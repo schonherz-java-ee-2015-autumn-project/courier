@@ -43,33 +43,4 @@ public class UserConverter {
 		return rv;
 	}
 
-	public static UserVO toVo(hu.schonherz.java.training.courier.webservice.UserVO userVO) {
-		if (userVO == null) {
-			return null;
-		}
-
-		UserVO localUserVO = new UserVO();
-		localUserVO.setId(userVO.getId());
-		localUserVO.setFullname(userVO.getFullname());
-		localUserVO.setUsername(userVO.getUsername());
-		localUserVO.setPassword(userVO.getPassword());
-		localUserVO.setGlobalid(userVO.getGlobalid());
-		localUserVO.setModdate(userVO.getModdate().toGregorianCalendar().getTime());
-		localUserVO.setRegdate(userVO.getRegdate().toGregorianCalendar().getTime());
-		localUserVO.setRoles(RoleConverter.toVofromWS(userVO.getRoles()));
-		localUserVO.setTransporting(userVO.getTransporting());
-		return localUserVO;
-	}
-
-	public static List<UserVO> toVoFromWS(List<hu.schonherz.java.training.courier.webservice.UserVO> users) {
-		List<UserVO> localUsers = new ArrayList<>();
-		for (hu.schonherz.java.training.courier.webservice.UserVO userVO : users) {
-			localUsers.add(toVo(userVO));
-		}
-		return localUsers;
-
-	}
-	
-	
-
 }

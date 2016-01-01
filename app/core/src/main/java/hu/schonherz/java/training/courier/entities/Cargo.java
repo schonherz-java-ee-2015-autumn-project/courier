@@ -3,28 +3,32 @@ package hu.schonherz.java.training.courier.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
-public class Cargo extends BaseEntity implements Serializable {
+public class Cargo extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne
+	@ManyToOne
 	private User user;
-	@OneToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Restaurant restaurant;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	List<Address> addresses;
 
+	@Column(length = 32, columnDefinition = "varchar(32) default 'Free'")
 	@Enumerated(EnumType.STRING)
-	private CargoStatus status;
-	private Long globalid;
+	private CargoStatus status = CargoStatus.getValue(1L);
+
+	private Long totalDistance;
+	private Long totalDuration;
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -58,12 +62,20 @@ public class Cargo extends BaseEntity implements Serializable {
 		this.status = status;
 	}
 
-	public Long getGlobalid() {
-		return globalid;
+	public Long getTotalDistance() {
+		return totalDistance;
 	}
 
-	public void setGlobalid(Long globalid) {
-		this.globalid = globalid;
+	public void setTotalDistance(Long totalDistance) {
+		this.totalDistance = totalDistance;
+	}
+
+	public Long getTotalDuration() {
+		return totalDuration;
+	}
+
+	public void setTotalDuration(Long totalDuration) {
+		this.totalDuration = totalDuration;
 	}
 
 }

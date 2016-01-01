@@ -11,7 +11,7 @@ public class PickedCargoVO implements Serializable {
 	private RestaurantVO restaurant;
 	List<AddressVO> addresses;
 	private Long status;
-	private double totalValue;
+	private Double totalValue;
 
 	public Long getId() {
 		return id;
@@ -37,11 +37,11 @@ public class PickedCargoVO implements Serializable {
 		this.addresses = addresses;
 	}
 
-	public double getTotalValue() {
+	public Double getTotalValue() {
 		return totalValue;
 	}
 
-	public void setTotalValue(double totalValue) {
+	public void setTotalValue(Double totalValue) {
 		this.totalValue = totalValue;
 	}
 

@@ -5,13 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class Item extends BaseEntity implements Serializable {
+public class Item extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private Long quantity;
-	private double price;
-	private Long globalid;
+	private Double price;
 	public String getName() {
 		return name;
 	}
@@ -20,28 +18,12 @@ public class Item extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 
-	public Long getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Long quantity) {
-		this.quantity = quantity;
-	}
-
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
-	}
-
-	public Long getGlobalid() {
-		return globalid;
-	}
-
-	public void setGlobalid(Long globalid) {
-		this.globalid = globalid;
 	}
 
 }

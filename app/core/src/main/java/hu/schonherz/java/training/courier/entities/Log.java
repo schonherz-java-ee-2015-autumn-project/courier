@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Log extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne
+	@ManyToOne
 	private User user;
 	private Date loginDate;
 	private Date logoutDate;
