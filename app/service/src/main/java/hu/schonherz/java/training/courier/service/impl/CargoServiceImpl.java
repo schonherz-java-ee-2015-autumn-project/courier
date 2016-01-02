@@ -14,6 +14,7 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.java.training.courier.dao.CargoDao;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
@@ -58,5 +59,10 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	public void updateCargoStatusById(Long id, String status, Long distance, Long duration) throws Exception {
 		cargoDao.updateCargoStatusById(id, status, distance, duration);
 
+	}
+
+	@Override
+	public Double findDailyIncomeByPayment(String actualDate, Payment payment) {
+		return cargoDao.findDailyIncomeByPayment(actualDate, payment);
 	}
 }

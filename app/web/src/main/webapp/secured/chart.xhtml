@@ -22,8 +22,20 @@
 							</div>
 						</div>
 						<div class="box-body">
-							
+							<p:chart type="bar" model="#{statisticsBean.barModel}"  responsive="true" style="height:400px"/>
 						</div>
+						<h:form>
+							<div class="box-footer">
+								<h:commandButton value="Previous"
+									action="#{statisticsBean.previousDays()}"
+									class="btn btn-default">
+								</h:commandButton>
+								<h:commandButton value="Next"
+									action="#{statisticsBean.nextDays()}"
+									class="btn btn-default pull-right">
+								</h:commandButton>
+							</div>
+						</h:form>
 						<!-- /.box-body-->
 					</div>
 					<!-- /.box -->
