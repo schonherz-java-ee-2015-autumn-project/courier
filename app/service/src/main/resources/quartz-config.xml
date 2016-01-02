@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data.xsd"
+	version="1.8">
+
+	<schedule>
+		<job>
+			<name>UserRefresh</name>
+			<group>UserAdminService</group>
+			<description>Synchronizing users with the administration module</description>
+			<job-class>hu.schonherz.java.training.courier.service.scheduler.jobs.GetUsersViaWebServiceJob
+			</job-class>
+		</job>
+		<trigger>
+			<cron>
+				<name>UserRefreshTrigger</name>
+				<job-name>UserRefresh</job-name>
+				<job-group>UserAdminService</job-group>
+				<cron-expression>0 0 7 * * ?</cron-expression>
+<!-- 				felhasználok lekérése minden nap reggel 7 kor és utána próbálkozás -->
+			</cron>
+		</trigger>
+
+
+		<job>
+			<name>CargoRefresh</name>
+			<group>CargoAdminService</group>
+			<description>Synchronizing cargos with the administration module which is given by the restaurant module</description>
+			<job-class>hu.schonherz.java.training.courier.service.scheduler.jobs.GetFreeCargosViaWebServiceJob
+			</job-class>
+		</job>
+		<trigger>
+			<cron>
+				<name>CargoRefreshTrigger</name>
+				<job-name>CargoRefresh</job-name>
+				<job-group>CargoAdminService</job-group>
+				<cron-expression>0 0/1 * 1/1 * ? *</cron-expression>
+<!-- 				szállítmányok lekérése percenként -->
+			</cron>
+		</trigger>
+	</schedule>
+
+</job-scheduling-data>
+  

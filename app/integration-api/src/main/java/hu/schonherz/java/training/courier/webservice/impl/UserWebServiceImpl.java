@@ -36,7 +36,6 @@ import hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemot
 @Stateless(mappedName = "userWebService")
 @Local(UserWebServiceLocal.class)
 @Remote(UserWebServiceRemote.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Interceptors({ SpringBeanAutowiringInterceptor.class })
 public class UserWebServiceImpl implements UserWebServiceLocal, UserWebServiceRemote {
 
@@ -120,16 +119,12 @@ public class UserWebServiceImpl implements UserWebServiceLocal, UserWebServiceRe
 		int globalId, id;
 		for (UserVO dbUser : usersInDB) {
 			for (WebUserDTO wsUser : usersInWS) {
-				System.out.println("GI:" + dbUser.getId());
 				globalId = dbUser.getGlobalid() == null ? 0 : dbUser.getGlobalid().intValue();
 				id = wsUser.getId().intValue();
 				if (globalId == id) {
 					try {
-						// userServiceLocal.updateUserByGlobalId(convertToUserVO(wsUser));
 						UserVO updatableUser = userServiceLocal.findByGlobalId(wsUser.getId());
-						logger.info("User:" + updatableUser.toString());
 						updatableUser = convertToUserVO(wsUser);
-						logger.info("User:" + updatableUser.toString());
 						userServiceLocal.updateUserByGlobalId(updatableUser);
 						updatedUsers++;
 					} catch (Exception e) {

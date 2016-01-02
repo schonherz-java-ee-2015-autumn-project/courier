@@ -26,10 +26,9 @@ import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote;
 
-@Stateless(mappedName = "userWebService")
+@Stateless(mappedName = "cargoWebService")
 @Local(CargoWebServiceLocal.class)
 @Remote(CargoWebServiceRemote.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Interceptors({ SpringBeanAutowiringInterceptor.class })
 public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServiceRemote {
 

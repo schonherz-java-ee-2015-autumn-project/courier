@@ -17,4 +17,5 @@
 	<jee:local-slsb id="UserService"
 		jndi-name="hu.schonherz.service.UserServiceLocal"
 		business-interface="hu.schonherz.java.training.courier.service.UserServiceLocal" />
+
 </beans>
