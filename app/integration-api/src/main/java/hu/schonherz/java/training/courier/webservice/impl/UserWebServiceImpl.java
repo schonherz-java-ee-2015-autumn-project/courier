@@ -64,9 +64,9 @@ public class UserWebServiceImpl implements UserWebServiceLocal, UserWebServiceRe
 			logger.info("Error:", e1);
 		}
 
-		url = wsdlProperties.getProperty("url");
+		url = wsdlProperties.getProperty("synchronization.service.url");
 		namespaceURI = wsdlProperties.getProperty("namespaceURI");
-		localPart = wsdlProperties.getProperty("localPart");
+		localPart = wsdlProperties.getProperty("synchronization.localPart");
 		logger.info("INFO: WS -> URL:" + url);
 		logger.info("INFO: WS -> namespaceURI:" + namespaceURI);
 		logger.info("INFO: WS -> localPart:" + localPart);

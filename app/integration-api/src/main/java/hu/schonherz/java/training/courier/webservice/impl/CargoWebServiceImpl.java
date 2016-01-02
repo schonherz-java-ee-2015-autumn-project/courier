@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,11 +17,18 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
+import hu.schonherz.administrator.CourierService;
+import hu.schonherz.administrator.CourierServiceImpl;
+import hu.schonherz.administrator.RemoteCargoDTO;
+import hu.schonherz.administrator.SynchronizationService;
+import hu.schonherz.administrator.SynchronizationServiceImpl;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
@@ -37,10 +46,18 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	@EJB
 	CargoServiceLocal cargoServiceLocal;
 
-	private String url;
+	private String courierUrl;
+	private String synchronizationUrl;
 	private String namespaceURI;
-	private String localPart;
+	private String courierLocalPart;
+	private String synchronizationLocalPart;
 	private Properties wsdlProperties;
+
+	private CourierServiceImpl courierServiceImpl;
+	private CourierService courierService;
+
+	private SynchronizationServiceImpl synchronizationServiceImpl;
+	private SynchronizationService synchronizationService;
 
 	@PostConstruct
 	void init() {
@@ -53,59 +70,114 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 			logger.info("Error:", e1);
 		}
 
-		url = wsdlProperties.getProperty("url");
-		namespaceURI = wsdlProperties.getProperty("namespaceURI");
-		localPart = wsdlProperties.getProperty("localPart");
-		logger.info("INFO: WS -> URL:" + url);
-		logger.info("INFO: WS -> namespaceURI:" + namespaceURI);
-		logger.info("INFO: WS -> localPart:" + localPart);
+		courierUrl = wsdlProperties.getProperty("courier.service.url");
+		courierLocalPart = wsdlProperties.getProperty("courier.localPart");
 
-		URL wsdl = null;
+		synchronizationUrl = wsdlProperties.getProperty("synchronization.service.url");
+		synchronizationLocalPart = wsdlProperties.getProperty("synchronization.localPart");
+
+		namespaceURI = wsdlProperties.getProperty("namespaceURI");
+
+		logger.info("INFO: WS -> COURIERURL:" + courierUrl);
+		logger.info("INFO: WS -> COURIERLocalPart:" + courierLocalPart);
+
+		logger.info("INFO: WS -> SYNCHRONIUAZIONUrl:" + synchronizationUrl);
+		logger.info("INFO: WS -> SYNCHRONIUAZIONLocalPart:" + synchronizationLocalPart);
+
+		logger.info("INFO: WS -> namespaceURI:" + namespaceURI);
+
+		URL courierWsdl = null;
+		URL synchronizationWsdl = null;
+
 		try {
-			wsdl = new URL(url);
+			courierWsdl = new URL(courierUrl);
+			synchronizationWsdl = new URL(synchronizationUrl);
 		} catch (MalformedURLException e) {
 			logger.info("Error:", e);
 		}
 
-		QName qName = new QName(namespaceURI, localPart);
+		QName courierqName = new QName(namespaceURI, courierLocalPart);
+		QName synchronizationqName = new QName(namespaceURI, synchronizationLocalPart);
+		// csatlakozunk a webServicehez.
+		courierServiceImpl = new CourierServiceImpl(courierWsdl, courierqName);
+		courierService = courierServiceImpl.getCourierServiceImplPort();
+		// csatlakozunk a synchronization WebServicehez
+		synchronizationServiceImpl = new SynchronizationServiceImpl(synchronizationWsdl, synchronizationqName);
+		synchronizationService = synchronizationServiceImpl.getSynchronizationServiceImplPort();
 	}
 
 	@Override
 	public void getFreeCargosFromAdministration() throws Exception {
 		// courierWebService majd lekéri az admin modultól a szállításokat.
 		List<CargoVO> cargosInDB = cargoServiceLocal.findAllByStatus(CargoStatus.getValue(1L));
+
+		GregorianCalendar gregorianDate = new GregorianCalendar();
+		gregorianDate.setTime(new Date());
+		XMLGregorianCalendar lastRequestForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
+		
 		updateCargos(cargosInDB);
 	}
 
 	@Override
 	public Long setCargoStatus(Long globalId, CargoStatus status) throws Exception {
-		//Ide jön majd a státusz update az admin moduk felé, egyenlõre hogy ne legyen baj minden sikeres
+		// Ide jön majd a státusz update az admin moduk felé, egyenlõre hogy ne
+		// legyen baj minden sikeres
+
 		return (long) 0;
 	}
 
-	public void updateCargos(List<CargoVO> cargosInDB /*,List<CargoWebVO> cargosInWS*/ ) {
+	public void updateCargos(
+			List<CargoVO> cargosInDB /* ,List<CargoWebVO> cargosInWS */ ) {
 		Integer newCargos = 0;
 		CargoVO newCargo;
-		
+
 		List<Long> existingIds = new ArrayList<>();
 		for (CargoVO dbCargo : cargosInDB) {
 			existingIds.add(dbCargo.getGlobalid());
 		}
-		
-		// amint megkaptuk az admin modultól az implementációt azonnal beiktatjuk
-//		for (CargoVO wsCargo : cargoListFromWS) {
-//
-//			if (!existingIds.contains((Long) wsCargo.getGlobalid())) {
-//				try {
-//					newCargo = cargoServiceLocal.save(wsCargo);
-//					newCargos++;
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					logger.error("Error:" + e.getMessage());
-//				}
-//			}
-//		}
-//		System.out.println("Update Success! New Cargos: " + newCargos);
+
+		// amint megkaptuk az admin modultól az implementációt azonnal
+		// beiktatjuk
+		// for (CargoVO wsCargo : cargoListFromWS) {
+		//
+		// if (!existingIds.contains((Long) wsCargo.getGlobalid())) {
+		// try {
+		// newCargo = cargoServiceLocal.save(wsCargo);
+		// newCargos++;
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// logger.error("Error:" + e.getMessage());
+		// }
+		// }
+		// }
+		// System.out.println("Update Success! New Cargos: " + newCargos);
+	}
+
+	@Override
+	public Long assignUserToCargo(Long userId, Long cargoId) throws Exception {
+		try {
+			courierService.assignCargoToCourier(cargoId, userId);
+		} catch (Exception e) {
+			logger.info("ERROR:", e);
+			return (long) 1;
+		}
+		return (long) 0;
+	}
+
+	public String getSynchronizationUrl() {
+		return synchronizationUrl;
+	}
+
+	public void setSynchronizationUrl(String synchronizationUrl) {
+		this.synchronizationUrl = synchronizationUrl;
+	}
+
+	public String getSynchronizationLocationUrl() {
+		return synchronizationLocalPart;
+	}
+
+	public void setSynchronizationLocationUrl(String synchronizationLocationUrl) {
+		this.synchronizationLocalPart = synchronizationLocationUrl;
 	}
 
 }

@@ -128,25 +128,6 @@
 	<build>
 <!-- 		<plugins> -->
 <!-- 			<plugin> -->
-<!-- 				<groupId>org.jvnet.jax-ws-commons</groupId> -->
-<!-- 				<artifactId>jaxws-maven-plugin</artifactId> -->
-<!-- 				<version>2.2</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<goals> -->
-<!-- 							<goal>wsgen</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<sourceDestDir>${project.build.directory}/generated</sourceDestDir> -->
-<!-- 							<verbose>true</verbose> -->
-<!-- 							<genWsdl>true</genWsdl> -->
-<!-- 							<sei>hu.schonherz.java.training.courier.webservice.impl.CourierWebServiceImpl</sei> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
-<!-- 			<plugin> -->
 <!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
 <!-- 				<configuration> -->
 <!-- 					<source>1.8</source> -->
