@@ -23,11 +23,11 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
-import hu.schonherz.administration.wsserviceapi.NotAllowedRoleException_Exception;
-import hu.schonherz.administration.wsserviceapi.SynchronizationService;
-import hu.schonherz.administration.wsserviceapi.SynchronizationServiceImpl;
-import hu.schonherz.administration.wsserviceapi.UserRole;
-import hu.schonherz.administration.wsserviceapi.WebUserDTO;
+import hu.schonherz.administrator.NotAllowedRoleException_Exception;
+import hu.schonherz.administrator.SynchronizationService;
+import hu.schonherz.administrator.SynchronizationServiceImpl;
+import hu.schonherz.administrator.UserRole;
+import hu.schonherz.administrator.WebUserDTO;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 import hu.schonherz.java.training.courier.service.webservice.UserWebServiceLocal;
