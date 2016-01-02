@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/templates/masterLayout.xhtml"
 	xmlns:sec="http://www.springframework.org/security/tags">
-	<ui:define name="pageTitle">#{out.hello}</ui:define>
+	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
 	<ui:define name="content">
 		<section class="content">
 
@@ -22,17 +22,19 @@
 							</div>
 						</div>
 						<div class="box-body">
-							<p:chart type="bar" model="#{statisticsBean.barModel}"  responsive="true" style="height:400px"/>
+							<p:chart id="incomeChart" type="bar" model="#{statisticsBean.barModel}"  responsive="true" style="height:400px"/>
 						</div>
 						<h:form>
 							<div class="box-footer">
 								<h:commandButton value="Previous"
 									action="#{statisticsBean.previousDays()}"
 									class="btn btn-default">
+									<f:ajax render=":incomeChart" />
 								</h:commandButton>
 								<h:commandButton value="Next"
 									action="#{statisticsBean.nextDays()}"
 									class="btn btn-default pull-right">
+									<f:ajax render=":incomeChart" />
 								</h:commandButton>
 							</div>
 						</h:form>
