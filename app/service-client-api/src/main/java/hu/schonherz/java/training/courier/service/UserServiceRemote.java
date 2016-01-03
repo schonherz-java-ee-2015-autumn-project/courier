@@ -19,4 +19,6 @@ public interface UserServiceRemote {
 	public UserVO findUserByNameWhereIsRemovedZero(String username) throws Exception;
 
 	public UserVO findByGlobalId(Long globalId) throws Exception;
+
+	public UserVO findOne(Long id) throws Exception;
 }
