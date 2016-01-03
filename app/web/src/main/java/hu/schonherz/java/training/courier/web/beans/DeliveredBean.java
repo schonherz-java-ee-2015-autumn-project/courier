@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import hu.schonherz.java.training.courier.entities.AddressStatus;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.AddressDetailsVO;
@@ -36,8 +37,10 @@ public class DeliveredBean implements Serializable {
 					CargoStatus.getValue(4L));
 			double cargoPrice;
 			double addressPrice;
+			double negativeIncome;
 			for (int i = 0; i < cargoes.size(); i++) {
 				cargoPrice = 0;
+				negativeIncome = 0;
 				List<AddressVO> addresses = cargoes.get(i).getAddresses();
 				for (int j = 0; j < addresses.size(); j++) {
 					addressPrice = 0;
@@ -46,8 +49,12 @@ public class DeliveredBean implements Serializable {
 						addressPrice += details.get(k).getItem().getPrice() * details.get(k).getQuantity();
 					addresses.get(j).setTotalValue(addressPrice);
 					cargoPrice += addressPrice;
+
+					if (addresses.get(j).getStatus().equals(AddressStatus.getValue(2L)))
+						negativeIncome += addressPrice;
 				}
 				cargoes.get(i).setTotalValue(cargoPrice);
+				cargoes.get(i).setIncome(cargoPrice - negativeIncome);
 			}
 
 		} catch (Exception e) {

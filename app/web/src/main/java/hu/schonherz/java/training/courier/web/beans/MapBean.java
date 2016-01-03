@@ -142,6 +142,17 @@ public class MapBean implements Serializable {
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
 		addressVO.setStatus(addressStatus);
 		getAddressService().save(addressVO);
+
+		if (addressStatus.equals(AddressStatus.getValue(1L))) {
+
+			int index = addresses.indexOf(addressVO);
+			if (selectedCargo.getIncome() == null)
+				selectedCargo.setIncome(addresses.get(index).getTotalValue());
+			else
+				selectedCargo.setIncome(selectedCargo.getIncome() + addresses.get(index).getTotalValue());
+
+		}
+
 		addresses.remove(addressVO);
 		addressList = updateRoute();
 

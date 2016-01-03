@@ -56,6 +56,9 @@ public class TimerBean {
 
 		try {
 			logs = getLogService().getLogsFrom(getMidnight());
+			if (logs.isEmpty())
+				duration = 0L;
+			else
 				getLoginDurationFromLog();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

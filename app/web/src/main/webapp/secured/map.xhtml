@@ -357,6 +357,13 @@
 											</h:outputText>
 											HUF
 										</p></li>
+									<li class="list-group-item"><b>#{out.income}</b>
+										<p class="pull-right">
+											<h:outputText value="#{mapBean.selectedCargo.income}">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText>
+											HUF
+										</p></li>
 									<li class="list-group-item"><b>#{out.status}</b>
 										<p class="pull-right">#{out['cargoStatus.'.concat(mapBean.selectedCargo.status)]}</p></li>
 								</ul>

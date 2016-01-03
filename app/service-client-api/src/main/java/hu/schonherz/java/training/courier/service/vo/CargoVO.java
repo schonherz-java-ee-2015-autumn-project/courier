@@ -14,6 +14,7 @@ public class CargoVO extends BaseVO implements Serializable {
 	List<AddressVO> addresses;
 	private CargoStatus status;
 	private Double totalValue;
+	private Double income;
 	private Long totalDistance;
 	private Long totalDuration;
 	private Long globalid;
@@ -95,6 +96,14 @@ public class CargoVO extends BaseVO implements Serializable {
 
 	public void setTotalDuration(Long totalDuration) {
 		this.totalDuration = totalDuration;
+	}
+
+	public Double getIncome() {
+		return income;
+	}
+
+	public void setIncome(Double income) {
+		this.income = income;
 	}
 
 }
