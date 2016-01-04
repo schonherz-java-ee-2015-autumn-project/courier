@@ -156,6 +156,7 @@
 					 }
 					 
 					 summaryPanel.innerHTML += 
+					
 					 	 '<div class="alert alert-info">'+
                  				'<h4>'+'#{out.totalRoute}'+'</h4>'+
                   				'<strong><i class="fa fa-globe margin-r-5"></i>'+'#{out.distance}'+'</strong>'+
@@ -171,9 +172,7 @@
                   				'<br></br>'+
                   				'<strong><i class="fa fa-clock-o margin-r-5"></i>'+'#{out.duration}'+'</strong>'+
                   				'<p class="pull-right">'+ (nextDuration/60).toFixed(0)+ ' minute(s)</p>'+         				
-               				'</div>'
-               				
-               				;
+               				'</div>';
 						directionsDisplay.setDirections(result);
 						
 						

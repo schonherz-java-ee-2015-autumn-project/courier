@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -18,7 +19,9 @@ import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
+import hu.schonherz.java.training.courier.service.converter.UserConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
+import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @Stateless(mappedName = "CargoService")
 @Local(CargoServiceLocal.class)
@@ -64,5 +67,18 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	@Override
 	public Double findDailyIncomeByPayment(String actualDate, Payment payment) {
 		return cargoDao.findDailyIncomeByPayment(actualDate, payment);
+	}
+
+	@Override
+	public List<CargoVO> findCargoesByUserIdAndStatusBetweenDatesOrderedByDeliveryDate(UserVO user, CargoStatus status,
+			Date startDate, Date endDate) throws Exception {
+		return CargoConverter.toVo(cargoDao.findCargoesByUserIdAndStatusBetweenDatesOrderedByDeliveryDate(
+				UserConverter.toEntity(user), status, startDate, endDate));
+	}
+
+	@Override
+	public void updateCargoStatusAndDeliveredAtById(Long id, String status, Date deliveredAt) throws Exception {
+		cargoDao.updateCargoStatusAndDeliveredAtById(id, status, deliveredAt);
+
 	}
 }
