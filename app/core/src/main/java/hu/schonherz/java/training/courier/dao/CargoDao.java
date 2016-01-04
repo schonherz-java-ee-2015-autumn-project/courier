@@ -20,6 +20,8 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 	List<Cargo> findCargoesById(Long cargoId);
 
 	Cargo findCargoById(Long cargoId);
+	
+	Cargo findCargoByGlobalid(Long globalid);
 
 	List<Cargo> findCargoesByUserIdAndStatus(Long userId, CargoStatus status);
 
@@ -40,6 +42,6 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 	@Query(value = "update cargo set status = ?2, deliveredAt = ?3 where id = ?1", nativeQuery = true)
 	void updateCargoStatusAndDeliveredAtById(Long id, String status, Date deliveredAt);
 
-	@Query(value = "SELECT SUM(i.price*d.quantity) FROM Cargo c join c.addresses a join a.details d join d.item i WHERE date(a.deadline) = date(:actualDate) AND a.payment = :payment AND a.status = 'Delivered'")
-	Double findDailyIncomeByPayment(@Param("actualDate") String actualDate, @Param("payment") Payment payment);
+	@Query(value = "SELECT SUM(i.price*d.quantity) FROM Cargo c join c.addresses a join a.details d join d.item i WHERE c.user = :user AND date(c.deliveredAt) = date(:actualDate) AND a.payment = :payment AND a.status = 'Delivered'")
+	Double findDailyIncomeByPayment(@Param("user") User user, @Param("actualDate") String actualDate, @Param("payment") Payment payment);
 }

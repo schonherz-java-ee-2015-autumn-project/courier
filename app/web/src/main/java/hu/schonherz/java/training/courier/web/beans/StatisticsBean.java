@@ -12,10 +12,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.DateAxis;
 
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
@@ -57,10 +57,18 @@ public class StatisticsBean implements Serializable{
 		for(int i=0;i<scale;i++) {
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 			d = calendar.getTime();
-			Double incomeByCash = cargoService.findDailyIncomeByPayment(dateFormat.format(d), Payment.Cash);
-			Double incomeByCard = cargoService.findDailyIncomeByPayment(dateFormat.format(d), Payment.Card);
-			Double incomeBySzep = cargoService.findDailyIncomeByPayment(dateFormat.format(d), Payment.SZEP);
-			Double incomeByVoucher = cargoService.findDailyIncomeByPayment(dateFormat.format(d), Payment.Voucher);
+			Double incomeByCash = null;
+			Double incomeByCard = null;
+			Double incomeBySzep = null;
+			Double incomeByVoucher = null;
+			try {
+				incomeByCash = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.Cash);
+				incomeByCard = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.Card);
+				incomeBySzep = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.SZEP);
+				incomeByVoucher = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.Voucher);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if(incomeByCash == null) incomeByCash = 0.0;
 			if(incomeByCard == null) incomeByCard = 0.0;
 			if(incomeBySzep == null) incomeBySzep = 0.0;
@@ -77,14 +85,11 @@ public class StatisticsBean implements Serializable{
         barModel.addSeries(series4);
          
         barModel.setTitle("Daily Income");
-        barModel.setLegendPosition("ne");
+        barModel.setLegendPosition("nw");
         barModel.getAxis(AxisType.Y).setLabel("Income");
         barModel.setStacked(true);
-        DateAxis axis = new DateAxis("Date");
+        Axis axis = barModel.getAxis(AxisType.X);
         axis.setTickAngle(-50);
-        //axis.setMax(dateFormat.format(Calendar.getInstance().getTime()));
-        axis.setTickFormat("%b %#d, %y");
-         
         barModel.getAxes().put(AxisType.X, axis);
     }
     

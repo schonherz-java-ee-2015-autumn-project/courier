@@ -12,6 +12,8 @@ public interface CargoServiceLocal {
 	public List<CargoVO> findCargoesById(Long cargoId) throws Exception;
 
 	public CargoVO findCargoById(Long cargoId) throws Exception;
+	
+	public CargoVO findCargoByGlobalid(Long globalid) throws Exception;
 
 	public List<CargoVO> findCargoesByUserIdAndStatus(Long userId, CargoStatus cargoStatus) throws Exception;
 
@@ -23,7 +25,7 @@ public interface CargoServiceLocal {
 
 	void updateCargoStatusAndDeliveredAtById(Long id, String status, Date deliveredAt) throws Exception;
 
-	Double findDailyIncomeByPayment(String actualDate, Payment payment);
+	Double findDailyIncomeByPayment(UserVO user, String actualDate, Payment payment) throws Exception;
 
 	List<CargoVO> findCargoesByUserIdAndStatusBetweenDatesOrderedByDeliveryDate(UserVO user, CargoStatus status,
 			Date startDate, Date endDate) throws Exception;
