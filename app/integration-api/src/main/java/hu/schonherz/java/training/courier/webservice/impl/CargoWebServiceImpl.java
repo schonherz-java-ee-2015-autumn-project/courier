@@ -113,9 +113,11 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 		GregorianCalendar gregorianDate = new GregorianCalendar();
 		gregorianDate.setTime(new Date());
-		XMLGregorianCalendar lastRequestForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
-		
-		updateCargos(cargosInDB);
+		XMLGregorianCalendar dateForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
+
+		List<RemoteCargoDTO> cargosInWS = synchronizationService.getCargosByDate(dateForCargo);
+
+		updateCargos(cargosInDB, cargosInWS);
 	}
 
 	@Override
@@ -126,8 +128,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		return (long) 0;
 	}
 
-	public void updateCargos(
-			List<CargoVO> cargosInDB /* ,List<CargoWebVO> cargosInWS */ ) {
+	public void updateCargos(List<CargoVO> cargosInDB, List<RemoteCargoDTO> cargosInWS) {
 		Integer newCargos = 0;
 		CargoVO newCargo;
 
@@ -138,19 +139,19 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 		// amint megkaptuk az admin modultól az implementációt azonnal
 		// beiktatjuk
-		// for (CargoVO wsCargo : cargoListFromWS) {
-		//
-		// if (!existingIds.contains((Long) wsCargo.getGlobalid())) {
-		// try {
-		// newCargo = cargoServiceLocal.save(wsCargo);
-		// newCargos++;
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// logger.error("Error:" + e.getMessage());
-		// }
-		// }
-		// }
-		// System.out.println("Update Success! New Cargos: " + newCargos);
+		for (RemoteCargoDTO wsCargo : cargosInWS) {
+
+			if (!existingIds.contains((Long) wsCargo.getId())) {
+				try {
+					//newCargo = cargoServiceLocal.save(wsCargo);
+					newCargos++;
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("Error:" + e.getMessage());
+				}
+			}
+		}
+		System.out.println("Update Success! New Cargos: " + newCargos);
 	}
 
 	@Override
