@@ -18,7 +18,7 @@ public class AddressVO implements Serializable {
 	@OneToMany
 	private List<AddressDetailsVO> details;
 	private Date deadline;
-
+	private Long globalid;
 	private Payment payment;
 	private Double totalValue;
 	private AddressStatus status;
@@ -108,6 +108,14 @@ public class AddressVO implements Serializable {
 	public String toString() {
 		return "AddressVO [id=" + id + ", address=" + address + ", details=" + details + ", deadline=" + deadline
 				+ ", payment=" + payment + ", totalValue=" + totalValue + ", status=" + status + "]";
+	}
+
+	public Long getGlobalid() {
+		return globalid;
+	}
+
+	public void setGlobalid(Long globalid) {
+		this.globalid = globalid;
 	}
 
 }
