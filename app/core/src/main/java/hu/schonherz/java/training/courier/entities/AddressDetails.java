@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class AddressDetails extends BaseEntity implements Serializable{
+public class AddressDetails extends GlobalEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@ManyToOne(cascade = CascadeType.ALL)

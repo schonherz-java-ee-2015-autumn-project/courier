@@ -6,14 +6,13 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 
 
 @Entity
-public class Address extends BaseEntity implements Serializable {
+public class Address extends GlobalEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String address;
