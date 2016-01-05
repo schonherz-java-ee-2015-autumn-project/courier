@@ -1,6 +1,7 @@
 package hu.schonherz.java.training.courier.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,6 +30,7 @@ public class Cargo extends GlobalEntity implements Serializable {
 
 	private Long totalDistance;
 	private Long totalDuration;
+	private Date deliveredAt;
 
 	public Restaurant getRestaurant() {
 		return restaurant;
@@ -76,6 +78,14 @@ public class Cargo extends GlobalEntity implements Serializable {
 
 	public void setTotalDuration(Long totalDuration) {
 		this.totalDuration = totalDuration;
+	}
+
+	public Date getDeliveredAt() {
+		return deliveredAt;
+	}
+
+	public void setDeliveredAt(Date deliveredAt) {
+		this.deliveredAt = deliveredAt;
 	}
 
 }

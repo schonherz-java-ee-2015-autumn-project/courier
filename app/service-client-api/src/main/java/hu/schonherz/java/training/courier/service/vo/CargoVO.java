@@ -1,6 +1,7 @@
 package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
@@ -14,8 +15,10 @@ public class CargoVO extends BaseVO implements Serializable {
 	List<AddressVO> addresses;
 	private CargoStatus status;
 	private Double totalValue;
+	private Double income;
 	private Long totalDistance;
 	private Long totalDuration;
+	private Date deliveredAt;
 	private Long globalid;
 
 	public Long getId() {
@@ -95,6 +98,22 @@ public class CargoVO extends BaseVO implements Serializable {
 
 	public void setTotalDuration(Long totalDuration) {
 		this.totalDuration = totalDuration;
+	}
+
+	public Double getIncome() {
+		return income;
+	}
+
+	public void setIncome(Double income) {
+		this.income = income;
+	}
+
+	public Date getDeliveredAt() {
+		return deliveredAt;
+	}
+
+	public void setDeliveredAt(Date deliveredAt) {
+		this.deliveredAt = deliveredAt;
 	}
 
 }

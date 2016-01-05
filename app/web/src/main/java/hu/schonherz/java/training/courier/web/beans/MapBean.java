@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -80,6 +81,7 @@ public class MapBean implements Serializable {
 			selectedCargo = getCargoService().findCargoById(id);
 			double cargoPrice = 0;
 			double addressPrice = 0;
+			double income = 0;
 			addresses = new ArrayList<>();
 			List<AddressVO> allAddress = selectedCargo.getAddresses();
 			for (AddressVO addressVO : allAddress) {
@@ -88,15 +90,20 @@ public class MapBean implements Serializable {
 				}
 			}
 
-			for (int j = 0; j < addresses.size(); j++) {
+			for (int j = 0; j < allAddress.size(); j++) {
 				addressPrice = 0;
-				List<AddressDetailsVO> details = addresses.get(j).getDetails();
+				List<AddressDetailsVO> details = allAddress.get(j).getDetails();
 				for (int k = 0; k < details.size(); k++)
 					addressPrice += details.get(k).getItem().getPrice() * details.get(k).getQuantity();
-				addresses.get(j).setTotalValue(addressPrice);
+				allAddress.get(j).setTotalValue(addressPrice);
 				cargoPrice += addressPrice;
+				if (allAddress.get(j).getStatus() != null)
+					if (allAddress.get(j).getStatus().equals(AddressStatus.getValue(1L)))
+						income += addressPrice;
+
 			}
 			selectedCargo.setTotalValue(cargoPrice);
+			selectedCargo.setIncome(income);
 			addressList = selectedCargo.getRestaurant().getAddress() + ";" + updateRoute();
 
 		} catch (Exception e) {
@@ -109,25 +116,32 @@ public class MapBean implements Serializable {
 		CargoStatus status = CargoStatus.getValue(value);
 
 		if (cargoWebService.setCargoStatus(selectedCargo.getGlobalid(), status) == 0) {
-			selectedCargo.setStatus(status);
-			selectedCargo.setTotalDistance(getTotalDistance());
-			selectedCargo.setTotalDuration(getTotalDuration());
-			getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString(), getTotalDistance(),
-					getTotalDuration());
-			addressList = updateRoute();
-			logger.info("INFO:AddressList -> " + addressList);
 
-			if (status.equals(CargoStatus.getValue(4L))) {
+			selectedCargo.setStatus(status);
+
+			if (status.equals(CargoStatus.getValue(3L))) {
+
+				selectedCargo.setTotalDistance(getTotalDistance());
+				selectedCargo.setTotalDuration(getTotalDuration());
+				getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString(), getTotalDistance(),
+						getTotalDuration());	
+				
+			} else if (status.equals(CargoStatus.getValue(4L))) {
 				getUserSessionBean().getUserVO().setTransporting(0L);
 				getUserService().save(getUserSessionBean().getUserVO());
 				getFacesExternalContext().getSessionMap().remove("cargoId");
 				getFacesExternalContext().redirect("../secured/available.xhtml");
+				selectedCargo.setDeliveredAt(new Date());
+				getCargoService().updateCargoStatusAndDeliveredAtById(selectedCargo.getId(), status.toString(),
+						new Date());
 			}
 		} else {
 			getFacesContext().addMessage("errorMessage",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened!"));
 			logger.info("INFO:Error while setting cargo status.");
 		}
+		
+		addressList = updateRoute();
 
 	}
 
@@ -156,6 +170,17 @@ public class MapBean implements Serializable {
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
 		addressVO.setStatus(addressStatus);
 		getAddressService().save(addressVO);
+
+		if (addressStatus.equals(AddressStatus.getValue(1L))) {
+
+			int index = addresses.indexOf(addressVO);
+			if (selectedCargo.getIncome() == null)
+				selectedCargo.setIncome(addresses.get(index).getTotalValue());
+			else
+				selectedCargo.setIncome(selectedCargo.getIncome() + addresses.get(index).getTotalValue());
+
+		}
+
 		addresses.remove(addressVO);
 		addressList = updateRoute();
 

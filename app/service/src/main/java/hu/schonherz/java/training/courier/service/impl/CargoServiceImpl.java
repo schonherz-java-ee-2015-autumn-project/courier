@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -14,10 +15,13 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.java.training.courier.dao.CargoDao;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
+import hu.schonherz.java.training.courier.service.converter.UserConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
+import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @Stateless(mappedName = "CargoService")
 @Local(CargoServiceLocal.class)
@@ -46,6 +50,11 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	}
 
 	@Override
+	public CargoVO findCargoByGlobalid(Long globalid) throws Exception {
+		return CargoConverter.toVo(cargoDao.findCargoByGlobalid(globalid));
+	}
+
+	@Override
 	public CargoVO save(CargoVO cargo) throws Exception {
 		return CargoConverter.toVo(cargoDao.save(CargoConverter.toEntity(cargo)));
 	}
@@ -58,6 +67,24 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	@Override
 	public void updateCargoStatusById(Long id, String status, Long distance, Long duration) throws Exception {
 		cargoDao.updateCargoStatusById(id, status, distance, duration);
+
+	}
+
+	@Override
+	public Double findDailyIncomeByPayment(UserVO user, String actualDate, Payment payment)  throws Exception{
+		return cargoDao.findDailyIncomeByPayment(UserConverter.toEntity(user), actualDate, payment);
+	}
+
+	@Override
+	public List<CargoVO> findCargoesByUserIdAndStatusBetweenDatesOrderedByDeliveryDate(UserVO user, CargoStatus status,
+			Date startDate, Date endDate) throws Exception {
+		return CargoConverter.toVo(cargoDao.findCargoesByUserIdAndStatusBetweenDatesOrderedByDeliveryDate(
+				UserConverter.toEntity(user), status, startDate, endDate));
+	}
+
+	@Override
+	public void updateCargoStatusAndDeliveredAtById(Long id, String status, Date deliveredAt) throws Exception {
+		cargoDao.updateCargoStatusAndDeliveredAtById(id, status, deliveredAt);
 
 	}
 }
