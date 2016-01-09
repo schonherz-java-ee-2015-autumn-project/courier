@@ -16,4 +16,6 @@ public interface CargoServiceRemote {
 
 	public List<CargoVO> findAllByStatus(CargoStatus cargoStatus) throws Exception;
 
+	void updateCargoByGlobalId(CargoVO cargo);
+
 }

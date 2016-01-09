@@ -45,4 +45,10 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 	@Query(value = "SELECT SUM(i.price*d.quantity) FROM Cargo c join c.addresses a join a.details d join d.item i WHERE c.user = :user AND date(c.deliveredAt) = date(:actualDate) AND a.payment = :payment AND a.status = 'Delivered'")
 	Double findDailyIncomeByPayment(@Param("user") User user, @Param("actualDate") String actualDate,
 			@Param("payment") Payment payment);
+
+	@Modifying(clearAutomatically = true)
+	@Query(value = "update cargo set status = :cargoStatus, user_id = :userid, moddate = :modDate where globalid = :globalId ", nativeQuery = true)
+	void updateCargoByGlobalId(@Param("cargoStatus") CargoStatus cargoStatus, @Param("userid") Long userId,
+			@Param("modDate") Date modDate, @Param("globalId") Long globalid);
+
 }

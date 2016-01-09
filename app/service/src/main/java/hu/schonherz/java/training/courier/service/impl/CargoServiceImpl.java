@@ -71,7 +71,7 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	}
 
 	@Override
-	public Double findDailyIncomeByPayment(UserVO user, String actualDate, Payment payment)  throws Exception{
+	public Double findDailyIncomeByPayment(UserVO user, String actualDate, Payment payment) throws Exception {
 		return cargoDao.findDailyIncomeByPayment(UserConverter.toEntity(user), actualDate, payment);
 	}
 
@@ -86,5 +86,11 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	public void updateCargoStatusAndDeliveredAtById(Long id, String status, Date deliveredAt) throws Exception {
 		cargoDao.updateCargoStatusAndDeliveredAtById(id, status, deliveredAt);
 
+	}
+
+	@Override
+	public void updateCargoByGlobalId(CargoVO cargo) {
+		cargoDao.updateCargoByGlobalId(cargo.getStatus(), cargo.getUser().getGlobalid(), new Date(),
+				cargo.getGlobalid());
 	}
 }
