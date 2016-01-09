@@ -14,8 +14,6 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -34,6 +32,7 @@ import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote;
+import hu.schonherz.java.training.courier.webservice.converters.RemoteCargoConverter;
 
 @Stateless(mappedName = "cargoWebService")
 @Local(CargoWebServiceLocal.class)
@@ -45,7 +44,10 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 	@EJB
 	CargoServiceLocal cargoServiceLocal;
-
+	
+	@EJB
+	RemoteCargoConverter remoteCargoConveter;
+	
 	private String courierUrl;
 	private String synchronizationUrl;
 	private String namespaceURI;
@@ -109,15 +111,17 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	@Override
 	public void getFreeCargosFromAdministration() throws Exception {
 		// courierWebService majd lekéri az admin modultól a szállításokat.
+		logger.info("INFO: Asking for cargos with Web Service");
 		List<CargoVO> cargosInDB = cargoServiceLocal.findAllByStatus(CargoStatus.getValue(1L));
-
+		
 		GregorianCalendar gregorianDate = new GregorianCalendar();
 		gregorianDate.setTime(new Date());
 		XMLGregorianCalendar dateForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
-
+		
 		List<RemoteCargoDTO> cargosInWS = synchronizationService.getCargosByDate(dateForCargo);
-
+		logger.info("INFO: Cargos with Web Service was asked.");
 		updateCargos(cargosInDB, cargosInWS);
+		
 	}
 
 	@Override
@@ -129,6 +133,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	}
 
 	public void updateCargos(List<CargoVO> cargosInDB, List<RemoteCargoDTO> cargosInWS) {
+		logger.info("INFO: Updating cargos");
 		Integer newCargos = 0;
 		CargoVO newCargo;
 
@@ -143,7 +148,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 			if (!existingIds.contains((Long) wsCargo.getId())) {
 				try {
-					//newCargo = cargoServiceLocal.save(wsCargo);
+					newCargo = cargoServiceLocal.save(remoteCargoConveter.toLocalVO(wsCargo));
 					newCargos++;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -179,6 +184,12 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 	public void setSynchronizationLocationUrl(String synchronizationLocationUrl) {
 		this.synchronizationLocalPart = synchronizationLocationUrl;
+	}
+
+	@Override
+	public void testEJB() {
+		logger.info("INFO: This log came from cargoWebService EJB!");
+		
 	}
 
 }
