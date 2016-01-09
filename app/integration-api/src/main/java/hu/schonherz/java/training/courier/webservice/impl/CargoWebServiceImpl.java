@@ -147,7 +147,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 	public void updateCargos(List<CargoVO> cargosInDB, List<RemoteCargoDTO> cargosInWS) {
 		logger.info("INFO: Updating cargos");
-		Integer newCargos = 0;
+		Integer newCargos = 0, updatedCargos = 0;
 		CargoVO newCargo;
 
 		List<Long> existingIds = new ArrayList<>();
@@ -158,31 +158,34 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		// amint megkaptuk az admin modultól az implementációt azonnal
 		// beiktatjuk
 		for (RemoteCargoDTO wsCargo : cargosInWS) {
-
+			newCargo = remoteCargoConveter.toLocalVO(wsCargo);
 			if (!existingIds.contains((Long) wsCargo.getId())) {
 				try {
-
-					newCargo = remoteCargoConveter.toLocalVO(wsCargo);
 					try {
 						cargoServiceLocal.save(newCargo);
 					} catch (Exception e) {
 						logger.info("Error something went wrong while trying to save new cargo!");
 						logger.info("ERROR", e);
 					}
-					logger.info("INFO: GloblId:" + newCargo.getGlobalid());
-					logger.info("INFO: Status:" + newCargo.getStatus());
-					logger.info("INFO: TotalValue:" + newCargo.getTotalValue());
-					for (AddressVO address : newCargo.getAddresses()) {
-						logger.info("INFO:" + address.getAddress());
-					}
 					newCargos++;
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error("Error:" + e.getMessage());
+				}
+			} else {
+				try {
+					try {
+						cargoServiceLocal.updateCargoByGlobalId(newCargo);
+					} catch (Exception e) {
+						logger.info("Error something went wrong while trying to update an existing cargo!");
+						logger.info("ERROR", e);
+					}
+					updatedCargos++;
+				} catch (Exception e) {
 					logger.error("Error:" + e.getMessage());
 				}
 			}
 		}
-		System.out.println("Update Success! New Cargos: " + newCargos);
+		logger.info("Update Success! New Cargos: " + newCargos + " Updated cargos:" + updatedCargos);
 	}
 
 	@Override

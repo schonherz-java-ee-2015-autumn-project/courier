@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.webservice.converters;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -75,7 +76,7 @@ public class RemoteCargoConverter {
 		}
 		logger.info("INFO: Making localVO");
 		CargoVO localVo = new CargoVO();
-		localVo.setId(null);
+		localVo.setId((long) 0);
 		logger.info("INFO: CargoVO localVO made");
 		List<AddressVO> addresses = RemoteOrderConverter.toLocalVo(remoteCargoDTO.getOrders());
 		if (addresses == null) {
@@ -85,7 +86,7 @@ public class RemoteCargoConverter {
 		logger.info("INFO: address is set in localVO");
 		localVo.setGlobalid(remoteCargoDTO.getId());
 		logger.info("INFO: globalid is set in localVO");
-		// localVo.setStatus(RemoteCargoStateConverter.toLocalCargoState(remoteCargoDTO.getState()));
+		localVo.setStatus(RemoteCargoStateConverter.toLocalCargoState(remoteCargoDTO.getState()));
 		logger.info("INFO: status is set in localVO");
 		localVo.setRestaurant(restaurant);
 		logger.info("INFO: restaurant is set in localVO");
@@ -97,6 +98,7 @@ public class RemoteCargoConverter {
 			totalValue += remoteCargoDTO.getOrders().get(i).getFullCost();
 		}
 		localVo.setTotalValue(totalValue);
+		localVo.setModdate(new Date());
 		logger.info("INFO: Returning localVO!");
 		return localVo;
 

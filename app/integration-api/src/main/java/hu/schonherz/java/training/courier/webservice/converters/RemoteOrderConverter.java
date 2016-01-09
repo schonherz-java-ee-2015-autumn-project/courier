@@ -40,9 +40,10 @@ public class RemoteOrderConverter {
 		logger.info("INFO: trying to set payment" + remoteOrderDTO.getPayment().toString());
 		localVo.setPayment(RemotePaymentConverter.toLocalPayment(remoteOrderDTO.getPayment()));
 		logger.info("INFO: payment is set");
-		//logger.info("INFO: trying to set status" + remoteOrderDTO.getDeliveryState().toString());
-		//localVo.setStatus(RemoteDeliveryStateConverter.toLocalState(remoteOrderDTO.getDeliveryState()));
-		//logger.info("INFO: status is set");
+		// logger.info("INFO: trying to set status" +
+		// remoteOrderDTO.getDeliveryState().toString());
+		localVo.setStatus(RemoteDeliveryStateConverter.toLocalState(remoteOrderDTO.getDeliveryState()));
+		logger.info("INFO: status is set");
 		logger.info("INFO: toLocalVo is done");
 		return localVo;
 	}
