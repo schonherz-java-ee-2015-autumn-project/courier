@@ -1,8 +1,9 @@
 package hu.schonherz.java.training.courier.webservice.converters;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
@@ -11,16 +12,16 @@ import org.apache.log4j.Logger;
 import hu.schonherz.administrator.RemoteCargoDTO;
 import hu.schonherz.java.training.courier.service.RestaurantServiceLocal;
 import hu.schonherz.java.training.courier.service.UserServiceLocal;
+import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
-import hu.schonherz.java.training.courier.service.webservice.remoteconverter.RemoteCargoConverterLocal;
 
 @Startup
-@Singleton
-@Local(RemoteCargoConverterLocal.class)
+@Singleton(name = "remoteCargoConverter")
 public class RemoteCargoConverter {
 	final static Logger logger = Logger.getLogger(RemoteCargoConverter.class);
+
 	// RemoteCargoDTO
 	// protected Long courierId;
 	// protected Long id;
@@ -28,6 +29,9 @@ public class RemoteCargoConverter {
 	// protected List<RemoteOrderDTO> orders;
 	// protected Long restaurantId;
 	// protected RemoteCargoState state;
+	public RemoteCargoConverter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@EJB
 	UserServiceLocal userService;
@@ -49,17 +53,19 @@ public class RemoteCargoConverter {
 		try {
 			logger.info("INFO: userService.findByGlobalId(remoteCargoDTO.getCourierId()) running");
 			courier = userService.findByGlobalId(remoteCargoDTO.getCourierId());
+			logger.info("INFO: courierName:" + courier.getFullname());
 			if (courier == null) {
 				logger.info("INFO: courier is still null after userService");
 			}
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 		}
-		
+
 		RestaurantVO restaurant = null;
 		try {
 			logger.info("INFO: restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId()) running");
 			restaurant = restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId());
+			logger.info("INFO: restaurantInfo:" + restaurant.getName());
 			if (restaurant == null) {
 				logger.info("INFO: Restaurant is still null after restaurantService");
 			}
@@ -69,17 +75,28 @@ public class RemoteCargoConverter {
 		}
 		logger.info("INFO: Making localVO");
 		CargoVO localVo = new CargoVO();
+		localVo.setId(null);
 		logger.info("INFO: CargoVO localVO made");
-		localVo.setAddresses(RemoteOrderConverter.toLocalVo(remoteCargoDTO.getOrders()));
+		List<AddressVO> addresses = RemoteOrderConverter.toLocalVo(remoteCargoDTO.getOrders());
+		if (addresses == null) {
+			logger.info("Addresses are NULL!");
+		}
+		localVo.setAddresses(addresses);
 		logger.info("INFO: address is set in localVO");
 		localVo.setGlobalid(remoteCargoDTO.getId());
 		logger.info("INFO: globalid is set in localVO");
-		localVo.setStatus(RemoteCargoStateConverter.toLocalCargoState(remoteCargoDTO.getState()));
+		// localVo.setStatus(RemoteCargoStateConverter.toLocalCargoState(remoteCargoDTO.getState()));
 		logger.info("INFO: status is set in localVO");
 		localVo.setRestaurant(restaurant);
 		logger.info("INFO: restaurant is set in localVO");
 		localVo.setUser(courier);
 		logger.info("INFO: courier is set in localVO");
+		double totalValue = 0;
+		for (int i = 0; i < remoteCargoDTO.getOrders().size(); i++) {
+
+			totalValue += remoteCargoDTO.getOrders().get(i).getFullCost();
+		}
+		localVo.setTotalValue(totalValue);
 		logger.info("INFO: Returning localVO!");
 		return localVo;
 

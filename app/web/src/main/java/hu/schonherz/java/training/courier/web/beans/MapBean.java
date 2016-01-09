@@ -32,6 +32,7 @@ import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceLocal;
+import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote;
 
 @ManagedBean(name = "mapBean")
 
@@ -53,7 +54,7 @@ public class MapBean implements Serializable {
 	private List<Payment> allPaymentStatus = Arrays.asList(Payment.values());
 	List<AddressVO> addresses;
 	@EJB
-	CargoWebServiceLocal cargoWebService;
+	CargoWebServiceRemote cargoWebService;
 	private Long totalDistance;
 	private Long totalDuration;
 
@@ -115,7 +116,8 @@ public class MapBean implements Serializable {
 
 		CargoStatus status = CargoStatus.getValue(value);
 
-		if (cargoWebService.setCargoStatus(selectedCargo.getGlobalid(), status) == 0) {
+		if (cargoWebService.changeCargoState(selectedCargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
+				status) == 0) {
 
 			selectedCargo.setStatus(status);
 
@@ -124,8 +126,8 @@ public class MapBean implements Serializable {
 				selectedCargo.setTotalDistance(getTotalDistance());
 				selectedCargo.setTotalDuration(getTotalDuration());
 				getCargoService().updateCargoStatusById(selectedCargo.getId(), status.toString(), getTotalDistance(),
-						getTotalDuration());	
-				
+						getTotalDuration());
+
 			} else if (status.equals(CargoStatus.getValue(4L))) {
 				getUserSessionBean().getUserVO().setTransporting(0L);
 				getUserService().save(getUserSessionBean().getUserVO());
@@ -140,7 +142,7 @@ public class MapBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened!"));
 			logger.info("INFO:Error while setting cargo status.");
 		}
-		
+
 		addressList = updateRoute();
 
 	}
@@ -168,30 +170,42 @@ public class MapBean implements Serializable {
 
 		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(addressStatusId);
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
-		addressVO.setStatus(addressStatus);
-		getAddressService().save(addressVO);
 
-		if (addressStatus.equals(AddressStatus.getValue(1L))) {
+		if (cargoWebService.changeDeliveryState(addressVO.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
+				addressStatus) == 0) {
 
-			int index = addresses.indexOf(addressVO);
-			if (selectedCargo.getIncome() == null)
-				selectedCargo.setIncome(addresses.get(index).getTotalValue());
-			else
-				selectedCargo.setIncome(selectedCargo.getIncome() + addresses.get(index).getTotalValue());
+			addressVO.setStatus(addressStatus);
+			getAddressService().save(addressVO);
 
+			if (addressStatus.equals(AddressStatus.getValue(1L))) {
+
+				int index = addresses.indexOf(addressVO);
+				if (selectedCargo.getIncome() == null)
+					selectedCargo.setIncome(addresses.get(index).getTotalValue());
+				else
+					selectedCargo.setIncome(selectedCargo.getIncome() + addresses.get(index).getTotalValue());
+
+			}
+
+			addresses.remove(addressVO);
+			addressList = updateRoute();
+		} else {
+			getFacesContext().addMessage("errorMessage",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened!"));
+			logger.info("INFO:Error while setting address status.");
 		}
-
-		addresses.remove(addressVO);
-		addressList = updateRoute();
 
 	}
 
 	public void paymentStatusChanged(AjaxBehaviorEvent e) throws Exception {
 		Payment paymentStatus = (Payment) ((UIOutput) e.getSource()).getValue();
 		Long addressId = (long) (Long) e.getComponent().getAttributes().get("addressId");
-		AddressVO addressVO = getAddressService().findAddressById(addressId);
-		addressVO.setPayment(paymentStatus);
-		getAddressService().save(addressVO);
+		if (cargoWebService.changePaymentState(userSessionBean.getUserVO().getGlobalid(), addressId,
+				paymentStatus) == 0) {
+			AddressVO addressVO = getAddressService().findAddressById(addressId);
+			addressVO.setPayment(paymentStatus);
+			getAddressService().save(addressVO);
+		}
 
 	}
 
