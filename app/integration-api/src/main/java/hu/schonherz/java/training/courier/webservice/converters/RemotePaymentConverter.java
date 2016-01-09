@@ -23,4 +23,23 @@ public class RemotePaymentConverter {
 		}
 		return localPayment;
 	}
+
+	public static RemotePaymentMethod toRemotePayment(Payment localPayment) {
+		RemotePaymentMethod remotePayment = null;
+		switch (localPayment) {
+		case Cash:
+			remotePayment = remotePayment.CASH;
+			break;
+		case Card:
+			remotePayment = remotePayment.CREDIT_CARD;
+			break;
+		case SZEP:
+			remotePayment = remotePayment.SZEP_CARD;
+			break;
+		case Voucher:
+			remotePayment = remotePayment.VOUCHER;
+			break;
+		}
+		return remotePayment;
+	}
 }

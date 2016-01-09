@@ -2,6 +2,7 @@ package hu.schonherz.java.training.courier.webservice.converters;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
@@ -13,9 +14,11 @@ import hu.schonherz.java.training.courier.service.UserServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
+import hu.schonherz.java.training.courier.service.webservice.remoteconverter.RemoteCargoConverterLocal;
 
 @Startup
 @Singleton
+@Local(RemoteCargoConverterLocal.class)
 public class RemoteCargoConverter {
 	final static Logger logger = Logger.getLogger(RemoteCargoConverter.class);
 	// RemoteCargoDTO
@@ -31,36 +34,36 @@ public class RemoteCargoConverter {
 
 	@EJB
 	RestaurantServiceLocal restaurantService;
-	
+
 	@PostConstruct
 	public void init() {
 		logger.info("INFO: RemoteCargoConverter Singleton EJB started");
-		if(userService == null  || restaurantService == null) 
-		{
+		if (userService == null || restaurantService == null) {
 			logger.info("INFO:userService or restaurantService is null.");
 		}
 	}
-	
+
 	public CargoVO toLocalVO(RemoteCargoDTO remoteCargoDTO) {
 		logger.info("INFO: RemoteCargoConverter toLocalVO method asked.");
 		UserVO courier = null;
 		try {
 			logger.info("INFO: userService.findByGlobalId(remoteCargoDTO.getCourierId()) running");
 			courier = userService.findByGlobalId(remoteCargoDTO.getCourierId());
-			if(courier == null) {
+			if (courier == null) {
 				logger.info("INFO: courier is still null after userService");
 			}
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 		}
+		
 		RestaurantVO restaurant = null;
 		try {
 			logger.info("INFO: restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId()) running");
 			restaurant = restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId());
-			if(restaurant == null) {
+			if (restaurant == null) {
 				logger.info("INFO: Restaurant is still null after restaurantService");
 			}
-				
+
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 		}

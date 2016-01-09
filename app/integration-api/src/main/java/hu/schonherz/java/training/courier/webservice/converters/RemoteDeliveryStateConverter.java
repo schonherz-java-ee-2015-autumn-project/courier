@@ -17,4 +17,17 @@ public class RemoteDeliveryStateConverter {
 		}
 		return localStatus;
 	}
+
+	public static DeliveryStateWeb toRemoteState(AddressStatus localStatus) {
+		DeliveryStateWeb remoteState = null;
+		switch (localStatus) {
+		case Delivered:
+			remoteState = DeliveryStateWeb.DELIVERED;
+			break;
+		case Failed:
+			remoteState = DeliveryStateWeb.FAILED;
+			break;
+		}
+		return remoteState;
+	}
 }

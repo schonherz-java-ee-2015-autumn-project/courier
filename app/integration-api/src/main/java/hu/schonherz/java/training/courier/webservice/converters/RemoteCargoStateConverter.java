@@ -23,4 +23,23 @@ public class RemoteCargoStateConverter {
 		}
 		return localCargoStatus;
 	}
+
+	public static RemoteCargoState toRemoteCargoState(CargoStatus localCargoStatus) {
+		RemoteCargoState remoteCargoState = null;
+		switch (localCargoStatus) {
+		case Free:
+			remoteCargoState = RemoteCargoState.FREE;
+			break;
+		case Reserved:
+			remoteCargoState = RemoteCargoState.TAKEN;
+			break;
+		case Received:
+			remoteCargoState = RemoteCargoState.DELIVERING;
+			break;
+		case Delivered:
+			remoteCargoState = RemoteCargoState.DELIVERED;
+			break;
+		}
+		return remoteCargoState;
+	}
 }
