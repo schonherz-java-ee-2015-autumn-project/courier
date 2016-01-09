@@ -28,51 +28,64 @@ import hu.schonherz.java.training.courier.service.vo.UserVO;
 public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Autowired
+	private
 	UserDao userDao;
 
 	@Override
 	public UserVO save(UserVO user) throws Exception {
-		return UserConverter.toVo(userDao.save(UserConverter.toEntity(user)));
+		return UserConverter.toVo(getUserDao().save(UserConverter.toEntity(user)));
 	}
 
 	@Override
 	public UserVO findUserByName(String name) throws Exception {
-		User user = userDao.findByUsername(name);
+		User user = getUserDao().findByUsername(name);
 		return UserConverter.toVo(user);
 	}
 
 	@Override
 	public List<UserVO> findAll() throws Exception {
-		return UserConverter.toVo(userDao.findAll());
+		return UserConverter.toVo(getUserDao().findAll());
 	}
 
 	@Override
 	public UserVO saveUserById(UserVO user) throws Exception {
 		Long id = user.getId();
-		UserVO userVO = UserConverter.toVo(userDao.save(UserConverter.toEntity(user)));
-		userDao.updateUserId(userVO.getId(), id);
-		userVO = UserConverter.toVo(userDao.findOne(id));
+		UserVO userVO = UserConverter.toVo(getUserDao().save(UserConverter.toEntity(user)));
+		getUserDao().updateUserId(userVO.getId(), id);
+		userVO = UserConverter.toVo(getUserDao().findOne(id));
 		// System.out.println("Saved user:"+userVO.toString());
 		return userVO;
 	}
 
 	@Override
 	public Integer updateUserByGlobalId(UserVO userVO) throws Exception {
-		return userDao.updateUserByGlobalId(userVO.getUsername(), userVO.getFullname(), userVO.getPassword(),new Date(),userVO.getGlobalid());
+		return getUserDao().updateUserByGlobalId(userVO.getUsername(), userVO.getFullname(), userVO.getPassword(),new Date(),userVO.getGlobalid());
 	}
 
 	@Override
 	public UserVO findUserByNameWhereIsRemovedZero(String username) throws Exception {
-		return UserConverter.toVo(userDao.findUserByNameWhereIsRemovedZero(username));
+		return UserConverter.toVo(getUserDao().findUserByNameWhereIsRemovedZero(username));
 	}
 
 	@Override
 	public UserVO findByGlobalId(Long globalId) throws Exception {
-		return UserConverter.toVo(userDao.findByGlobalid(globalId));
+		return UserConverter.toVo(getUserDao().findByGlobalid(globalId));
+	}
+	
+	public UserVO findOne(Long id) throws Exception {
+		return UserConverter.toVo(getUserDao().findOne(id));
 	}
 
 	@Override
 	public Date findLastModDate() throws Exception {
-		return userDao.findLastModDate();
+		return getUserDao().findLastModDate();
+	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 }
