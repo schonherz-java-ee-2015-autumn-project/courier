@@ -7,47 +7,433 @@
 	xmlns:sec="http://www.springframework.org/security/tags">
 	<ui:define name="pageTitle">#{out.pageTitle}</ui:define>
 	<ui:define name="content">
-		<section class="content">
+		<style>
+.ui-datatable-header {
+	background: #00a65a;
+	color: white;
+}
 
-			<div class="row">
-				<div class="col-md-12">
-					<div class="box box-primary">
-						<div class="box-header with-border">
-							<i class="fa fa-bar-chart-o"></i>
-							<h3 class="box-title">Bar Chart</h3>
-							<div class="box-tools pull-right">
-								<button class="btn btn-box-tool" data-widget="collapse">
-									<i class="fa fa-minus"></i>
-								</button>
+.ui-datagrid-content {
+	background: transparent;
+	border: none;
+}
+
+.datatable td {
+	background: white;
+}
+
+.datatable td {
+	font-size: 12px;
+}
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+	text-align: center;
+	font-size: 13px;
+}
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+	text-align: center;
+	padding: 4px 11px;
+	font-size: 14px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	border: 1px solid #00a65a;
+	background: none;
+	font-weight: small;
+	color: #3f3731;
+	font-weight: normal;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td,
+	.ui-datatable tfoot th {
+	padding: 4px 10px;
+	overflow: hidden;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #00a65a;
+}
+
+.ui-corner-top {
+	-moz-border-radius-topleft: 3px;
+	-webkit-border-top-left-radius: 3px;
+	border-top-left-radius: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span
+	{
+	display: block;
+	position: absolute;
+	left: 50%;
+	margin-left: -8px;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.ui-icon {
+	width: 16px;
+	height: 16px;
+	background-image:
+		url("/courier/javax.faces.resource/images/ui-icons_c47a23_256x240.png.xhtml?ln=primefaces-humanity");
+}
+
+.ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+.ui-icon-circle-triangle-e {
+	background-position: -48px -192px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+	left: 2px;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 2px;
+	width: 1.8em;
+	height: 1.8em;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+	cursor: pointer;
+}
+
+.ui-widget-header a {
+	color: #4f4f4f;
+}
+
+.ui-widget-content a {
+	color: #4f4f4f;
+}
+
+.ui-corner-all {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+.ui-icon-circle-triangle-w {
+	background-position: -80px -192px;
+}
+
+.ui-icon {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+	right: 2px;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 2px;
+	width: 1.8em;
+	height: 1.8em;
+}
+
+.ui-datepicker .ui-datepicker-calendar .ui-state-default {
+	background: none;
+	border: none;
+	color: #5F83B9;
+}
+
+.ui-datepicker .ui-datepicker-current-day .ui-state-highlight,
+	.ui-datepicker .ui-datepicker-current-day .ui-state-default {
+	background: #5F83B9;
+	color: #FFFFFF !important;
+	text-shadow: 0 1px 1px #234386;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.ui-datepicker {
+	background: white;
+	-moz-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+	-webkit-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list {
+	background: white;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	width: auto;
+	padding: 2px 3px;
+}
+.fa-angle-down {
+	padding: 5px 6px;
+}
+.ui-c {
+}
+</style>
+		<script type="text/javascript">
+			$(document).ready(
+					function() {
+						$('a.sidebar-toggle').click(function() {
+							setTimeout(doneResizing, 300);
+						});
+						$('span.ui-icon.ui-icon-triangle-1-s.ui-c')
+								.removeClass("ui-c").removeClass(
+										"ui-icon-triangle-1-s").removeClass(
+										"ui-icon").addClass("fa").addClass(
+										"fa-angle-down");
+					});
+			var id;
+			$(window).resize(function() {
+				clearTimeout(id);
+				id = setTimeout(doneResizing, 500);
+
+			});
+
+			function doneResizing() {
+				updatechartpanel();
+			}
+		</script>
+		<section class="content">
+			<h:form id="form">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6">
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<i class="fa fa-bar-chart-o"></i>
+								<h3 class="box-title">#{out.diagram}</h3>
+								<div class="box-tools pull-right">
+									<p:selectOneMenu id="chartMenu" value="#{chartBean.oneMenu}"
+										style="width:140px;">
+										<f:selectItem itemLabel="#{out['chart.income']}" itemValue="income" />
+										<f:selectItem itemLabel="#{out['chart.distance']}" itemValue="distance" />
+										<f:selectItem itemLabel="#{out['chart.duration']}" itemValue="duration" />
+										<f:selectItem itemLabel="#{out['chart.deliveries']}"
+											itemValue="deliveries" />
+										<p:ajax event="change" update="form:reportChart"
+											listener="#{chartBean.selectChart}" />
+										<p:ajax event="change" update="form:chartLabel1" />
+										<p:ajax event="change" update="form:chartLabel2" />
+									</p:selectOneMenu>
+								</div>
 							</div>
-						</div>
-						<div class="box-body">
-							<p:chart id="incomeChart" type="bar" model="#{statisticsBean.barModel}"  responsive="true" style="height:400px"/>
-						</div>
-						<h:form>
+							<!-- chart -->
+
+							<div class="box-body">
+								<div class="row">
+									<div class="col-xs-5">
+										<p:outputLabel id="chartLabel1"
+											value="#{out['scale.'.concat(chartBean.oneMenu)]}" 
+											style="font-weight: 400;"/>
+									</div>
+									<div class="col-xs-7">
+										<p:outputLabel id="chartLabel2"
+											value="#{out['chart.'.concat(chartBean.oneMenu)]}" 
+											style="font-weight: 400; font-size: 18px;"/>
+									</div>
+								</div>
+								<p:chart id="reportChart" type="bar"
+									model="#{chartBean.barModel}" responsive="true"
+									style="height:300px">
+								</p:chart>
+								<p:remoteCommand name="updatechartpanel" update="form:reportChart" />
+							</div>
 							<div class="box-footer">
 								<h:commandButton value="Previous"
-									action="#{statisticsBean.previousDays()}"
-									class="btn btn-default">
-									<f:ajax render=":incomeChart" />
+									action="#{chartBean.previousDays()}" class="btn btn-default">
+									<f:ajax execute="@form" render="form:reportChart" />
 								</h:commandButton>
-								<h:commandButton value="Next"
-									action="#{statisticsBean.nextDays()}"
+								<h:commandButton value="Next" action="#{chartBean.nextDays()}"
 									class="btn btn-default pull-right">
-									<f:ajax render=":incomeChart" />
+									<f:ajax execute="@form" render="form:reportChart" />
 								</h:commandButton>
 							</div>
-						</h:form>
-						<!-- /.box-body-->
+						</div>
+					</div>
+
+					<div class="col-xs-12 col-sm-12 col-md-6">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<i class="fa fa-table"></i>
+								<h3 class="box-title">#{out.statistics}</h3>
+							</div>
+							<!-- calendar -->
+
+							<div class="box-body">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="startDate" class="col-xs-4 control-label">#{out.startDate}</label>
+										<div class="col-xs-6">
+
+											<p:calendar id="startDate"
+												value="#{statisticsBean.startDate}" pattern="dd/MM/yyyy"
+												maxdate="#{statisticsBean.currentDate}">
+												<p:ajax event="dateSelect" update="form:endDate" />
+												<p:ajax event="dateSelect"
+													listener="#{statisticsBean.submit}"
+													update="form:cargoStatistics" />
+											</p:calendar>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="endDate" class="col-xs-4 control-label">#{out.endDate}</label>
+										<div class="col-xs-6">
+
+											<p:calendar id="endDate" value="#{statisticsBean.endDate}"
+												pattern="dd/MM/yyyy" maxdate="#{statisticsBean.currentDate}">
+												<p:ajax event="dateSelect" update="form:startDate" />
+												<p:ajax event="dateSelect"
+													listener="#{statisticsBean.submit}"
+													update="form:cargoStatistics" />
+											</p:calendar>
+
+										</div>
+									</div>
+								</div>
+								<!-- table -->
+
+								<p:dataGrid id="cargoStatistics" var="stat"
+									value="#{statisticsBean}" columns="1">
+									<div class="box-body no-padding">
+										<table class="table table-striped">
+											<tr>
+												<th></th>
+												<th>#{out.between}</th>
+												<th>#{out.total}</th>
+												<th>#{out.average}</th>
+											</tr>
+											<tr>
+												<td>#{out.income}</td>
+												<td><h:outputText value="#{stat.incomeTotalBetween}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeTotalTotal}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeTotalAverage}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out['paymentStatus.Cash']}:</td>
+												<td><h:outputText value="#{stat.incomeCashBetween}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeCashTotal}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeCashAverage}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out['paymentStatus.Card']}:</td>
+												<td><h:outputText value="#{stat.incomeCardBetween}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeCardTotal}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeCardAverage}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out['paymentStatus.SZEP']}:</td>
+												<td><h:outputText value="#{stat.incomeSzepBetween}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeSzepTotal}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeSzepAverage}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out['paymentStatus.Voucher']}:</td>
+												<td><h:outputText value="#{stat.incomeVoucherBetween}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeVoucherTotal}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}</td>
+												<td><h:outputText value="#{stat.incomeVoucherAverage}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.income']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out.distance}</td>
+												<td><h:outputText
+														value="#{stat.reportBetween.distance}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.distance']}</td>
+												<td><h:outputText value="#{stat.reportTotal.distance}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.distance']}</td>
+												<td><h:outputText
+														value="#{stat.reportAverage.distance}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.distance']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out.duration}</td>
+												<td><h:outputText
+														value="#{stat.reportBetween.duration}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.duration']}</td>
+												<td><h:outputText value="#{stat.reportTotal.duration}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.duration']}</td>
+												<td><h:outputText
+														value="#{stat.reportAverage.duration}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.duration']}/#{out['scale.day']}</td>
+											</tr>
+											<tr>
+												<td>#{out.deliveries}:</td>
+												<td><h:outputText value="#{stat.reportBetween.deliveries}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText></td>
+												<td><h:outputText value="#{stat.reportTotal.deliveries}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText></td>
+												<td><h:outputText value="#{stat.reportAverage.deliveries}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.deliveries']}/#{out['scale.day']}</td>
+											</tr>
+										</table>
+									</div>
+								</p:dataGrid>
+							</div>
+
+							<!-- /.box-body -->
+							<div class="box-footer"></div>
+							<!-- /.box-footer -->
+
+						</div>
+						<!-- /.box -->
 					</div>
 					<!-- /.box -->
 				</div>
-				<!-- /.box -->
-			</div>
-			<!-- /.col (LEFT) -->
-
+				<!-- /.col (LEFT) -->
+			</h:form>
 		</section>
-
 
 	</ui:define>
 </ui:composition>

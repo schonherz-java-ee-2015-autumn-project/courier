@@ -5,7 +5,10 @@ import java.util.List;
 
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.entities.Payment;
+import hu.schonherz.java.training.courier.entities.Report;
+import hu.schonherz.java.training.courier.entities.Restaurant;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
+import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 public interface CargoServiceLocal {
@@ -25,8 +28,34 @@ public interface CargoServiceLocal {
 
 	void updateCargoStatusAndDeliveredAtById(Long id, String status, Date deliveredAt) throws Exception;
 
-	Double findDailyIncomeByPayment(UserVO user, String actualDate, Payment payment) throws Exception;
-
 	List<CargoVO> findCargoesByUserIdAndStatusBetweenDatesOrderedByDeliveryDate(UserVO user, CargoStatus status,
 			Date startDate, Date endDate) throws Exception;
+//1
+	Double findTotalIncomeByUserBetweenDates(UserVO user, Date startDate, Date endDate) throws Exception;
+//2
+	Double findIncomeByUserAndPaymentBetweenDates(UserVO user, Date startDate, Date endDate, Payment payment)
+			throws Exception;
+//3
+	Report findReportByUserBetweenDates(UserVO user, Date startDate, Date endDate) throws Exception;
+//4
+	Double findTotalIncomeByUser(UserVO user) throws Exception;
+//5
+	Double findIncomeByUserAndPayment(UserVO user, Payment payment) throws Exception;
+//6
+	Report findReportByUser(UserVO user) throws Exception;
+//7
+	Double findAverageIncomeByUserId(UserVO user) throws Exception;
+//8
+	Double findAverageIncomeByUserIdAndPayment(UserVO user, Payment payment) throws Exception;
+//9
+	Report findAverageReportByUserId(UserVO user) throws Exception;
+//10
+	List<Restaurant> findRestaurantsByUserBetweenDates(UserVO user, Date startDate,Date endDate) 
+			throws Exception;
+//11
+	Double findTotalIncomeByUserAndRestaurantBetweenDates(UserVO user, RestaurantVO restaurant,	
+			Date startDate, Date endDate) throws Exception;
+//12
+	Double findIncomeByUserAndRestaurantAndPaymentBetweenDates(UserVO user, RestaurantVO restaurant, 
+			Payment payment, Date startDate, Date endDate) throws Exception;
 }
