@@ -8,6 +8,7 @@ import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.entities.Report;
 import hu.schonherz.java.training.courier.entities.Restaurant;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
+import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
@@ -50,7 +51,7 @@ public interface CargoServiceLocal {
 //9
 	Report findAverageReportByUserId(UserVO user) throws Exception;
 //10
-	List<Restaurant> findRestaurantsByUserBetweenDates(UserVO user, Date startDate,Date endDate) 
+	List<RestaurantVO> findRestaurantsByUserBetweenDates(UserVO user, Date startDate,Date endDate) 
 			throws Exception;
 //11
 	Double findTotalIncomeByUserAndRestaurantBetweenDates(UserVO user, RestaurantVO restaurant,	
@@ -58,4 +59,6 @@ public interface CargoServiceLocal {
 //12
 	Double findIncomeByUserAndRestaurantAndPaymentBetweenDates(UserVO user, RestaurantVO restaurant, 
 			Payment payment, Date startDate, Date endDate) throws Exception;
+	
+	List<ItemVO> findItemsByUserOrderByCount(UserVO user) throws Exception;
 }

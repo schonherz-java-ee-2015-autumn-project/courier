@@ -1,7 +1,9 @@
 package hu.schonherz.java.training.courier.web.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,8 +12,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import hu.schonherz.java.training.courier.entities.Payment;
-import hu.schonherz.java.training.courier.entities.Report;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.vo.ItemVO;
+import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @ManagedBean(name = "statisticsBean")
@@ -28,33 +31,22 @@ public class StatisticsBean implements Serializable{
 	private Date startDate;
 	private Date endDate;
 	
-	private Double incomeTotalBetween;
-	private Double incomeCashBetween;
-	private Double incomeCardBetween;
-	private Double incomeSzepBetween;
-	private Double incomeVoucherBetween;
+	private CargoReport incomeBetween;
+	private CargoReport incomeTotal;
+	private CargoReport incomeAverage;
 	
-	private Double incomeTotalTotal;
-	private Double incomeCashTotal;
-	private Double incomeCardTotal;
-	private Double incomeSzepTotal;
-	private Double incomeVoucherTotal;
-	
-	private Double incomeTotalAverage;
-	private Double incomeCashAverage;
-	private Double incomeCardAverage;
-	private Double incomeSzepAverage;
-	private Double incomeVoucherAverage;
-	
-	private Report reportBetween;
-	private Report reportTotal;
-	private Report reportAverage;
+	private List<RestaurantVO> restaurantsBetween;
+	private List<CargoReport> restaurantReports;
+	private List<ItemVO> popularItems;
 	
 	@PostConstruct
 	public void init() {
 		currentDate = new Date();
 		startDate = currentDate;
 		endDate = currentDate;
+		incomeBetween = new CargoReport();
+		incomeTotal = new CargoReport();
+		incomeAverage = new CargoReport();
 		setData();
 		setDataBetween();
 	}
@@ -62,20 +54,27 @@ public class StatisticsBean implements Serializable{
 	public void setData() {
 		UserVO user = getUserSessionBean().getUserVO();
 		try {
-			incomeTotalTotal = getCargoService().findTotalIncomeByUser(user);
-			incomeCashTotal = getCargoService().findIncomeByUserAndPayment(user, Payment.Cash);
-			incomeCardTotal = getCargoService().findIncomeByUserAndPayment(user, Payment.Card);
-			incomeSzepTotal = getCargoService().findIncomeByUserAndPayment(user, Payment.SZEP);
-			incomeVoucherTotal = getCargoService().findIncomeByUserAndPayment(user, Payment.Voucher);
+			incomeTotal.setTotal(getCargoService().findTotalIncomeByUser(user));
+			incomeTotal.setCash(getCargoService().findIncomeByUserAndPayment(user, Payment.Cash));
+			incomeTotal.setCard(getCargoService().findIncomeByUserAndPayment(user, Payment.Card));
+			incomeTotal.setSzep(getCargoService().findIncomeByUserAndPayment(user, Payment.SZEP));
+			incomeTotal.setVoucher(getCargoService().findIncomeByUserAndPayment(user, Payment.Voucher));
 			
-			incomeTotalAverage = getCargoService().findAverageIncomeByUserId(user);
-			incomeCashAverage = getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Cash);
-			incomeCardAverage = getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Card);
-			incomeSzepAverage = getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.SZEP);
-			incomeVoucherAverage = getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Voucher);
+			incomeAverage.setTotal(getCargoService().findAverageIncomeByUserId(user));
+			incomeAverage.setCash(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Cash));
+			incomeAverage.setCard(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Card));
+			incomeAverage.setSzep(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.SZEP));
+			incomeAverage.setVoucher(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Voucher));
 			
-			reportTotal = getCargoService().findReportByUser(user);
-			reportAverage = getCargoService().findAverageReportByUserId(user);
+			incomeTotal.setReport(getCargoService().findReportByUser(user));
+			incomeAverage.setReport(getCargoService().findAverageReportByUserId(user));
+			
+			popularItems = getCargoService().findItemsByUserOrderByCount(user);
+			List<ItemVO> items = new ArrayList<>();
+			for(int i=0; i<5 && i<popularItems.size(); i++) {
+				items.add(popularItems.get(i));
+			}
+			popularItems = items;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,13 +83,26 @@ public class StatisticsBean implements Serializable{
 	public void setDataBetween() {
 		UserVO user = getUserSessionBean().getUserVO();
 		try {
-			incomeTotalBetween = getCargoService().findTotalIncomeByUserBetweenDates(user, startDate, endDate);
-			incomeCashBetween = getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Cash);
-			incomeCardBetween = getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Card);
-			incomeSzepBetween = getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.SZEP);
-			incomeVoucherBetween = getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Voucher);
+			incomeBetween.setTotal(getCargoService().findTotalIncomeByUserBetweenDates(user, startDate, endDate));
+			incomeBetween.setCash(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Cash));
+			incomeBetween.setCard(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Card));
+			incomeBetween.setSzep(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.SZEP));
+			incomeBetween.setVoucher(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Voucher));
 			
-			reportBetween = getCargoService().findReportByUserBetweenDates(user, startDate, endDate);
+			incomeBetween.setReport(getCargoService().findReportByUserBetweenDates(user, startDate, endDate));
+
+			restaurantsBetween = getCargoService().findRestaurantsByUserBetweenDates(user, startDate, endDate);
+			restaurantReports = new ArrayList<>();
+			for(RestaurantVO restaurant : restaurantsBetween) {
+				CargoReport report = new CargoReport();
+				report.setName(restaurant.getName());
+				report.setTotal(getCargoService().findTotalIncomeByUserAndRestaurantBetweenDates(user, restaurant, startDate, endDate));
+				report.setCash(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.Cash, startDate, endDate));
+				report.setCard(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.Card, startDate, endDate));
+				report.setSzep(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.SZEP, startDate, endDate));
+				report.setVoucher(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.Voucher, startDate, endDate));
+				restaurantReports.add(report);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -139,190 +151,56 @@ public class StatisticsBean implements Serializable{
 		return endDate;
 	}
 
-
 	public void setEndDate(Date endDate) {
 		if(endDate.before(startDate)) startDate = endDate;
 		this.endDate = endDate;
 	}
 
-
-	public Double getIncomeTotalBetween() {
-		return incomeTotalBetween;
+	public CargoReport getIncomeBetween() {
+		return incomeBetween;
 	}
 
-
-	public void setIncomeTotalBetween(Double incomeTotalBetween) {
-		this.incomeTotalBetween = incomeTotalBetween;
+	public void setIncomeBetween(CargoReport incomeBetween) {
+		this.incomeBetween = incomeBetween;
 	}
 
-
-	public Double getIncomeCashBetween() {
-		return incomeCashBetween;
+	public CargoReport getIncomeTotal() {
+		return incomeTotal;
 	}
 
-
-	public void setIncomeCashBetween(Double incomeCashBetween) {
-		this.incomeCashBetween = incomeCashBetween;
+	public void setIncomeTotal(CargoReport incomeTotal) {
+		this.incomeTotal = incomeTotal;
 	}
 
-
-	public Double getIncomeCardBetween() {
-		return incomeCardBetween;
+	public CargoReport getIncomeAverage() {
+		return incomeAverage;
 	}
 
-
-	public void setIncomeCardBetween(Double incomeCardBetween) {
-		this.incomeCardBetween = incomeCardBetween;
+	public void setIncomeAverage(CargoReport incomeAverage) {
+		this.incomeAverage = incomeAverage;
 	}
 
-
-	public Double getIncomeSzepBetween() {
-		return incomeSzepBetween;
+	public List<RestaurantVO> getRestaurantsBetween() {
+		return restaurantsBetween;
 	}
 
-
-	public void setIncomeSzepBetween(Double incomeSzepBetween) {
-		this.incomeSzepBetween = incomeSzepBetween;
+	public void setRestaurantsBetween(List<RestaurantVO> restaurantsBetween) {
+		this.restaurantsBetween = restaurantsBetween;
 	}
 
-
-	public Double getIncomeVoucherBetween() {
-		return incomeVoucherBetween;
+	public List<CargoReport> getRestaurantReports() {
+		return restaurantReports;
 	}
 
-
-	public void setIncomeVoucherBetween(Double incomeVoucherBetween) {
-		this.incomeVoucherBetween = incomeVoucherBetween;
+	public void setRestaurantReports(List<CargoReport> restaurantReports) {
+		this.restaurantReports = restaurantReports;
 	}
 
-
-	public Double getIncomeTotalTotal() {
-		return incomeTotalTotal;
+	public List<ItemVO> getPopularItems() {
+		return popularItems;
 	}
 
-
-	public void setIncomeTotalTotal(Double incomeTotalTotal) {
-		this.incomeTotalTotal = incomeTotalTotal;
+	public void setPopularItems(List<ItemVO> popularItems) {
+		this.popularItems = popularItems;
 	}
-
-
-	public Double getIncomeCashTotal() {
-		return incomeCashTotal;
-	}
-
-
-	public void setIncomeCashTotal(Double incomeCashTotal) {
-		this.incomeCashTotal = incomeCashTotal;
-	}
-
-
-	public Double getIncomeCardTotal() {
-		return incomeCardTotal;
-	}
-
-
-	public void setIncomeCardTotal(Double incomeCardTotal) {
-		this.incomeCardTotal = incomeCardTotal;
-	}
-
-
-	public Double getIncomeSzepTotal() {
-		return incomeSzepTotal;
-	}
-
-
-	public void setIncomeSzepTotal(Double incomeSzepTotal) {
-		this.incomeSzepTotal = incomeSzepTotal;
-	}
-
-
-	public Double getIncomeVoucherTotal() {
-		return incomeVoucherTotal;
-	}
-
-
-	public void setIncomeVoucherTotal(Double incomeVoucherTotal) {
-		this.incomeVoucherTotal = incomeVoucherTotal;
-	}
-
-
-	public Double getIncomeTotalAverage() {
-		return incomeTotalAverage;
-	}
-
-
-	public void setIncomeTotalAverage(Double incomeTotalAverage) {
-		this.incomeTotalAverage = incomeTotalAverage;
-	}
-
-
-	public Double getIncomeCashAverage() {
-		return incomeCashAverage;
-	}
-
-
-	public void setIncomeCashAverage(Double incomeCashAverage) {
-		this.incomeCashAverage = incomeCashAverage;
-	}
-
-
-	public Double getIncomeCardAverage() {
-		return incomeCardAverage;
-	}
-
-
-	public void setIncomeCardAverage(Double incomeCardAverage) {
-		this.incomeCardAverage = incomeCardAverage;
-	}
-
-
-	public Double getIncomeSzepAverage() {
-		return incomeSzepAverage;
-	}
-
-
-	public void setIncomeSzepAverage(Double incomeSzepAverage) {
-		this.incomeSzepAverage = incomeSzepAverage;
-	}
-
-
-	public Double getIncomeVoucherAverage() {
-		return incomeVoucherAverage;
-	}
-
-
-	public void setIncomeVoucherAverage(Double incomeVoucherAverage) {
-		this.incomeVoucherAverage = incomeVoucherAverage;
-	}
-
-
-	public Report getReportBetween() {
-		return reportBetween;
-	}
-
-
-	public void setReportBetween(Report reportBetween) {
-		this.reportBetween = reportBetween;
-	}
-
-
-	public Report getReportTotal() {
-		return reportTotal;
-	}
-
-
-	public void setReportTotal(Report reportTotal) {
-		this.reportTotal = reportTotal;
-	}
-
-
-	public Report getReportAverage() {
-		return reportAverage;
-	}
-
-
-	public void setReportAverage(Report reportAverage) {
-		this.reportAverage = reportAverage;
-	}
-	
 }

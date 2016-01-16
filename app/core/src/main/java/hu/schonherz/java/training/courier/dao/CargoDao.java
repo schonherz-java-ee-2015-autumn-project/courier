@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import hu.schonherz.java.training.courier.entities.Cargo;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
+import hu.schonherz.java.training.courier.entities.Item;
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.entities.Report;
 import hu.schonherz.java.training.courier.entities.Restaurant;
@@ -146,4 +147,11 @@ public interface CargoDao extends JpaRepository<Cargo, Long> {
 	Double findIncomeByUserAndRestaurantAndPaymentBetweenDates(@Param("user") User user, 
 			@Param("restaurant") Restaurant restaurant, @Param("payment") Payment payment, 
 			@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	
+	@Query(value ="SELECT i "
+			+ "FROM Cargo c join c.addresses a join a.details d join d.item i "
+			+ "WHERE c.user = :user "
+			+ "AND a.status = 'Delivered' "
+			+ "GROUP BY i.id ORDER BY COUNT(i.id) DESC ")
+	List<Item> findItemsByUserOrderByCount(@Param("user") User user);
 }

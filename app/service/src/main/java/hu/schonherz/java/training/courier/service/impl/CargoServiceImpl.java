@@ -21,9 +21,11 @@ import hu.schonherz.java.training.courier.entities.Restaurant;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
+import hu.schonherz.java.training.courier.service.converter.ItemConverter;
 import hu.schonherz.java.training.courier.service.converter.RestaurantConverter;
 import hu.schonherz.java.training.courier.service.converter.UserConverter;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
+import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
@@ -135,9 +137,9 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 	}
 //10
 	@Override
-	public List<Restaurant> findRestaurantsByUserBetweenDates(UserVO user, Date startDate, Date endDate)
+	public List<RestaurantVO> findRestaurantsByUserBetweenDates(UserVO user, Date startDate, Date endDate)
 			throws Exception {
-		return cargoDao.findRestaurantsByUserBetweenDates(UserConverter.toEntity(user), startDate, endDate);
+		return RestaurantConverter.toVo(cargoDao.findRestaurantsByUserBetweenDates(UserConverter.toEntity(user), startDate, endDate));
 	}
 //11
 	@Override
@@ -152,5 +154,10 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 			Payment payment, Date startDate, Date endDate) throws Exception {
 		return cargoDao.findIncomeByUserAndRestaurantAndPaymentBetweenDates(UserConverter.toEntity(user), 
 				RestaurantConverter.toEntity(restaurant), payment, startDate, endDate);
+	}
+
+	@Override
+	public List<ItemVO> findItemsByUserOrderByCount(UserVO user) throws Exception {
+		return ItemConverter.toVo(cargoDao.findItemsByUserOrderByCount(UserConverter.toEntity(user)));
 	}
 }

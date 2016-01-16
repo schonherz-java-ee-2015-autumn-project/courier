@@ -59,12 +59,12 @@ public class CargoDaoTest {
 	Long globalId = 89001L;
 	CargoStatus cargoStatus = CargoStatus.Delivered;
 	AddressStatus addressStatus = AddressStatus.Delivered;
-	String username = "purplemouse442";
+	Long userId = 2L;
 	User targetUser = null;
 	
-	@Test
+	//@Test
 	public void testGenerateRandomFreeCargosForDay() {
-		targetUser = userDao.findByUsername(username);
+		targetUser = userDao.findOne(userId);
 		cargoStatus = CargoStatus.Free;
 		addressStatus = null;
 		generateRandomCargosForDay();
@@ -72,7 +72,7 @@ public class CargoDaoTest {
 	
 	//@Test
 	public void testGenerateRandomCargosForDay() {
-		targetUser = userDao.findByUsername(username);
+		targetUser = userDao.findOne(userId);
 		cargoStatus = CargoStatus.Delivered;
 		addressStatus = AddressStatus.Delivered;
 		generateRandomCargosForDay();
@@ -80,7 +80,7 @@ public class CargoDaoTest {
 	
 	//@Test
 	public void testGenerateRandomCargos() {
-		targetUser = userDao.findByUsername(username);
+		targetUser = userDao.findOne(userId);
 		cargoStatus = CargoStatus.Delivered;
 		addressStatus = AddressStatus.Delivered;
 		generateRandomCargos();
@@ -88,7 +88,7 @@ public class CargoDaoTest {
 	
 	@Test
 	public void testQueryTest() {
-		targetUser = userDao.findByUsername(username);
+		targetUser = userDao.findOne(userId);
 		/**1**/
 		Double d = cargoDao.findTotalIncomeByUserBetweenDates(targetUser, actualDate, actualDate);
 		System.out.println("#1 ___ " + d);
@@ -119,15 +119,24 @@ public class CargoDaoTest {
 		}
 		/**10**/
 		List<Restaurant> rLi = cargoDao.findRestaurantsByUserBetweenDates(targetUser, actualDate, actualDate);
-		for(Restaurant res : rLi) {
-			System.out.println("#10 ___ " + res.getName());
+		if(rLi != null && rLi.size() != 0) {
+			for(Restaurant res : rLi) {
+				System.out.println("#10 ___ " + res.getName());
+			}
+			/**11**/
+			d = cargoDao.findTotalIncomeByUserAndRestaurantBetweenDates(targetUser, rLi.get(0), actualDate, actualDate);
+			System.out.println("#11 ___ " + d);
+			/**12**/
+			d = cargoDao.findIncomeByUserAndRestaurantAndPaymentBetweenDates(targetUser, rLi.get(0), Payment.Cash, actualDate, actualDate);
+			System.out.println("#12 ___ " + d);
 		}
-		/**11**/
-		d = cargoDao.findTotalIncomeByUserAndRestaurantBetweenDates(targetUser, rLi.get(0), actualDate, actualDate);
-		System.out.println("#11 ___ " + d);
-		/**12**/
-		d = cargoDao.findIncomeByUserAndRestaurantAndPaymentBetweenDates(targetUser, rLi.get(0), Payment.Cash, actualDate, actualDate);
-		System.out.println("#12 ___ " + d);
+		/**13**/
+		List<Item> iLi = cargoDao.findItemsByUserOrderByCount(targetUser);
+		if(iLi != null && iLi.size() != 0) {
+			for(Item item :iLi) {
+				System.out.println("#13 ___ " + item.getName());
+			}
+		}
 	}
 	
 	public void generateRandomCargos() {
