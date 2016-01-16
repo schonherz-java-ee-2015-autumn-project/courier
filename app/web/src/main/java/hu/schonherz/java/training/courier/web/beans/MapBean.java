@@ -80,6 +80,7 @@ public class MapBean implements Serializable {
 	public void loadCargo(Long id) {
 		try {
 			selectedCargo = getCargoService().findCargoById(id);
+			logger.info("INFO: selectedCargo " + selectedCargo.getGlobalid());
 			double cargoPrice = 0;
 			double addressPrice = 0;
 			double income = 0;
@@ -106,6 +107,7 @@ public class MapBean implements Serializable {
 			selectedCargo.setTotalValue(cargoPrice);
 			selectedCargo.setIncome(income);
 			addressList = selectedCargo.getRestaurant().getAddress() + ";" + updateRoute();
+			logger.info("INFO:addressList:" + addressList);
 
 		} catch (Exception e) {
 			logger.info("Error:", e);
@@ -115,7 +117,9 @@ public class MapBean implements Serializable {
 	public void cargoStatusChanged(Long value) throws Exception {
 
 		CargoStatus status = CargoStatus.getValue(value);
-
+		logger.info("INFO: Setting cargo status to:" + status.toString());
+		logger.info("INFO: userGlobalID:" + userSessionBean.getUserVO().getGlobalid());
+		logger.info("INFO: CargoGlobalId:" + selectedCargo.getGlobalid());
 		if (cargoWebService.changeCargoState(selectedCargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
 				status) == 0) {
 
@@ -170,7 +174,9 @@ public class MapBean implements Serializable {
 
 		AddressStatus addressStatus = (AddressStatus) AddressStatus.getValue(addressStatusId);
 		AddressVO addressVO = getAddressService().findAddressById(addressId);
-
+		logger.info("INFO: Setting address status to:" + addressStatus.toString());
+		logger.info("INFO:userGlobalID:" + userSessionBean.getUserVO().getGlobalid());
+		logger.info("AddressGlobalID:" + addressVO.getGlobalid());
 		if (cargoWebService.changeDeliveryState(addressVO.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
 				addressStatus) == 0) {
 

@@ -91,25 +91,39 @@ public class AvailableBean implements Serializable {
 	}
 
 	public void pickUpCargo(CargoVO cargo) throws Exception {
+		CargoStatus status = CargoStatus.getValue(2L);
+		if (cargoWebService.assignUserToCargo(userSessionBean.getUserVO().getGlobalid(), cargo.getGlobalid()) == 0) {
 
-		// ellenõrizzük hogy a Web Servicen keresztül képesek voltunk-e menteni
-		// az aktuális cargoStatus-t, ha igen akkor mi is mentünk adatbázisba
-		// ha viszont nem akkor egyértelmûen nem csinálunk semmit, csak egy
-		// hibát dobunk majd az oldalra
-		if (cargoWebService.setCargoStatus(cargo.getGlobalid(), CargoStatus.getValue(2L)) == 0) {
 			cargo.setUser(userVO);
-			cargo.setStatus(CargoStatus.getValue(2L));
-
 			getCargoService().save(cargo);
 			userVO.setTransporting(cargo.getId());
 			getUserService().save(userVO);
 			getUserSessionBean().getUserVO().setTransporting(cargo.getId());
-			showOnMap(cargo.getId());
-			logger.info("INFO:Succes cargoStatus setting with WebService. ");
+			logger.info("INFO: Courier assigned to Cargo!");
+			// ellenõrizzük hogy a Web Servicen keresztül képesek voltunk-e
+			// menteni
+			// az aktuális cargoStatus-t, ha igen akkor mi is mentünk
+			// adatbázisba
+			// ha viszont nem akkor egyértelmûen nem csinálunk semmit, csak egy
+			// hibát dobunk majd az oldalra
+			logger.info("Setting cargo Status, cargoGlobalID:" + cargo.getGlobalid() + " userId:"
+					+ userSessionBean.getUserVO().getGlobalid() + " status:" + status.toString());
+			if (cargoWebService.changeCargoState(cargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
+					status) == 0) {
+				logger.info("IM IN THE FELTÉTEL");
+				cargo.setStatus(status);
+				getCargoService().save(cargo);
+				showOnMap(cargo.getId());
+				logger.info("INFO:Succes cargoStatus setting with WebService. ");
+			} else {
+				getFacesContext().addMessage("errorMessage",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened."));
+				logger.info("ERROR:Error while setting cargoStatus with WebService.");
+			}
 		} else {
 			getFacesContext().addMessage("errorMessage",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened."));
-			logger.info("ERROR:Error while setting cargoStatus with WebService.");
+			logger.info("ERROR:Error while setting cargo to courier with WebService.");
 		}
 
 	}
