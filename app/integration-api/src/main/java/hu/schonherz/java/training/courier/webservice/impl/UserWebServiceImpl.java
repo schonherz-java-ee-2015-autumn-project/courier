@@ -36,7 +36,8 @@ import hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemot
 @Stateless(mappedName = "userWebService")
 @Local(UserWebServiceLocal.class)
 @Remote(UserWebServiceRemote.class)
-@Interceptors({ SpringBeanAutowiringInterceptor.class })
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+// @Interceptors({ SpringBeanAutowiringInterceptor.class })
 public class UserWebServiceImpl implements UserWebServiceLocal, UserWebServiceRemote {
 
 	private final static Logger logger = Logger.getLogger(UserWebServiceImpl.class);
@@ -86,10 +87,15 @@ public class UserWebServiceImpl implements UserWebServiceLocal, UserWebServiceRe
 
 	@Override
 	public void getUsersFromAdministration() throws Exception {
-		GregorianCalendar gregorianDate = new GregorianCalendar();
-		gregorianDate.setTime(userServiceLocal.findLastModDate());
-		XMLGregorianCalendar lastModDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
-		logger.info("INFO: lastModDate:" + gregorianDate.getTime());
+		logger.info("INFO:Trying to get users from WebService!");
+
+//		 GregorianCalendar gregorianDate = new GregorianCalendar();
+//		 gregorianDate.setTime(userServiceLocal.findLastModDate());
+//		 XMLGregorianCalendar lastModDate =
+//		 DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
+//		
+//		 logger.info("INFO: lastModDate:" + gregorianDate.getTime());
+
 		try {
 			List<WebUserDTO> usersInWS = synchService.getUsersByRole(ROLE);
 			List<UserVO> usersInDB = userServiceLocal.findAll();

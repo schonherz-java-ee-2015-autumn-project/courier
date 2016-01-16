@@ -1,5 +1,6 @@
 package hu.schonherz.java.training.courier.webservice.converters;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,12 +50,12 @@ public class RemoteCargoConverter {
 	}
 
 	public CargoVO toLocalVO(RemoteCargoDTO remoteCargoDTO) {
-		logger.info("INFO: RemoteCargoConverter toLocalVO method asked.");
+//		logger.info("INFO: RemoteCargoConverter toLocalVO method asked.");
 		UserVO courier = null;
 		try {
-			logger.info("INFO: userService.findByGlobalId(remoteCargoDTO.getCourierId()) running");
+//			logger.info("INFO: userService.findByGlobalId(remoteCargoDTO.getCourierId()) running");
 			courier = userService.findByGlobalId(remoteCargoDTO.getCourierId());
-			logger.info("INFO: courierName:" + courier.getFullname());
+//			logger.info("INFO: courierName:" + courier.getFullname());
 			if (courier == null) {
 				logger.info("INFO: courier is still null after userService");
 			}
@@ -64,9 +65,9 @@ public class RemoteCargoConverter {
 
 		RestaurantVO restaurant = null;
 		try {
-			logger.info("INFO: restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId()) running");
+//			logger.info("INFO: restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId()) running");
 			restaurant = restaurantService.findRestaurantByGlobalid(remoteCargoDTO.getRestaurantId());
-			logger.info("INFO: restaurantInfo:" + restaurant.getName());
+//			logger.info("INFO: restaurantInfo:" + restaurant.getName());
 			if (restaurant == null) {
 				logger.info("INFO: Restaurant is still null after restaurantService");
 			}
@@ -74,24 +75,24 @@ public class RemoteCargoConverter {
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 		}
-		logger.info("INFO: Making localVO");
+//		logger.info("INFO: Making localVO");
 		CargoVO localVo = new CargoVO();
 		localVo.setId((long) 0);
-		logger.info("INFO: CargoVO localVO made");
+//		logger.info("INFO: CargoVO localVO made");
 		List<AddressVO> addresses = RemoteOrderConverter.toLocalVo(remoteCargoDTO.getOrders());
 		if (addresses == null) {
 			logger.info("Addresses are NULL!");
 		}
 		localVo.setAddresses(addresses);
-		logger.info("INFO: address is set in localVO");
+//		logger.info("INFO: address is set in localVO");
 		localVo.setGlobalid(remoteCargoDTO.getId());
-		logger.info("INFO: globalid is set in localVO");
+//		logger.info("INFO: globalid is set in localVO");
 		localVo.setStatus(RemoteCargoStateConverter.toLocalCargoState(remoteCargoDTO.getState()));
-		logger.info("INFO: status is set in localVO");
+//		logger.info("INFO: status is set in localVO");
 		localVo.setRestaurant(restaurant);
-		logger.info("INFO: restaurant is set in localVO");
+//		logger.info("INFO: restaurant is set in localVO");
 		localVo.setUser(courier);
-		logger.info("INFO: courier is set in localVO");
+//		logger.info("INFO: courier is set in localVO");
 		double totalValue = 0;
 		for (int i = 0; i < remoteCargoDTO.getOrders().size(); i++) {
 
@@ -99,8 +100,16 @@ public class RemoteCargoConverter {
 		}
 		localVo.setTotalValue(totalValue);
 		localVo.setModdate(new Date());
-		logger.info("INFO: Returning localVO!");
+//		logger.info("INFO: Returning localVO!");
 		return localVo;
+	}
+
+	public List<CargoVO> toLocalVO(List<RemoteCargoDTO> remoteCargos) {
+		List<CargoVO> localCargos = new ArrayList<>();
+		for (RemoteCargoDTO remoteVO : remoteCargos) {
+			localCargos.add(toLocalVO(remoteVO));
+		}
+		return localCargos;
 
 	}
 }

@@ -7,17 +7,33 @@
 		<version>0.0.1</version>
 	</parent>
 	<packaging>ejb</packaging>
-	<artifactId>integration-api</artifactId>
+	<artifactId>integration</artifactId>
 
 	<dependencies>
+		<dependency><!-- this one will be first on the test classpath -->
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0-5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-core</artifactId>
+			<version>4.7.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-junit</artifactId>
+			<version>4.7.2</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- felvesszük föggőségnek a service-client-api -t -->
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>service-client-api</artifactId>
 			<version>${version}</version>
 		</dependency>
-		<!-- felvesszük függőségnek a core-t -->
-
 		<dependency>
 			<groupId>hu.schonherz.java.training.courier</groupId>
 			<artifactId>integration-service-client</artifactId>

@@ -11,15 +11,11 @@ public class RemoteDeliveryStateConverter {
 	public static AddressStatus toLocalState(DeliveryStateWeb remoteState) {
 		AddressStatus localStatus = null;
 		logger.info("INFO: In RemoteDeliveryStateConverter");
-		//logger.info("INFO: Trying to convert remoteState to localState" + remoteState.toString());
 		switch (remoteState) {
 		case DELIVERED:
 			localStatus = AddressStatus.Delivered;
 			break;
 		case FAILED:
-			localStatus = AddressStatus.Failed;
-			break;
-		default:
 			localStatus = AddressStatus.Failed;
 			break;
 		}

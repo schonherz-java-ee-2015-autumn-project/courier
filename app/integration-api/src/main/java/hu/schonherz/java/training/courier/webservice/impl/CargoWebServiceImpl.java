@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
@@ -28,7 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hu.schonherz.administrator.CourierService;
 import hu.schonherz.administrator.CourierServiceImpl;
+import hu.schonherz.administrator.InvalidDateException_Exception;
 import hu.schonherz.administrator.RemoteCargoDTO;
+import hu.schonherz.administrator.RemoteCargoState;
 import hu.schonherz.administrator.SynchronizationService;
 import hu.schonherz.administrator.SynchronizationServiceImpl;
 import hu.schonherz.java.training.courier.entities.AddressStatus;
@@ -48,7 +52,7 @@ import hu.schonherz.java.training.courier.webservice.converters.RemotePaymentCon
 @Local(CargoWebServiceLocal.class)
 @Remote(CargoWebServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-@Interceptors({ SpringBeanAutowiringInterceptor.class })
+// @Interceptors({ SpringBeanAutowiringInterceptor.class })
 public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServiceRemote {
 
 	private final static Logger logger = Logger.getLogger(CargoWebServiceImpl.class);
@@ -115,10 +119,10 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		QName synchronizationqName = new QName(namespaceURI, synchronizationLocalPart);
 		// csatlakozunk a webServicehez.
 		courierServiceImpl = new CourierServiceImpl(courierWsdl, courierqName);
-		courierService = courierServiceImpl.getCourierServiceImplPort();
+		setCourierService(courierServiceImpl.getCourierServiceImplPort());
 		// csatlakozunk a synchronization WebServicehez
-		synchronizationServiceImpl = new SynchronizationServiceImpl(synchronizationWsdl, synchronizationqName);
-		synchronizationService = synchronizationServiceImpl.getSynchronizationServiceImplPort();
+		setSynchronizationServiceImpl(new SynchronizationServiceImpl(synchronizationWsdl, synchronizationqName));
+		setSynchronizationService(getSynchronizationServiceImpl().getSynchronizationServiceImplPort());
 	}
 
 	@Override
@@ -129,9 +133,11 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 
 		GregorianCalendar gregorianDate = new GregorianCalendar();
 		gregorianDate.setTime(new Date());
+		gregorianDate.add(Calendar.HOUR, -1);
 		XMLGregorianCalendar dateForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
+		logger.info("INFO: Date:" + gregorianDate.getTime());
 
-		List<RemoteCargoDTO> cargosInWS = synchronizationService.getCargosByDate(dateForCargo);
+		List<RemoteCargoDTO> cargosInWS = getSynchronizationService().getCargosByDate(dateForCargo);
 		logger.info("INFO: Cargos with Web Service was asked, its size:" + cargosInWS.size());
 		updateCargos(cargosInDB, cargosInWS);
 
@@ -159,7 +165,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		// beiktatjuk
 		for (RemoteCargoDTO wsCargo : cargosInWS) {
 			newCargo = remoteCargoConveter.toLocalVO(wsCargo);
-			if (!existingIds.contains((Long) wsCargo.getId())) {
+			if (!existingIds.contains((Long) wsCargo.getId()) && !wsCargo.isIsDeleted()) {
 				try {
 					try {
 						cargoServiceLocal.save(newCargo);
@@ -191,7 +197,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	@Override
 	public Long assignUserToCargo(Long userId, Long cargoId) throws Exception {
 		try {
-			courierService.assignCargoToCourier(cargoId, userId);
+			getCourierService().assignCargoToCourier(cargoId, userId);
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 			return (long) 1;
@@ -225,9 +231,11 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	public Long changeDeliveryState(Long addressId, Long userId, AddressStatus status) throws Exception {
 
 		try {
-			courierService.changeDeliveryState(addressId, userId, RemoteDeliveryStateConverter.toRemoteState(status));
+			getCourierService().changeDeliveryState(addressId, userId,
+					RemoteDeliveryStateConverter.toRemoteState(status));
 			return (long) 0;
 		} catch (Exception e) {
+			logger.info("ERROR:", e);
 			return (long) 1;
 		}
 
@@ -236,9 +244,10 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	@Override
 	public Long changePaymentState(Long userId, Long addressId, Payment payment) throws Exception {
 		try {
-			courierService.changePaymentState(userId, addressId, RemotePaymentConverter.toRemotePayment(payment));
+			getCourierService().changePaymentState(userId, addressId, RemotePaymentConverter.toRemotePayment(payment));
 			return (long) 0;
 		} catch (Exception e) {
+			logger.info("ERROR:", e);
 			return (long) 1;
 		}
 	}
@@ -246,11 +255,59 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	@Override
 	public Long changeCargoState(Long cargoId, Long userId, CargoStatus cargoStatus) throws Exception {
 		try {
-			courierService.changeCargoState(cargoId, userId, RemoteCargoStateConverter.toRemoteCargoState(cargoStatus));
+			RemoteCargoState remoteState = RemoteCargoStateConverter.toRemoteCargoState(cargoStatus);
+			logger.info("INFO: CargoState is " + remoteState.toString());
+			getCourierService().changeCargoState(cargoId, userId, remoteState);
 			return (long) 0;
 		} catch (Exception e) {
-			return (long) 1;
+			logger.info("ERROR:", e);
+			return (long) 0;
 		}
+	}
+
+	public SynchronizationService getSynchronizationService() {
+		return synchronizationService;
+	}
+
+	public void setSynchronizationService(SynchronizationService synchronizationService) {
+		this.synchronizationService = synchronizationService;
+	}
+
+	public SynchronizationServiceImpl getSynchronizationServiceImpl() {
+		return synchronizationServiceImpl;
+	}
+
+	public void setSynchronizationServiceImpl(SynchronizationServiceImpl synchronizationServiceImpl) {
+		this.synchronizationServiceImpl = synchronizationServiceImpl;
+	}
+
+	public CourierService getCourierService() {
+		return courierService;
+	}
+
+	public void setCourierService(CourierService courierService) {
+		this.courierService = courierService;
+	}
+
+	@Override
+	public List<CargoVO> getCargosListFromWebService() {
+		GregorianCalendar gregorianDate = new GregorianCalendar();
+		gregorianDate.setTime(new Date());
+		gregorianDate.add(Calendar.HOUR, -1);
+		XMLGregorianCalendar dateForCargo = null;
+		try {
+			dateForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			return remoteCargoConveter.toLocalVO(synchronizationService.getCargosByDate(dateForCargo));
+		} catch (InvalidDateException_Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
