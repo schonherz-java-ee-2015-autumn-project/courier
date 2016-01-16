@@ -27,8 +27,8 @@ public class GetFreeCargosViaWebServiceJob extends EJBInvokerJob implements Job 
 
 	CargoWebServiceRemote cargoWebService;
 
-	private final int MAXIMUM_TRIES = 5;
-	//10 másodpercenként újra próbálkozunk.
+	private final int MAXIMUM_TRIES = 1;
+	// 10 másodpercenként újra próbálkozunk.
 	private final int WAIT_TIME_MILLISEC = 10000;
 	private final String UNSUCCESFUL_TRIES = "cargo_unsuccessful_asks";
 
@@ -37,11 +37,22 @@ public class GetFreeCargosViaWebServiceJob extends EJBInvokerJob implements Job 
 	}
 
 	private void init() {
+
 		Context context = null;
 		try {
+
 			context = new InitialContext();
-			cargoWebService = (CargoWebServiceRemote) context.lookup("cargoWebService#hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote");
+			logger.info("INFO: Trying to lookUp cargoWebService!");
+			cargoWebService = (CargoWebServiceRemote) context.lookup(
+					"java:global.ear-0.0.1.integration-0.0.1.CargoWebServiceImpl!hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote");
+			if (cargoWebService == null) {
+				logger.info("ERROR:CargoWebService is NULL");
+
+			} else {
+				logger.info("INFO:CargoWebService is NOT NULL");
+			}
 		} catch (NamingException e) {
+			logger.info("ERROR:", e);
 		} finally {
 			try {
 				context.close();

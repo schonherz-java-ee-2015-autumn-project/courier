@@ -31,5 +31,20 @@
 		<wls:jndi-name>CargoService</wls:jndi-name>
 		<wls:local-jndi-name>CargoServiceLocal</wls:local-jndi-name>
 	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>CargoWebServiceImpl</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>CargoWebService</wls:jndi-name>
+		<wls:local-jndi-name>CargoWebServiceLocal</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
+	<wls:weblogic-enterprise-bean>
+		<wls:ejb-name>RemoteCargoConverter</wls:ejb-name>
+		<wls:stateless-session-descriptor></wls:stateless-session-descriptor>
+		<wls:enable-call-by-reference>true</wls:enable-call-by-reference>
+		<wls:jndi-name>remoteCargoConverter</wls:jndi-name>
+		<wls:local-jndi-name>RemoteCargoConverter</wls:local-jndi-name>
+	</wls:weblogic-enterprise-bean>
+
 
 </wls:weblogic-ejb-jar>

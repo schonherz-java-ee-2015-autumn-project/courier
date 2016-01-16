@@ -16,7 +16,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.jobs.ee.ejb.EJBInvokerJob;
 
-import hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote;
 import hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote;
 
 @DisallowConcurrentExecution
@@ -25,25 +24,33 @@ public class GetUsersViaWebServiceJob extends EJBInvokerJob implements Job {
 
 	final static Logger logger = Logger.getLogger(GetUsersViaWebServiceJob.class);
 
-	
 	UserWebServiceRemote userWebService;
 
-	//max 10-szer
+	// max 10-szer
 	private final int MAXIMUM_TRIES = 10;
-	//10 percenként újra próbálkozunk
+	// 10 percenként újra próbálkozunk
 	private final int WAIT_TIME_MILLISEC = 600000;
 	private final String UNSUCCESFUL_TRIES = "user_unsuccessful_asks";
-	
+
 	public GetUsersViaWebServiceJob() {
 		init();
 	}
-	
+
 	private void init() {
 		Context context = null;
 		try {
 			context = new InitialContext();
-			userWebService = (UserWebServiceRemote) context.lookup("userWebService#hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote");
+			userWebService = (UserWebServiceRemote) context.lookup(
+					"java:global.ear-0.0.1.integration-0.0.1.UserWebServiceImpl!hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote");
+			// "userWebService#hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote"
+			if (userWebService == null) {
+				logger.info("ERROR: userWebService is NULL");
+
+			} else {
+				logger.info("INFO: userWebService is NOT NULL");
+			}
 		} catch (NamingException e) {
+			logger.info("ERROR:", e);
 		} finally {
 			try {
 				context.close();
@@ -51,7 +58,7 @@ public class GetUsersViaWebServiceJob extends EJBInvokerJob implements Job {
 			}
 		}
 	}
-	
+
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 

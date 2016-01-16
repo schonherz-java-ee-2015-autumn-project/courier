@@ -9,7 +9,8 @@
 		<job>
 			<name>UserRefresh</name>
 			<group>UserAdminService</group>
-			<description>Synchronizing users with the administration module</description>
+			<description>Synchronizing users with the administration module
+			</description>
 			<job-class>hu.schonherz.java.training.courier.service.scheduler.jobs.GetUsersViaWebServiceJob
 			</job-class>
 		</job>
@@ -18,8 +19,9 @@
 				<name>UserRefreshTrigger</name>
 				<job-name>UserRefresh</job-name>
 				<job-group>UserAdminService</job-group>
+<!-- 				<cron-expression>0 0/1 * 1/1 * ? *</cron-expression> -->
 				<cron-expression>0 0 7 * * ?</cron-expression>
-<!-- 				felhasználok lekérése minden nap reggel 7 kor és utána próbálkozás -->
+				<!-- felhasználok lekérése minden nap reggel 7 kor és utána próbálkozás -->
 			</cron>
 		</trigger>
 
@@ -27,7 +29,9 @@
 		<job>
 			<name>CargoRefresh</name>
 			<group>CargoAdminService</group>
-			<description>Synchronizing cargos with the administration module which is given by the restaurant module</description>
+			<description>Synchronizing cargos with the administration module
+				which is given by the restaurant module
+			</description>
 			<job-class>hu.schonherz.java.training.courier.service.scheduler.jobs.GetFreeCargosViaWebServiceJob
 			</job-class>
 		</job>
@@ -36,8 +40,9 @@
 				<name>CargoRefreshTrigger</name>
 				<job-name>CargoRefresh</job-name>
 				<job-group>CargoAdminService</job-group>
+<!-- 				<cron-expression>0 0/30 * 1/1 * ? *</cron-expression> -->
 				<cron-expression>0 0/1 * 1/1 * ? *</cron-expression>
-<!-- 				szállítmányok lekérése percenként -->
+				<!-- szállítmányok lekérése percenként -->
 			</cron>
 		</trigger>
 	</schedule>
