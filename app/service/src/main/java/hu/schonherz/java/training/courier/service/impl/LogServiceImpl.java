@@ -42,7 +42,7 @@ public class LogServiceImpl implements LogServiceLocal, LogServiceRemote {
 	}
 
 	@Override
-	public List<LogVO> getLogsFrom(Date date) throws Exception {
-		return LogConverter.toVo(logDao.getLogsFrom(date));
+	public List<LogVO> getLogsByUserIdFrom(Long userId, Date date) throws Exception {
+		return LogConverter.toVo(logDao.getLogsByUserIdFrom(userId, date));
 	}
 }

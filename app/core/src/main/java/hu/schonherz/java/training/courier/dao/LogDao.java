@@ -13,6 +13,6 @@ import hu.schonherz.java.training.courier.entities.Log;
 public interface LogDao extends JpaRepository<Log, Long> {
 	List<Log> findByUserId(Long id);
 
-	@Query(value = "select * from log where loginDate > ?1", nativeQuery = true)
-	List<Log> getLogsFrom(Date date);
+	@Query(value = "select * from log where user_id = ?1 and loginDate > ?2", nativeQuery = true)
+	List<Log> getLogsByUserIdFrom(Long userId, Date date);
 }
