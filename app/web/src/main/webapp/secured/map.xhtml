@@ -156,6 +156,7 @@
 					 }
 					 
 					 summaryPanel.innerHTML += 
+					
 					 	 '<div class="alert alert-info">'+
                  				'<h4>'+'#{out.totalRoute}'+'</h4>'+
                   				'<strong><i class="fa fa-globe margin-r-5"></i>'+'#{out.distance}'+'</strong>'+
@@ -171,9 +172,7 @@
                   				'<br></br>'+
                   				'<strong><i class="fa fa-clock-o margin-r-5"></i>'+'#{out.duration}'+'</strong>'+
                   				'<p class="pull-right">'+ (nextDuration/60).toFixed(0)+ ' minute(s)</p>'+         				
-               				'</div>'
-               				
-               				;
+               				'</div>';
 						directionsDisplay.setDirections(result);
 						
 						
@@ -327,10 +326,6 @@
 			<div class="navbar-header">
 				<a href="#{request.contextPath}/secured/available.xhtml"
 					class="navbar-brand"><b>C</b>ourier</a>
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar-collapse">
-					<i class="fa fa-bars"></i>
-				</button>
 			</div>
 
 
@@ -355,6 +350,13 @@
 									<li class="list-group-item"><b>#{out.cargoValue}</b>
 										<p class="pull-right">
 											<h:outputText value="#{mapBean.selectedCargo.totalValue}">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText>
+											HUF
+										</p></li>
+									<li class="list-group-item"><b>#{out.income}</b>
+										<p class="pull-right">
+											<h:outputText value="#{mapBean.selectedCargo.income}">
 												<f:convertNumber minFractionDigits="2" />
 											</h:outputText>
 											HUF

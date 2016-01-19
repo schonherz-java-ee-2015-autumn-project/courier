@@ -63,101 +63,287 @@
 	-webkit-border-top-right-radius: 3px;
 	border-top-right-radius: 3px;
 }
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span
+	{
+	display: block;
+	position: absolute;
+	left: 50%;
+	margin-left: -8px;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.ui-icon {
+	width: 16px;
+	height: 16px;
+	background-image:
+		url("/courier/javax.faces.resource/images/ui-icons_c47a23_256x240.png.xhtml?ln=primefaces-humanity");
+}
+
+.ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+.ui-icon-circle-triangle-e {
+	background-position: -48px -192px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+	left: 2px;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 2px;
+	width: 1.8em;
+	height: 1.8em;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+	cursor: pointer;
+}
+
+.ui-widget-header a {
+	color: #4f4f4f;
+}
+
+.ui-widget-content a {
+	color: #4f4f4f;
+}
+
+.ui-corner-all {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+.ui-icon-circle-triangle-w {
+	background-position: -80px -192px;
+}
+
+.ui-icon {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+	right: 2px;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 2px;
+	width: 1.8em;
+	height: 1.8em;
+}
+
+.ui-datepicker .ui-datepicker-calendar .ui-state-default {
+	background: none;
+	border: none;
+	color: #5F83B9;
+}
+
+.ui-datepicker .ui-datepicker-current-day .ui-state-highlight,
+	.ui-datepicker .ui-datepicker-current-day .ui-state-default {
+	background: #5F83B9;
+	color: #FFFFFF !important;
+	text-shadow: 0 1px 1px #234386;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.ui-datepicker {
+	background: white;
+	-moz-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+	-webkit-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+}
 </style>
+
 		<section class="content">
-			<div class="row">
-				<div class="col-md-12">
+			<h:form id="form">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-4">
 
-					<p:dataGrid id="deliveredCargoes" var="cargo"
-						value="#{deliveredBean.cargoes}" columns="1">
-						<f:facet name="emptyMessage">
-
-							<h:outputText value="#{out.emptyMessage}"
-								class="callout callout-danger" />
-
-						</f:facet>
-						<div class="box box-success collapsed-box">
+						<!-- Horizontal Form -->
+						<div class="box box-info">
 							<div class="box-header with-border">
-								<h2 class="box-title">#{out.company}
-									#{cargo.restaurant.name}</h2>
-								<h5 class="widget-user-desc">
-									#{out.cargoValue}
-									<h:outputText value="#{cargo.totalValue}">
-										<f:convertNumber minFractionDigits="2" />
-									</h:outputText>
-									HUF
-								</h5>
-								<h5 class="widget-user-desc">#{out.status} #{cargo.status}</h5>
-								<div class="box-tools pull-right">
-									<button class="btn btn-box-tool" data-widget="collapse">
-										<i class="fa fa-plus"></i>
-									</button>
-								</div>
-								<!-- /.box-tools -->
+								<h3 class="box-title">#{out.interval}</h3>
 							</div>
 							<!-- /.box-header -->
+							<!-- form start -->
 
 							<div class="box-body">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="startDate" class="col-sm-4 control-label">#{out.startDate}</label>
+										<div class="col-sm-8">
 
-								<p:dataGrid var="address" value="#{cargo.addresses}" columns="1">
-									<div class="box box-success box-solid collapsed-box">
-										<div class="box-header with-border">
-											<h5>#{out.address} #{address.address}</h5>
-											<div class="box-tools pull-right">
-												<button class="btn btn-box-tool" data-widget="collapse">
-													<i class="fa fa-plus"></i>
-												</button>
-											</div>
+											<p:calendar id="startDate" value="#{deliveredBean.startDate}"
+												pattern="dd/MM/yyyy" maxdate="#{deliveredBean.currentDate}">
+												<p:ajax process="startDate" partialSubmit="true"
+													event="change" />
+											</p:calendar>
 										</div>
-										<div class="box-body">
-											<ul class="list-group list-group-unbordered">
-												<li class="list-group-item"><b>#{out.deadline}</b> <p
-													class="pull-right"> <h:outputText
-															value="#{address.deadline}">
-															<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
-														</h:outputText></p></li>
-												<li class="list-group-item"><b>#{out.addressValue}</b>
-													<p class="pull-right"> <h:outputText
-															value="#{address.totalValue}">
-															<f:convertNumber minFractionDigits="2" />
-														</h:outputText> HUF
-												</p></li>
-												<li class="list-group-item"><b>#{out.payment}</b> <p
-													class="pull-right">#{address.payment}</p></li>
-												<li class="list-group-item"><b>#{out.status}</b> <p
-													class="pull-right">#{address.status}</p></li>
-											</ul>
-											<p:dataTable id="table" var="detail" value="#{address.details}"
-												styleClass="datatable">
-												<f:facet name="header">
-      												#{out.items}
-   												</f:facet>
-												<p:column styleClass="customHeader" headerText="#{out.item}">
-													<h:outputText value="#{detail.item.name}" />
-												</p:column>
+									</div>
+									<div class="form-group">
+										<label for="endDate" class="col-sm-4 control-label">#{out.endDate}</label>
+										<div class="col-sm-8">
 
-												<p:column headerText="#{out.price}">
-													<h:outputText value="#{detail.item.price}">
-														<f:convertNumber minFractionDigits="2" />
-													</h:outputText> HUF
-													</p:column>
-												<p:column headerText="#{out.quantity}">
-													<h:outputText value="#{detail.quantity}" />
-												</p:column>
-											</p:dataTable>
+											<p:calendar id="endDate" value="#{deliveredBean.endDate}"
+												pattern="dd/MM/yyyy" maxdate="#{deliveredBean.currentDate}">
+												<p:ajax process="endDate" partialSubmit="true"
+													event="change" />
+											</p:calendar>
 
 										</div>
 									</div>
-								</p:dataGrid>
+								</div>
+							</div>
+
+							<!-- /.box-body -->
+							<div class="box-footer">
+
+								<h:commandButton value="#{out.submit}"
+									class="btn btn-info pull-right"
+									action="#{deliveredBean.submit()}">
+									<f:ajax execute="@form" render="form:deliveredCargoes" />
+								</h:commandButton>
 
 							</div>
+							<!-- /.box-footer -->
 
 						</div>
 						<!-- /.box -->
-					</p:dataGrid>
+
+					</div>
+
+					<div class="col-xs-12 col-sm-12 col-md-8">
+
+						<p:dataGrid id="deliveredCargoes" var="cargo"
+							value="#{deliveredBean.cargoes}" columns="1">
+							<f:facet name="emptyMessage">
+
+								<h:outputText value="#{out.emptyMessage}"
+									class="callout callout-danger" />
+
+							</f:facet>
+							<div class="box box-success collapsed-box">
+								<div class="box-header with-border">
+									<h2 class="box-title">#{out.company}
+										#{cargo.restaurant.name}</h2>
+									<h5 class="widget-user-desc">
+										#{out.cargoValue}
+										<h:outputText value="#{cargo.totalValue}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputText>
+										HUF
+									</h5>
+									<h5 class="widget-user-desc">
+										#{out.income}
+										<h:outputText value="#{cargo.income}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputText>
+										HUF
+									</h5>
+									<h5 class="widget-user-desc">#{out.status} #{cargo.status}</h5>
+									<h5 class="widget-user-desc">#{out.deliveredAt}
+										<h:outputText value="#{cargo.deliveredAt}">
+											<f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" />
+										</h:outputText>
+									</h5>
+									<div class="box-tools pull-right">
+										<button class="btn btn-box-tool" data-widget="collapse">
+											<i class="fa fa-plus"></i>
+										</button>
+									</div>
+									<!-- /.box-tools -->
+								</div>
+								<!-- /.box-header -->
+
+								<div class="box-body">
+
+									<p:dataGrid var="address" value="#{cargo.addresses}"
+										columns="1">
+
+										<div
+											class="box box-#{(address.status == 'Delivered') ? 'success' : 'danger'} box-solid collapsed-box">
+											<div class="box-header with-border">
+												<h5>#{out.address} #{address.address}</h5>
+												<h6>#{out.status} #{address.status}</h6>
+												<div class="box-tools pull-right">
+													<button class="btn btn-box-tool" data-widget="collapse">
+														<i class="fa fa-plus"></i>
+													</button>
+												</div>
+											</div>
+											<div class="box-body">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item"><b>#{out.deadline}</b>
+														<p class="pull-right">
+															<h:outputText value="#{address.deadline}">
+																<f:convertDateTime type="date"
+																	pattern="yyyy-MM-dd HH:mm" />
+															</h:outputText>
+														</p></li>
+													<li class="list-group-item"><b>#{out.addressValue}</b>
+														<p class="pull-right">
+															<h:outputText value="#{address.totalValue}">
+																<f:convertNumber minFractionDigits="2" />
+															</h:outputText>
+															HUF
+														</p></li>
+													<li class="list-group-item"><b>#{out.payment}</b>
+														<p class="pull-right">#{address.payment}</p></li>
+													<li class="list-group-item"><b>#{out.status}</b>
+														<p class="pull-right">#{address.status}</p></li>
+												</ul>
+												<p:dataTable id="table" var="detail"
+													value="#{address.details}">
+													<f:facet name="header">
+      												#{out.items}
+   												</f:facet>
+													<p:column styleClass="customHeader"
+														headerText="#{out.item}">
+														<h:outputText value="#{detail.item.name}" />
+													</p:column>
+
+													<p:column headerText="#{out.price}">
+														<h:outputText value="#{detail.item.price}">
+															<f:convertNumber minFractionDigits="2" />
+														</h:outputText> HUF
+													</p:column>
+													<p:column headerText="#{out.quantity}">
+														<h:outputText value="#{detail.quantity}" />
+													</p:column>
+												</p:dataTable>
+
+											</div>
+										</div>
+									</p:dataGrid>
+
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</p:dataGrid>
+					</div>
+					<!-- /.box -->
 				</div>
-				<!-- /.box -->
-			</div>
+			</h:form>
 		</section>
 
 	</ui:define>

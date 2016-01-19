@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import hu.schonherz.java.training.courier.service.LogServiceLocal;
@@ -19,6 +20,8 @@ public class TimerBean {
 
 	@EJB
 	LogServiceLocal logService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 	List<LogVO> logs;
 	private Long hours;
 	private static final Long workingTime = 28800000L;
@@ -55,8 +58,11 @@ public class TimerBean {
 	public void init() {
 
 		try {
-			logs = getLogService().getLogsFrom(getMidnight());
-			getLoginDurationFromLog();
+			logs = getLogService().getLogsByUserIdFrom(getUserSessionBean().getUserVO().getId(), getMidnight());
+			if (logs.isEmpty())
+				duration = 0L;
+			else
+				getLoginDurationFromLog();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,8 +85,8 @@ public class TimerBean {
 		for (LogVO logVO : logs) {
 			if (logVO.getLogoutDate() != null)
 				duration += logVO.getLogoutDate().getTime() - logVO.getLoginDate().getTime();
-			else
-				duration += new Date().getTime() - logVO.getLoginDate().getTime();
+//			else
+//				duration += new Date().getTime() - logVO.getLoginDate().getTime();
 		}
 
 		minutes = TimeUnit.MILLISECONDS.toMinutes(duration);
@@ -115,6 +121,14 @@ public class TimerBean {
 
 	public void setLogService(LogServiceLocal logService) {
 		this.logService = logService;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
 	}
 
 	public List<LogVO> getLogs() {
