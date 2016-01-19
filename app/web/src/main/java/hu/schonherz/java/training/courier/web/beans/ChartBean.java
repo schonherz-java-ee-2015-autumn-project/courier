@@ -21,6 +21,7 @@ import org.primefaces.model.chart.ChartSeries;
 
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.LogServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @ManagedBean(name = "chartBean")
@@ -31,6 +32,8 @@ public class ChartBean implements Serializable {
 	
 	@EJB
 	CargoServiceLocal cargoService;
+	@EJB
+	LogServiceLocal logService;
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 	private String oneMenu;
@@ -85,6 +88,9 @@ public class ChartBean implements Serializable {
 					if(oneMenu.equals("deliveries")) {
 						value = cargoService.findReportByUserBetweenDates(user, day, day).getDeliveries();
 					}
+					if(oneMenu.equals("hours")) {
+						value = logService.getWorkingHoursByUserBetweenDates(user, day, day);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -124,6 +130,14 @@ public class ChartBean implements Serializable {
 
 	public void setCargoService(CargoServiceLocal cargoService) {
 		this.cargoService = cargoService;
+	}
+
+	public LogServiceLocal getLogService() {
+		return logService;
+	}
+
+	public void setLogService(LogServiceLocal logService) {
+		this.logService = logService;
 	}
 
 	public UserSessionBean getUserSessionBean() {

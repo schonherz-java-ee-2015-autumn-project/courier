@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hu.schonherz.java.training.courier.dao.CargoDao;
 import hu.schonherz.java.training.courier.dao.ItemDao;
+import hu.schonherz.java.training.courier.dao.LogDao;
 import hu.schonherz.java.training.courier.dao.RestaurantDao;
 import hu.schonherz.java.training.courier.dao.UserDao;
 import hu.schonherz.java.training.courier.entities.Address;
@@ -48,6 +49,8 @@ public class CargoDaoTest {
 	ItemDao itemDao;
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	LogDao logDao;
 	
 	Random rand = new Random();
 	
@@ -137,6 +140,18 @@ public class CargoDaoTest {
 				System.out.println("#13 ___ " + item.getName());
 			}
 		}
+		/**14**/
+		d = logDao.getWorkingDaysByUser(targetUser.getId());
+		System.out.println("#14 ___ " + d);
+		/**15**/
+		d = logDao.getWorkingHoursByUserBetweenDates(targetUser.getId(), actualDate, actualDate);
+		System.out.println("#15 ___ " + d);
+		/**16**/
+		d = logDao.getTotalWorkingHoursByUser(targetUser.getId());
+		System.out.println("#16 ___ " + d);
+		/**17**/
+		d = logDao.getAverageWorkingHoursByUser(targetUser.getId());
+		System.out.println("#17 ___ " + d);
 	}
 	
 	public void generateRandomCargos() {

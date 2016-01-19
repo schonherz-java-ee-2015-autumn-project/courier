@@ -13,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.LogServiceLocal;
 import hu.schonherz.java.training.courier.service.vo.ItemVO;
 import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
@@ -25,6 +26,8 @@ public class StatisticsBean implements Serializable{
 	
 	@EJB
 	CargoServiceLocal cargoService;
+	@EJB
+	LogServiceLocal logService;
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 	private Date currentDate;
@@ -38,6 +41,8 @@ public class StatisticsBean implements Serializable{
 	private List<RestaurantVO> restaurantsBetween;
 	private List<CargoReport> restaurantReports;
 	private List<ItemVO> popularItems;
+	
+	private Double activeDays;
 	
 	@PostConstruct
 	public void init() {
@@ -59,12 +64,14 @@ public class StatisticsBean implements Serializable{
 			incomeTotal.setCard(getCargoService().findIncomeByUserAndPayment(user, Payment.Card));
 			incomeTotal.setSzep(getCargoService().findIncomeByUserAndPayment(user, Payment.SZEP));
 			incomeTotal.setVoucher(getCargoService().findIncomeByUserAndPayment(user, Payment.Voucher));
+			incomeTotal.setHour(getLogService().getTotalWorkingHoursByUser(user));
 			
 			incomeAverage.setTotal(getCargoService().findAverageIncomeByUserId(user));
 			incomeAverage.setCash(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Cash));
 			incomeAverage.setCard(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Card));
 			incomeAverage.setSzep(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.SZEP));
 			incomeAverage.setVoucher(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Voucher));
+			incomeAverage.setHour(getLogService().getAverageWorkingHoursByUser(user));
 			
 			incomeTotal.setReport(getCargoService().findReportByUser(user));
 			incomeAverage.setReport(getCargoService().findAverageReportByUserId(user));
@@ -75,6 +82,8 @@ public class StatisticsBean implements Serializable{
 				items.add(popularItems.get(i));
 			}
 			popularItems = items;
+			
+			activeDays = getLogService().getWorkingDaysByUser(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,6 +97,7 @@ public class StatisticsBean implements Serializable{
 			incomeBetween.setCard(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Card));
 			incomeBetween.setSzep(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.SZEP));
 			incomeBetween.setVoucher(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Voucher));
+			incomeBetween.setHour(getLogService().getWorkingHoursByUserBetweenDates(user, startDate, endDate));
 			
 			incomeBetween.setReport(getCargoService().findReportByUserBetweenDates(user, startDate, endDate));
 
@@ -118,6 +128,14 @@ public class StatisticsBean implements Serializable{
 
 	public void setCargoService(CargoServiceLocal cargoService) {
 		this.cargoService = cargoService;
+	}
+
+	public LogServiceLocal getLogService() {
+		return logService;
+	}
+
+	public void setLogService(LogServiceLocal logService) {
+		this.logService = logService;
 	}
 
 	public UserSessionBean getUserSessionBean() {
@@ -202,5 +220,13 @@ public class StatisticsBean implements Serializable{
 
 	public void setPopularItems(List<ItemVO> popularItems) {
 		this.popularItems = popularItems;
+	}
+
+	public Double getActiveDays() {
+		return activeDays;
+	}
+
+	public void setActiveDays(Double activeDays) {
+		this.activeDays = activeDays;
 	}
 }

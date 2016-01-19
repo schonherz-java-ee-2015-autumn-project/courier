@@ -11,6 +11,7 @@ public class CargoReport {
 	private Double card;
 	private Double szep;
 	private Double voucher;
+	private Double hour;
 	
 	private Report report;
 
@@ -60,6 +61,14 @@ public class CargoReport {
 
 	public void setVoucher(Double voucher) {
 		this.voucher = voucher;
+	}
+
+	public Double getHour() {
+		return hour;
+	}
+
+	public void setHour(Double hour) {
+		this.hour = hour;
 	}
 
 	public Report getReport() {

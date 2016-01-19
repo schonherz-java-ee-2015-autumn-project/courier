@@ -427,6 +427,18 @@
 													</h:outputText> #{out['scale.duration']}</td>
 											</tr>
 											<tr>
+												<td><b>#{out.workHours}:</b></td>
+												<td><h:outputText value="#{stat.incomeBetween.hour}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.hours']}</td>
+												<td><h:outputText value="#{stat.incomeTotal.hour}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.hours']}</td>
+												<td><h:outputText value="#{stat.incomeAverage.hour}">
+														<f:convertNumber maxFractionDigits="2" />
+													</h:outputText> #{out['scale.hours']}</td>
+											</tr>
+											<tr>
 												<td><b>#{out.deliveries}:</b></td>
 												<td><h:outputText
 														value="#{stat.incomeBetween.report.deliveries}">
@@ -447,7 +459,14 @@
 							</div>
 
 							<!-- /.box-body -->
-							<div class="box-footer"></div>
+							<div class="box-footer">
+								<h5>
+									<b>#{out.activeDays}: </b>
+									<h:outputText value="#{statisticsBean.activeDays}">
+										<f:convertNumber maxFractionDigits="2" />
+									</h:outputText>
+								</h5>
+							</div>
 							<!-- /.box-footer -->
 
 						</div>
@@ -470,10 +489,11 @@
 											itemValue="duration" />
 										<f:selectItem itemLabel="#{out['chart.deliveries']}"
 											itemValue="deliveries" />
-										<p:ajax event="change" update="form:reportChart"
+										<f:selectItem itemLabel="#{out['chart.hours']}"
+											itemValue="hours" />
+										<p:ajax event="change"
+											update="form:reportChart form:chartLabel1 form:chartLabel2"
 											listener="#{chartBean.selectChart}" />
-										<p:ajax event="change" update="form:chartLabel1" />
-										<p:ajax event="change" update="form:chartLabel2" />
 									</p:selectOneMenu>
 								</div>
 							</div>
