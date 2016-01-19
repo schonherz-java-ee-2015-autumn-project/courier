@@ -141,13 +141,12 @@ public class MapBean implements Serializable {
 				getCargoService().updateCargoStatusAndDeliveredAtById(selectedCargo.getId(), status.toString(),
 						new Date());
 			}
+			addressList = updateRoute();
 		} else {
 			getFacesContext().addMessage("errorMessage",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened!"));
 			logger.info("INFO:Error while setting cargo status.");
 		}
-
-		addressList = updateRoute();
 
 	}
 
