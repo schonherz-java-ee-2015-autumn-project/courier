@@ -1,7 +1,7 @@
 package hu.schonherz.java.training.courier.entities;
 
 public enum AddressStatus {
-	Delivered(1L), Failed(2L);
+	Delivered(1L), Failed(2L), In_progress(3L);
 
 	public final Long value;
 
