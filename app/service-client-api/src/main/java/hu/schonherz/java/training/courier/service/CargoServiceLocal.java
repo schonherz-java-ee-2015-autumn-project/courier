@@ -9,7 +9,11 @@ import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 public interface CargoServiceLocal {
+	public List<CargoVO> findAll() throws Exception;
+
 	public List<CargoVO> findCargoesById(Long cargoId) throws Exception;
+
+	public List<CargoVO> findCargosBetweenModdate(Date startDate, Date endDate) throws Exception;
 
 	public CargoVO findCargoById(Long cargoId) throws Exception;
 
@@ -31,4 +35,5 @@ public interface CargoServiceLocal {
 			Date startDate, Date endDate) throws Exception;
 
 	void updateCargoByGlobalId(CargoVO cargo);
+
 }

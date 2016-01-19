@@ -20,6 +20,60 @@ public class CargoVO extends BaseVO implements Serializable {
 	private Long totalDuration;
 	private Date deliveredAt;
 	private Long globalid;
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
+		result = prime * result + ((globalid == null) ? 0 : globalid.hashCode());
+		result = prime * result + ((restaurant == null) ? 0 : restaurant.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((totalValue == null) ? 0 : totalValue.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CargoVO other = (CargoVO) obj;
+		if (addresses == null) {
+			if (other.addresses != null)
+				return false;
+		} else if (!addresses.equals(other.addresses))
+			return false;
+		if (globalid == null) {
+			if (other.globalid != null)
+				return false;
+		} else if (!globalid.equals(other.globalid))
+			return false;
+		if (restaurant == null) {
+			if (other.restaurant != null)
+				return false;
+		} else if (!restaurant.equals(other.restaurant))
+			return false;
+		if (status != other.status)
+			return false;
+		if (totalValue == null) {
+			if (other.totalValue != null)
+				return false;
+		} else if (!totalValue.equals(other.totalValue))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
+	}
 
 	public Long getId() {
 		return id;

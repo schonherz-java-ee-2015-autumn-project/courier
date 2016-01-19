@@ -27,7 +27,7 @@ public class GetFreeCargosViaWebServiceJob extends EJBInvokerJob implements Job 
 
 	CargoWebServiceRemote cargoWebService;
 
-	private final int MAXIMUM_TRIES = 1;
+	private final int MAXIMUM_TRIES = 5;
 	// 10 másodpercenként újra próbálkozunk.
 	private final int WAIT_TIME_MILLISEC = 10000;
 	private final String UNSUCCESFUL_TRIES = "cargo_unsuccessful_asks";

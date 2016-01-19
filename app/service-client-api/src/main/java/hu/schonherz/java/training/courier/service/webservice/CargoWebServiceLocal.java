@@ -10,8 +10,6 @@ import hu.schonherz.java.training.courier.service.vo.CargoVO;
 public interface CargoWebServiceLocal {
 	void getFreeCargosFromAdministration() throws Exception;
 
-	Long setCargoStatus(Long globalId, CargoStatus status) throws Exception;
-
 	Long assignUserToCargo(Long userId, Long cargoId) throws Exception;
 
 	Long changeDeliveryState(Long addressId, Long userId, AddressStatus status) throws Exception;

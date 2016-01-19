@@ -10,16 +10,22 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
+import hu.schonherz.java.training.courier.dao.AddressDao;
+import hu.schonherz.java.training.courier.dao.AddressDetailsDao;
 import hu.schonherz.java.training.courier.dao.CargoDao;
+import hu.schonherz.java.training.courier.dao.ItemDao;
 import hu.schonherz.java.training.courier.entities.CargoStatus;
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
 import hu.schonherz.java.training.courier.service.CargoServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.CargoConverter;
 import hu.schonherz.java.training.courier.service.converter.UserConverter;
+import hu.schonherz.java.training.courier.service.vo.AddressDetailsVO;
+import hu.schonherz.java.training.courier.service.vo.AddressVO;
 import hu.schonherz.java.training.courier.service.vo.CargoVO;
 import hu.schonherz.java.training.courier.service.vo.UserVO;
 
@@ -30,11 +36,21 @@ import hu.schonherz.java.training.courier.service.vo.UserVO;
 @Interceptors({ SpringBeanAutowiringInterceptor.class })
 public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 
+	private final static Logger logger = Logger.getLogger(CargoServiceImpl.class);
+
 	@Autowired
 	CargoDao cargoDao;
 
-	@Override
+	@Autowired
+	AddressDetailsDao addressDetailsDao;
 
+	@Autowired
+	ItemDao itemDao;
+
+	@Autowired
+	AddressDao addressDao;
+
+	@Override
 	public List<CargoVO> findCargoesByUserIdAndStatus(Long userId, CargoStatus status) throws Exception {
 		return CargoConverter.toVo(cargoDao.findCargoesByUserIdAndStatus(userId, status));
 	}
@@ -90,7 +106,38 @@ public class CargoServiceImpl implements CargoServiceLocal, CargoServiceRemote {
 
 	@Override
 	public void updateCargoByGlobalId(CargoVO cargo) {
-		cargoDao.updateCargoByGlobalId(cargo.getStatus(), cargo.getUser().getGlobalid(), new Date(),
-				cargo.getGlobalid());
+
+		for (AddressVO address : cargo.getAddresses()) {
+
+			for (AddressDetailsVO details : address.getDetails()) {
+				itemDao.updateItemByGlobalId(new Date(), details.getItem().getName(), details.getItem().getPrice(),
+						details.getGlobalid());
+
+				addressDetailsDao.updateAddressDetailsByGlobalId(new Date(), details.getQuantity(),
+						details.getGlobalid());
+
+			}
+			logger.info(address.getAddress());
+			logger.info(address.getDeadline());
+			logger.info(address.getPayment());
+			logger.info(address.getStatus());
+			logger.info(address.getGlobalid());
+			addressDao.updateAddressByGlobalId(address.getAddress(), address.getDeadline(), new Date(),
+					address.getPayment().toString(), address.getStatus().toString(), address.getGlobalid());
+
+		}
+
+		cargoDao.updateCargoByGlobalId(cargo.getStatus().toString(), new Date(), cargo.getGlobalid());
 	}
+
+	@Override
+	public List<CargoVO> findCargosBetweenModdate(Date startDate, Date endDate) throws Exception {
+		return CargoConverter.toVo(cargoDao.findCargoesBetweenModdate(startDate, endDate));
+	}
+
+	@Override
+	public List<CargoVO> findAll() throws Exception {
+		return CargoConverter.toVo(cargoDao.findAll());
+	}
+
 }
