@@ -117,9 +117,11 @@ public class MapBean implements Serializable {
 	public void cargoStatusChanged(Long value) throws Exception {
 
 		CargoStatus status = CargoStatus.getValue(value);
-		logger.info("INFO: Setting cargo status to:" + status.toString());
-		logger.info("INFO: userGlobalID:" + userSessionBean.getUserVO().getGlobalid());
-		logger.info("INFO: CargoGlobalId:" + selectedCargo.getGlobalid());
+
+		// logger.info("INFO: Setting cargo status to:" + status.toString());
+		// logger.info("INFO: userGlobalID:" +
+		// userSessionBean.getUserVO().getGlobalid());
+		// logger.info("INFO: CargoGlobalId:" + selectedCargo.getGlobalid());
 		if (cargoWebService.changeCargoState(selectedCargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
 				status) == 0) {
 
@@ -140,6 +142,7 @@ public class MapBean implements Serializable {
 				selectedCargo.setDeliveredAt(new Date());
 				getCargoService().updateCargoStatusAndDeliveredAtById(selectedCargo.getId(), status.toString(),
 						new Date());
+
 			}
 			addressList = updateRoute();
 		} else {

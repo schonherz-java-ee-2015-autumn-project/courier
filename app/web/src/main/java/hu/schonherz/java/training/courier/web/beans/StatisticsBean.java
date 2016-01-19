@@ -1,10 +1,9 @@
 package hu.schonherz.java.training.courier.web.beans;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -12,13 +11,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
-
 import hu.schonherz.java.training.courier.entities.Payment;
 import hu.schonherz.java.training.courier.service.CargoServiceLocal;
+import hu.schonherz.java.training.courier.service.LogServiceLocal;
+import hu.schonherz.java.training.courier.service.vo.ItemVO;
+import hu.schonherz.java.training.courier.service.vo.RestaurantVO;
+import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @ManagedBean(name = "statisticsBean")
 @ViewScoped
@@ -28,87 +26,116 @@ public class StatisticsBean implements Serializable{
 	
 	@EJB
 	CargoServiceLocal cargoService;
+	@EJB
+	LogServiceLocal logService;
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
-	private BarChartModel barModel;
-	private Calendar calendar;
-	private int scale = 10;
+	private Date currentDate;
+	private Date startDate;
+	private Date endDate;
+	
+	private CargoReport incomeBetween;
+	private CargoReport incomeTotal;
+	private CargoReport incomeAverage;
+	
+	private List<RestaurantVO> restaurantsBetween;
+	private List<CargoReport> restaurantReports;
+	private List<ItemVO> popularItems;
+	
+	private Double activeDays;
 	
 	@PostConstruct
 	public void init() {
-		calendar = Calendar.getInstance();
-		createBarModel();
+		currentDate = new Date();
+		startDate = currentDate;
+		endDate = currentDate;
+		incomeBetween = new CargoReport();
+		incomeTotal = new CargoReport();
+		incomeAverage = new CargoReport();
+		setData();
+		setDataBetween();
 	}
-     
-    private void createBarModel() {
-		calendar.add(Calendar.DAY_OF_MONTH, -scale);
-        barModel = new BarChartModel();
-        ChartSeries series1 = new ChartSeries();
-        ChartSeries series2 = new ChartSeries();
-        ChartSeries series3 = new ChartSeries();
-        ChartSeries series4 = new ChartSeries();
-        series1.setLabel("Cash");
-        series2.setLabel("Card");
-        series3.setLabel("SZEP");
-        series4.setLabel("Voucher");
-        
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date d;
-		for(int i=0;i<scale;i++) {
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-			d = calendar.getTime();
-			Double incomeByCash = null;
-			Double incomeByCard = null;
-			Double incomeBySzep = null;
-			Double incomeByVoucher = null;
-			try {
-				incomeByCash = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.Cash);
-				incomeByCard = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.Card);
-				incomeBySzep = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.SZEP);
-				incomeByVoucher = cargoService.findDailyIncomeByPayment(getUserSessionBean().getUserVO(), dateFormat.format(d), Payment.Voucher);
-			} catch (Exception e) {
-				e.printStackTrace();
+	
+	public void setData() {
+		UserVO user = getUserSessionBean().getUserVO();
+		try {
+			incomeTotal.setTotal(getCargoService().findTotalIncomeByUser(user));
+			incomeTotal.setCash(getCargoService().findIncomeByUserAndPayment(user, Payment.Cash));
+			incomeTotal.setCard(getCargoService().findIncomeByUserAndPayment(user, Payment.Card));
+			incomeTotal.setSzep(getCargoService().findIncomeByUserAndPayment(user, Payment.SZEP));
+			incomeTotal.setVoucher(getCargoService().findIncomeByUserAndPayment(user, Payment.Voucher));
+			incomeTotal.setHour(getLogService().getTotalWorkingHoursByUser(user));
+			
+			incomeAverage.setTotal(getCargoService().findAverageIncomeByUserId(user));
+			incomeAverage.setCash(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Cash));
+			incomeAverage.setCard(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Card));
+			incomeAverage.setSzep(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.SZEP));
+			incomeAverage.setVoucher(getCargoService().findAverageIncomeByUserIdAndPayment(user, Payment.Voucher));
+			incomeAverage.setHour(getLogService().getAverageWorkingHoursByUser(user));
+			
+			incomeTotal.setReport(getCargoService().findReportByUser(user));
+			incomeAverage.setReport(getCargoService().findAverageReportByUserId(user));
+			
+			popularItems = getCargoService().findItemsByUserOrderByCount(user);
+			List<ItemVO> items = new ArrayList<>();
+			for(int i=0; i<5 && i<popularItems.size(); i++) {
+				items.add(popularItems.get(i));
 			}
-			if(incomeByCash == null) incomeByCash = 0.0;
-			if(incomeByCard == null) incomeByCard = 0.0;
-			if(incomeBySzep == null) incomeBySzep = 0.0;
-			if(incomeByVoucher == null) incomeByVoucher = 0.0;
-			series1.set(dateFormat.format(d), (Number) incomeByCash);
-			series2.set(dateFormat.format(d), (Number) incomeByCard);
-			series3.set(dateFormat.format(d), (Number) incomeBySzep);
-			series4.set(dateFormat.format(d), (Number) incomeByVoucher);
+			popularItems = items;
+			
+			activeDays = getLogService().getWorkingDaysByUser(user);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
- 
-        barModel.addSeries(series1);
-        barModel.addSeries(series2);
-        barModel.addSeries(series3);
-        barModel.addSeries(series4);
-         
-        barModel.setTitle("Daily Income");
-        barModel.setLegendPosition("nw");
-        barModel.getAxis(AxisType.Y).setLabel("Income");
-        barModel.setStacked(true);
-        Axis axis = barModel.getAxis(AxisType.X);
-        axis.setTickAngle(-50);
-        barModel.getAxes().put(AxisType.X, axis);
-    }
-    
-    public void previousDays() {
-		calendar.add(Calendar.DAY_OF_MONTH, -scale);
-		createBarModel();
-    }
-    
-    public void nextDays() {
-		calendar.add(Calendar.DAY_OF_MONTH, scale);
-		createBarModel();
-    }
+	}
+	
+	public void setDataBetween() {
+		UserVO user = getUserSessionBean().getUserVO();
+		try {
+			incomeBetween.setTotal(getCargoService().findTotalIncomeByUserBetweenDates(user, startDate, endDate));
+			incomeBetween.setCash(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Cash));
+			incomeBetween.setCard(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Card));
+			incomeBetween.setSzep(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.SZEP));
+			incomeBetween.setVoucher(getCargoService().findIncomeByUserAndPaymentBetweenDates(user, startDate, endDate, Payment.Voucher));
+			incomeBetween.setHour(getLogService().getWorkingHoursByUserBetweenDates(user, startDate, endDate));
+			
+			incomeBetween.setReport(getCargoService().findReportByUserBetweenDates(user, startDate, endDate));
 
+			restaurantsBetween = getCargoService().findRestaurantsByUserBetweenDates(user, startDate, endDate);
+			restaurantReports = new ArrayList<>();
+			for(RestaurantVO restaurant : restaurantsBetween) {
+				CargoReport report = new CargoReport();
+				report.setName(restaurant.getName());
+				report.setTotal(getCargoService().findTotalIncomeByUserAndRestaurantBetweenDates(user, restaurant, startDate, endDate));
+				report.setCash(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.Cash, startDate, endDate));
+				report.setCard(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.Card, startDate, endDate));
+				report.setSzep(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.SZEP, startDate, endDate));
+				report.setVoucher(getCargoService().findIncomeByUserAndRestaurantAndPaymentBetweenDates(user, restaurant, Payment.Voucher, startDate, endDate));
+				restaurantReports.add(report);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void submit() {
+		setDataBetween();
+	}
+    
 	public CargoServiceLocal getCargoService() {
 		return cargoService;
 	}
 
 	public void setCargoService(CargoServiceLocal cargoService) {
 		this.cargoService = cargoService;
+	}
+
+	public LogServiceLocal getLogService() {
+		return logService;
+	}
+
+	public void setLogService(LogServiceLocal logService) {
+		this.logService = logService;
 	}
 
 	public UserSessionBean getUserSessionBean() {
@@ -118,20 +145,88 @@ public class StatisticsBean implements Serializable{
 	public void setUserSessionBean(UserSessionBean userSessionBean) {
 		this.userSessionBean = userSessionBean;
 	}
-	
-	public BarChartModel getBarModel() {
-        return barModel;
-    }
 
-	public void setBarModel(BarChartModel barModel) {
-		this.barModel = barModel;
+	public Date getCurrentDate() {
+		return currentDate;
 	}
 
-	public Calendar getCalendar() {
-		return calendar;
+	public void setCurrentDate(Date currentDate) {
+		this.currentDate = currentDate;
 	}
 
-	public void setCalendar(Calendar calendar) {
-		this.calendar = calendar;
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(Date startDate) {
+		if(endDate.before(startDate)) endDate = startDate;
+		this.startDate = startDate;
+	}
+
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		if(endDate.before(startDate)) startDate = endDate;
+		this.endDate = endDate;
+	}
+
+	public CargoReport getIncomeBetween() {
+		return incomeBetween;
+	}
+
+	public void setIncomeBetween(CargoReport incomeBetween) {
+		this.incomeBetween = incomeBetween;
+	}
+
+	public CargoReport getIncomeTotal() {
+		return incomeTotal;
+	}
+
+	public void setIncomeTotal(CargoReport incomeTotal) {
+		this.incomeTotal = incomeTotal;
+	}
+
+	public CargoReport getIncomeAverage() {
+		return incomeAverage;
+	}
+
+	public void setIncomeAverage(CargoReport incomeAverage) {
+		this.incomeAverage = incomeAverage;
+	}
+
+	public List<RestaurantVO> getRestaurantsBetween() {
+		return restaurantsBetween;
+	}
+
+	public void setRestaurantsBetween(List<RestaurantVO> restaurantsBetween) {
+		this.restaurantsBetween = restaurantsBetween;
+	}
+
+	public List<CargoReport> getRestaurantReports() {
+		return restaurantReports;
+	}
+
+	public void setRestaurantReports(List<CargoReport> restaurantReports) {
+		this.restaurantReports = restaurantReports;
+	}
+
+	public List<ItemVO> getPopularItems() {
+		return popularItems;
+	}
+
+	public void setPopularItems(List<ItemVO> popularItems) {
+		this.popularItems = popularItems;
+	}
+
+	public Double getActiveDays() {
+		return activeDays;
+	}
+
+	public void setActiveDays(Double activeDays) {
+		this.activeDays = activeDays;
 	}
 }

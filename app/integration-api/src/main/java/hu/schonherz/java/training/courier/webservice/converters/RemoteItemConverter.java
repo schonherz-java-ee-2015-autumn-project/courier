@@ -12,7 +12,7 @@ public class RemoteItemConverter {
 		ItemVO localVo = new ItemVO();
 		localVo.setGlobalid(remoteItemDTO.getId());
 		localVo.setName(remoteItemDTO.getName());
-		localVo.setPrice(remoteItemDTO.getPrice());
+		localVo.setPrice((double) remoteItemDTO.getPrice());
 		return localVo;
 	}
 

@@ -73,7 +73,7 @@ public class RemoteOrderConverterTest {
 			Assert.assertEquals(remoteOrder.getItems().get(i).getItemDTO().getId(),
 					localVo.getDetails().get(i).getItem().getGlobalid());
 			Assert.assertEquals(remoteOrder.getItems().get(i).getItemDTO().getPrice(),
-					(int) localVo.getDetails().get(i).getItem().getPrice());
+					localVo.getDetails().get(i).getItem().getPrice());
 			Assert.assertEquals(remoteOrder.getItems().get(i).getItemDTO().getName(),
 					localVo.getDetails().get(i).getItem().getName());
 		}

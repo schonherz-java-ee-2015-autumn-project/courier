@@ -19,6 +19,7 @@ import hu.schonherz.java.training.courier.service.LogServiceLocal;
 import hu.schonherz.java.training.courier.service.LogServiceRemote;
 import hu.schonherz.java.training.courier.service.converter.LogConverter;
 import hu.schonherz.java.training.courier.service.vo.LogVO;
+import hu.schonherz.java.training.courier.service.vo.UserVO;
 
 @Stateless
 @Local(LogServiceLocal.class)
@@ -42,7 +43,27 @@ public class LogServiceImpl implements LogServiceLocal, LogServiceRemote {
 	}
 
 	@Override
-	public List<LogVO> getLogsFrom(Date date) throws Exception {
-		return LogConverter.toVo(logDao.getLogsFrom(date));
+	public List<LogVO> getLogsByUserIdFrom(Long userId, Date date) throws Exception {
+		return LogConverter.toVo(logDao.getLogsByUserIdFrom(userId, date));
+	}
+
+	@Override
+	public Double getWorkingDaysByUser(UserVO user) {
+		return logDao.getWorkingDaysByUser(user.getId());
+	}
+
+	@Override
+	public Double getWorkingHoursByUserBetweenDates(UserVO user, Date startDate, Date endDate) {
+		return logDao.getWorkingHoursByUserBetweenDates(user.getId(), startDate, endDate);
+	}
+
+	@Override
+	public Double getTotalWorkingHoursByUser(UserVO user) {
+		return logDao.getTotalWorkingHoursByUser(user.getId());
+	}
+
+	@Override
+	public Double getAverageWorkingHoursByUser(UserVO user) {
+		return logDao.getAverageWorkingHoursByUser(user.getId());
 	}
 }

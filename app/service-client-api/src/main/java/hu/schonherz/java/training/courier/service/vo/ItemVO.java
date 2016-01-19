@@ -2,7 +2,7 @@ package hu.schonherz.java.training.courier.service.vo;
 
 import java.io.Serializable;
 
-public class ItemVO implements Serializable {
+public class ItemVO extends BaseVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -25,11 +25,11 @@ public class ItemVO implements Serializable {
 		this.id = id;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
