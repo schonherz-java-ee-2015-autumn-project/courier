@@ -7,6 +7,7 @@ public class RemoteCargoStateConverter {
 
 	public static CargoStatus toLocalCargoState(RemoteCargoState remoteCargoState) {
 		CargoStatus localCargoStatus = null;
+		
 		switch (remoteCargoState) {
 		case FREE:
 			localCargoStatus = CargoStatus.Free;

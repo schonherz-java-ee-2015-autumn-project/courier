@@ -8,11 +8,6 @@ import hu.schonherz.java.training.courier.service.vo.ItemVO;
 
 public class RemoteItemConverter {
 
-	// RemoteItemDTO
-	// protected Long id;
-	// protected String name;
-	// protected int price;
-
 	public static ItemVO toLocalVo(RemoteItemDTO remoteItemDTO) {
 		ItemVO localVo = new ItemVO();
 		localVo.setGlobalid(remoteItemDTO.getId());

@@ -10,8 +10,11 @@ public class RemoteDeliveryStateConverter {
 
 	public static AddressStatus toLocalState(DeliveryStateWeb remoteState) {
 		AddressStatus localStatus = null;
-		logger.info("INFO: In RemoteDeliveryStateConverter");
+
 		switch (remoteState) {
+		case IN_PROGRESS:
+			localStatus = AddressStatus.In_progress;
+			break;
 		case DELIVERED:
 			localStatus = AddressStatus.Delivered;
 			break;
@@ -19,13 +22,16 @@ public class RemoteDeliveryStateConverter {
 			localStatus = AddressStatus.Failed;
 			break;
 		}
-		logger.info("INFO: In RemoteDeliveryStateConverter localstatus is set");
+
 		return localStatus;
 	}
 
 	public static DeliveryStateWeb toRemoteState(AddressStatus localStatus) {
 		DeliveryStateWeb remoteState = null;
 		switch (localStatus) {
+		case In_progress:
+			remoteState = DeliveryStateWeb.IN_PROGRESS;
+			break;
 		case Delivered:
 			remoteState = DeliveryStateWeb.DELIVERED;
 			break;

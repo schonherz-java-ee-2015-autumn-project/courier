@@ -51,8 +51,8 @@ import hu.schonherz.java.training.courier.webservice.converters.RemotePaymentCon
 @Stateless(mappedName = "cargoWebService")
 @Local(CargoWebServiceLocal.class)
 @Remote(CargoWebServiceRemote.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-// @Interceptors({ SpringBeanAutowiringInterceptor.class })
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({ SpringBeanAutowiringInterceptor.class })
 public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServiceRemote {
 
 	private final static Logger logger = Logger.getLogger(CargoWebServiceImpl.class);
@@ -129,7 +129,6 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	public void getFreeCargosFromAdministration() throws Exception {
 		// courierWebService majd lekéri az admin modultól a szállításokat.
 		logger.info("INFO: Asking for cargos with Web Service");
-		List<CargoVO> cargosInDB = cargoServiceLocal.findAllByStatus(CargoStatus.getValue(1L));
 
 		GregorianCalendar gregorianDate = new GregorianCalendar();
 		gregorianDate.setTime(new Date());
@@ -137,28 +136,23 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		XMLGregorianCalendar dateForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
 		logger.info("INFO: Date:" + gregorianDate.getTime());
 
+		List<CargoVO> cargosInDB = cargoServiceLocal.findAll();
+		logger.info("INFO: Cargos in db size:" + cargosInDB.size());
 		List<RemoteCargoDTO> cargosInWS = getSynchronizationService().getCargosByDate(dateForCargo);
 		logger.info("INFO: Cargos with Web Service was asked, its size:" + cargosInWS.size());
 		updateCargos(cargosInDB, cargosInWS);
 
 	}
 
-	@Override
-	public Long setCargoStatus(Long globalId, CargoStatus status) throws Exception {
-		// Ide jön majd a státusz update az admin moduk felé, egyenlõre hogy ne
-		// legyen baj minden sikeres
-
-		return (long) 0;
-	}
-
 	public void updateCargos(List<CargoVO> cargosInDB, List<RemoteCargoDTO> cargosInWS) {
 		logger.info("INFO: Updating cargos");
 		Integer newCargos = 0, updatedCargos = 0;
 		CargoVO newCargo;
-
+		CargoVO existingCargo;
 		List<Long> existingIds = new ArrayList<>();
 		for (CargoVO dbCargo : cargosInDB) {
 			existingIds.add(dbCargo.getGlobalid());
+			logger.info("globalId:" + dbCargo.getGlobalid());
 		}
 
 		// amint megkaptuk az admin modultól az implementációt azonnal
@@ -167,27 +161,39 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 			newCargo = remoteCargoConveter.toLocalVO(wsCargo);
 			if (!existingIds.contains((Long) wsCargo.getId()) && !wsCargo.isIsDeleted()) {
 				try {
+
 					try {
+
+						newCargo.setRegdate(new Date());
+						newCargo.setModdate(new Date());
 						cargoServiceLocal.save(newCargo);
+						newCargos++;
+
 					} catch (Exception e) {
 						logger.info("Error something went wrong while trying to save new cargo!");
 						logger.info("ERROR", e);
 					}
-					newCargos++;
+
 				} catch (Exception e) {
 					logger.error("Error:" + e.getMessage());
 				}
 			} else {
 				try {
 					try {
-						cargoServiceLocal.updateCargoByGlobalId(newCargo);
+						existingCargo = cargoServiceLocal.findCargoByGlobalid(wsCargo.getId());
+						if (!existingCargo.equals(newCargo)) {
+							logger.info("A cargo should be updated!");
+							logger.info("Cargo status:" + newCargo.getStatus());
+							cargoServiceLocal.updateCargoByGlobalId(newCargo);
+						}
+						updatedCargos++;
 					} catch (Exception e) {
 						logger.info("Error something went wrong while trying to update an existing cargo!");
 						logger.info("ERROR", e);
 					}
-					updatedCargos++;
+
 				} catch (Exception e) {
-					logger.error("Error:" + e.getMessage());
+					logger.error("Error:", e);
 				}
 			}
 		}

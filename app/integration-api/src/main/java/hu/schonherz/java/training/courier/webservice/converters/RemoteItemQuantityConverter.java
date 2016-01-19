@@ -8,11 +8,6 @@ import hu.schonherz.java.training.courier.service.vo.AddressDetailsVO;
 
 public class RemoteItemQuantityConverter {
 
-	// RemoteItemQuantityDTO
-	// protected Long id;
-	// protected RemoteItemDTO itemDTO;
-	// protected Integer quantity;
-
 	public static AddressDetailsVO toLocalVo(RemoteItemQuantityDTO remoteQuantityItemDTO) {
 		AddressDetailsVO localVo = new AddressDetailsVO();
 		localVo.setGlobalid(remoteQuantityItemDTO.getId());

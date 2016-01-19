@@ -7,6 +7,9 @@ public class RemotePaymentConverter {
 
 	public static Payment toLocalPayment(RemotePaymentMethod remotePayment) {
 		Payment localPayment = null;
+		if (remotePayment == null) {
+			return Payment.Cash;
+		}
 		switch (remotePayment) {
 		case CASH:
 			localPayment = Payment.Cash;
@@ -20,6 +23,8 @@ public class RemotePaymentConverter {
 		case VOUCHER:
 			localPayment = Payment.Voucher;
 			break;
+		default:
+			localPayment = Payment.Cash;
 		}
 		return localPayment;
 	}
