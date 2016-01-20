@@ -41,7 +41,7 @@ public class GetUsersViaWebServiceJob extends EJBInvokerJob implements Job {
 		try {
 			context = new InitialContext();
 			userWebService = (UserWebServiceRemote) context.lookup(
-					"java:global.ear-0.0.1.integration-0.0.1.UserWebServiceImpl!hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote");
+					"userWebService#hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote");
 			// "userWebService#hu.schonherz.java.training.courier.service.webservice.UserWebServiceRemote"
 			if (userWebService == null) {
 				logger.info("ERROR: userWebService is NULL");

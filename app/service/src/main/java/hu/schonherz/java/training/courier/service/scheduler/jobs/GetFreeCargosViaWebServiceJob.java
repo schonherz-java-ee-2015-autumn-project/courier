@@ -44,7 +44,7 @@ public class GetFreeCargosViaWebServiceJob extends EJBInvokerJob implements Job 
 			context = new InitialContext();
 			logger.info("INFO: Trying to lookUp cargoWebService!");
 			cargoWebService = (CargoWebServiceRemote) context.lookup(
-					"java:global.ear-0.0.1.integration-0.0.1.CargoWebServiceImpl!hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote");
+					"cargoWebService#hu.schonherz.java.training.courier.service.webservice.CargoWebServiceRemote");
 			if (cargoWebService == null) {
 				logger.info("ERROR:CargoWebService is NULL");
 
