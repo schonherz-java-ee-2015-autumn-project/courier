@@ -204,11 +204,12 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 	public Long assignUserToCargo(Long userId, Long cargoId) throws Exception {
 		try {
 			getCourierService().assignCargoToCourier(cargoId, userId);
+			return (long) 0;
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 			return (long) 1;
 		}
-		return (long) 0;
+
 	}
 
 	public String getSynchronizationUrl() {
@@ -267,7 +268,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 			return (long) 0;
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
-			return (long) 0;
+			return (long) 1;
 		}
 	}
 

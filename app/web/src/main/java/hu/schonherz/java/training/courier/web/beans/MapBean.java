@@ -87,7 +87,7 @@ public class MapBean implements Serializable {
 			addresses = new ArrayList<>();
 			List<AddressVO> allAddress = selectedCargo.getAddresses();
 			for (AddressVO addressVO : allAddress) {
-				if (addressVO.getStatus() == null) {
+				if (addressVO.getStatus() == AddressStatus.In_progress) {
 					addresses.add(addressVO);
 				}
 			}
@@ -104,6 +104,7 @@ public class MapBean implements Serializable {
 						income += addressPrice;
 
 			}
+
 			selectedCargo.setTotalValue(cargoPrice);
 			selectedCargo.setIncome(income);
 			addressList = selectedCargo.getRestaurant().getAddress() + ";" + updateRoute();
@@ -208,11 +209,15 @@ public class MapBean implements Serializable {
 	public void paymentStatusChanged(AjaxBehaviorEvent e) throws Exception {
 		Payment paymentStatus = (Payment) ((UIOutput) e.getSource()).getValue();
 		Long addressId = (long) (Long) e.getComponent().getAttributes().get("addressId");
-		if (cargoWebService.changePaymentState(userSessionBean.getUserVO().getGlobalid(), addressId,
+		AddressVO addressVO = getAddressService().findAddressById(addressId);
+		if (cargoWebService.changePaymentState(userSessionBean.getUserVO().getGlobalid(), addressVO.getGlobalid(),
 				paymentStatus) == 0) {
-			AddressVO addressVO = getAddressService().findAddressById(addressId);
 			addressVO.setPayment(paymentStatus);
 			getAddressService().save(addressVO);
+		} else {
+			getFacesContext().addMessage("errorMessage",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened!"));
+			logger.info("INFO:Error while setting payment.");
 		}
 
 	}

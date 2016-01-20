@@ -108,18 +108,18 @@ public class AvailableBean implements Serializable {
 			// hibát dobunk majd az oldalra
 			logger.info("Setting cargo Status, cargoGlobalID:" + cargo.getGlobalid() + " userId:"
 					+ userSessionBean.getUserVO().getGlobalid() + " status:" + status.toString());
-			if (cargoWebService.changeCargoState(cargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
-					status) == 0) {
-				logger.info("IM IN THE FELTÉTEL");
+//			if (cargoWebService.changeCargoState(cargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
+//					status) == 0) {
+//				logger.info("IM IN THE FELTÉTEL");
 				cargo.setStatus(status);
 				getCargoService().save(cargo);
 				showOnMap(cargo.getId());
 				logger.info("INFO:Succes cargoStatus setting with WebService. ");
-			} else {
-				getFacesContext().addMessage("errorMessage",
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened."));
-				logger.info("ERROR:Error while setting cargoStatus with WebService.");
-			}
+//			} else {
+//				getFacesContext().addMessage("errorMessage",
+//						new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened."));
+//				logger.info("ERROR:Error while setting cargoStatus with WebService.");
+//			}
 		} else {
 			getFacesContext().addMessage("errorMessage",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Something wrong happened."));
