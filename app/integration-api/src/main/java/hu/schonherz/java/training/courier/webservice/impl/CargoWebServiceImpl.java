@@ -152,7 +152,7 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		List<Long> existingIds = new ArrayList<>();
 		for (CargoVO dbCargo : cargosInDB) {
 			existingIds.add(dbCargo.getGlobalid());
-			logger.info("globalId:" + dbCargo.getGlobalid());
+//			logger.info("globalId:" + dbCargo.getGlobalid());
 		}
 
 		// amint megkaptuk az admin modultól az implementációt azonnal
@@ -182,8 +182,8 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 					try {
 						existingCargo = cargoServiceLocal.findCargoByGlobalid(wsCargo.getId());
 						if (!existingCargo.equals(newCargo)) {
-							logger.info("A cargo should be updated!");
-							logger.info("Cargo status:" + newCargo.getStatus());
+//							logger.info("A cargo should be updated!");
+//							logger.info("Cargo status:" + newCargo.getStatus());
 							cargoServiceLocal.updateCargoByGlobalId(newCargo);
 						}
 						updatedCargos++;
@@ -305,13 +305,11 @@ public class CargoWebServiceImpl implements CargoWebServiceLocal, CargoWebServic
 		try {
 			dateForCargo = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianDate);
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			return remoteCargoConveter.toLocalVO(synchronizationService.getCargosByDate(dateForCargo));
 		} catch (InvalidDateException_Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

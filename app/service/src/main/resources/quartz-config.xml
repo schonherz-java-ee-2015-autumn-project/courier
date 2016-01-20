@@ -19,8 +19,8 @@
 				<name>UserRefreshTrigger</name>
 				<job-name>UserRefresh</job-name>
 				<job-group>UserAdminService</job-group>
-<!-- 				<cron-expression>0 0/1 * 1/1 * ? *</cron-expression> -->
-				<cron-expression>0 0 7 * * ?</cron-expression>
+				<cron-expression>0 0/5 * 1/1 * ? *</cron-expression>
+<!-- 				<cron-expression>0 0 7 * * ?</cron-expression> -->
 				<!-- felhasználok lekérése minden nap reggel 7 kor és utána próbálkozás -->
 			</cron>
 		</trigger>

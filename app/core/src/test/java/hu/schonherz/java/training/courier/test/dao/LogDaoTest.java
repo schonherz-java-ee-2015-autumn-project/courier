@@ -53,7 +53,7 @@ public class LogDaoTest {
 		testCalendar.add(Calendar.HOUR,-6);
 		dateToQuery = testCalendar.getTime();
 		
-		List<Log> testLogs = logDao.getLogsFrom(dateToQuery);
+		List<Log> testLogs = logDao.getLogsByUserIdFrom((long) 2, dateToQuery);
 		Assert.assertFalse(testLogs.isEmpty());
 		
 		
