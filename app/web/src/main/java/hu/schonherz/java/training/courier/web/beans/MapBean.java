@@ -99,7 +99,7 @@ public class MapBean implements Serializable {
 					addressPrice += details.get(k).getItem().getPrice() * details.get(k).getQuantity();
 				allAddress.get(j).setTotalValue(addressPrice);
 				cargoPrice += addressPrice;
-				if (allAddress.get(j).getStatus() != null)
+				if (allAddress.get(j).getStatus() != AddressStatus.In_progress)
 					if (allAddress.get(j).getStatus().equals(AddressStatus.getValue(1L)))
 						income += addressPrice;
 
@@ -119,10 +119,6 @@ public class MapBean implements Serializable {
 
 		CargoStatus status = CargoStatus.getValue(value);
 
-		// logger.info("INFO: Setting cargo status to:" + status.toString());
-		// logger.info("INFO: userGlobalID:" +
-		// userSessionBean.getUserVO().getGlobalid());
-		// logger.info("INFO: CargoGlobalId:" + selectedCargo.getGlobalid());
 		if (cargoWebService.changeCargoState(selectedCargo.getGlobalid(), userSessionBean.getUserVO().getGlobalid(),
 				status) == 0) {
 
@@ -160,7 +156,7 @@ public class MapBean implements Serializable {
 
 		for (int j = 0; j < addresses.size(); j++) {
 
-			if (addresses.get(j).getStatus() == null) {
+			if (addresses.get(j).getStatus() == AddressStatus.In_progress) {
 				stringAddress.add(addresses.get(j).getAddress());
 
 			}
