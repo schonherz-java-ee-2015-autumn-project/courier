@@ -66,7 +66,7 @@ public class RemoteCargoConverter {
 		try {
 			restaurant = restaurantService.findRestaurantByGlobalid((long) 1);
 			if (restaurant == null) {
-				logger.info("INFO: Restaurant is still null after restaurantService");
+//				logger.info("INFO: Restaurant is still null after restaurantService");
 			}
 
 		} catch (Exception e) {
