@@ -61,14 +61,8 @@ public class RemoteCargoConverter {
 			logger.info("ERROR:", e);
 		}
 		RestaurantVO restaurant = null;
-		// Long restaurantId = remoteCargoDTO.getRestaurantId() == null ? 1 :
-		// remoteCargoDTO.getRestaurantId();
 		try {
 			restaurant = restaurantService.findRestaurantByGlobalid((long) 1);
-			if (restaurant == null) {
-//				logger.info("INFO: Restaurant is still null after restaurantService");
-			}
-
 		} catch (Exception e) {
 			logger.info("ERROR:", e);
 		}
